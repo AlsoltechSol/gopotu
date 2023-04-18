@@ -1,0 +1,203 @@
+.form-control.error {
+    border-color: red;
+}
+
+select.form-control.error+.select2-container .select2-selection {
+    border-color: red;
+}
+
+.error {
+    color: red;
+}
+
+p.error {
+    margin: 2px 0 10px;
+}
+
+.modal button.close {
+    display: none;
+}
+
+.mb-15 {
+    margin-bottom: 15px;
+}
+
+.login-page,
+.register-page {
+    background: '#edecf2';
+    background-image: url('../img/auth-bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.resendotp {
+    width: fit-content;
+    color: #ffffff !important;
+    border-radius: 0px;
+    pointer-events: all;
+}
+
+.datepicker {
+    z-index: 9999 !important;
+}
+
+hr.short {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+a.label.my-label {
+    pointer-events: none;
+    text-align: left;
+    font-weight: bold;
+}
+
+table td,
+table th {
+    vertical-align: middle !important;
+}
+
+.heading-label .box-title {
+    font-size: 15px;
+    color: white;
+}
+
+.heading-label {
+    margin-bottom: 1em;
+}
+
+.btn-group .dropdown-menu,
+.navbar-fixed-bottom .dropdown .dropdown-menu {
+    right: 100%;
+    top: 0;
+    left: auto;
+    margin-bottom: 2px;
+    margin-top: 0;
+    margin-right: .125rem;
+}
+
+img.datatable-icon {
+    background: #d6dbdf;
+    border-radius: 5px;
+    width: 70px;
+    height: 70px;
+    border: 2px solid #93a4b2;
+}
+
+
+/* The switch - the box around the slider */
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+
+/* Hide default HTML checkbox */
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+
+/* The slider */
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked+.slider {
+    background-color: #2196F3;
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked+.slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+
+/* Rounded sliders */
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+img.datatable-color {
+    width: 50px;
+    border-radius: 10px;
+}
+
+.color-code-disp {
+    padding: 0px 9px;
+    border-radius: 100%;
+    margin-right: 10px;
+}
+
+.ekko-lightbox.modal .modal-header {
+    display: none;
+}
+
+.ekko-lightbox.modal .modal-body {
+    padding: 0;
+}
+
+table .btn.mg {
+    /* margin-left: 0.2em; */
+    margin-right: 0.5em;
+}
+
+table.dataTable>tbody>tr.child ul {
+    width: 100%;
+}
+
+.dz-error-message {
+    text-align: center;
+}
+
+.dropdown-divider {
+    border-top: 1px solid #cacaca;
+    margin: 8px 0;
+}
+
+.wallet-btn {
+    margin-top: 10px !important;
+    background: #e6e6e6 !important;
+    color: #000 !important;
+}
+
+.swal-footer {
+    text-align: center;
+}
