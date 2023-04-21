@@ -147,7 +147,7 @@ class CmsController extends Controller
                 $rules = array(
                     'tittle' => 'required',
                     'link' => 'required',
-                    'icon_image' => 'required|mimes:jpeg,jpg,png,gif',
+                    'icon_image' => 'required|mimes:jpeg,jpg,png,gif,webp',
                 );
 
                 $permission = 'add_sociallink';
@@ -157,7 +157,7 @@ class CmsController extends Controller
                 $rules = array(
                     'tittle' => 'required',
                     'link' => 'required',
-                    'icon_image' => 'nullable|mimes:jpeg,jpg,png,gif',
+                    'icon_image' => 'nullable|mimes:jpeg,jpg,png,gif,webp',
                     'id' => 'required',
                 );
 

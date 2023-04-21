@@ -184,7 +184,7 @@ class ProductsController extends Controller
 
                 $rules = [
                     'id' => 'required|exists:products,id',
-                    'file' => 'required|mimes:jpeg,jpg,png,gif',
+                    'file' => 'required|mimes:jpeg,jpg,png,gif,webp',
                 ];
                 break;
 
@@ -263,6 +263,7 @@ class ProductsController extends Controller
                         'color' => $post->color[$key],
                         'price' => $post->price[$key],
                         'offeredprice' => $post->offeredprice[$key],
+                        'listingprice' => $post->listingprice[$key],
                         'quantity' => $post->quantity[$key],
                         'sku' => $post->sku[$key],
                     );
@@ -342,6 +343,7 @@ class ProductsController extends Controller
                         'color' => $post->color[$key],
                         'price' => $post->price[$key],
                         'offeredprice' => $post->offeredprice[$key],
+                        'listingprice' => $post->listingprice[$key],
                         'quantity' => $post->quantity[$key],
                         'sku' => $post->sku[$key],
                     );
@@ -533,6 +535,7 @@ class ProductsController extends Controller
                     'id' => 'required|exists:product_variants',
                     'price' => 'required|numeric|min:1',
                     'offeredprice' => 'required|numeric|min:1',
+                    'listingprice' => 'required|numeric',
                     'quantity' => 'required|numeric|min:0',
                 ];
 
@@ -580,6 +583,8 @@ class ProductsController extends Controller
                 $document = array();
                 $document['price'] = $post->price;
                 $document['offeredprice'] = $post->offeredprice;
+                $document['listingprice'] = $post->listingprice;
+                
                 $document['quantity'] = $post->quantity;
 
                 $action = ProductVariant::where('id', $post->id)->update($document);
@@ -611,6 +616,10 @@ class ProductsController extends Controller
 
     public function getSchemes(Category $category){
         $scheme = $category->scheme;
-        return $scheme;
+
+        
+        return response()->json([
+            'scheme' => $scheme
+        ]);
     }
 }

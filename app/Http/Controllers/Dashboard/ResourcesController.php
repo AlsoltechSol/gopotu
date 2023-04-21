@@ -67,7 +67,7 @@ class ResourcesController extends Controller
             case 'scheme-new':
                 $rules = [
                     'name' => 'required',
-                    'icon' => 'nullable|mimes:jpeg,jpg,png,gif',
+                    'icon' => 'nullable|mimes:jpeg,jpg,png,gif,webp',
                 ];
 
                 $permission = 'add_scheme';
@@ -77,7 +77,7 @@ class ResourcesController extends Controller
                 $rules = [
                     'id' => 'required|exists:schemes',
                     'name' => 'required',
-                    'icon' => 'nullable|mimes:jpeg,jpg,png,gif',
+                    'icon' => 'nullable|mimes:jpeg,jpg,png,gif,webp',
                 ];
 
                 $permission = 'add_scheme';

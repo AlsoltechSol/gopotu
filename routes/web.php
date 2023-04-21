@@ -101,6 +101,7 @@ Route::prefix('/dashboard')->name('dashboard.')->namespace('Dashboard')->middlew
         Route::get('/index', 'OrdersController@index')->name('index');
         Route::post('/update', 'OrdersController@update')->name('update');
         Route::get('/view/{id?}', 'OrdersController@view')->name('view');
+        Route::get('/cancel/{id?}', 'OrdersController@cancel')->name('cancel');
         Route::post('/ajax', 'OrdersController@ajax')->name('ajax');
     });
 

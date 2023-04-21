@@ -70,7 +70,7 @@ class CommonController extends Controller
                 break;
 
             case 'productmaster':
-                $query = \App\Model\ProductMaster::with('category', 'brand');
+                $query = \App\Model\ProductMaster::with('category', 'brand')->orderBy('created_at', 'desc');
                 $request['searchdata'] = ['type'];
                 break;
 
@@ -90,7 +90,7 @@ class CommonController extends Controller
                 break;
 
             case 'martproducts':
-                $query = \App\Model\Product::with('product_variants', 'details', 'shop')->where('products.type', 'mart');
+                $query = \App\Model\Product::with('product_variants', 'details', 'shop')->where('products.type', 'mart')->orderBy('created_at', 'desc');
 
                 if (\Myhelper::hasNotRole(['admin', 'superadmin'])) {
                     $query->where('shop_id', \Myhelper::getShop());
@@ -105,7 +105,7 @@ class CommonController extends Controller
                 break;
 
             case 'restaurantproducts':
-                $query = \App\Model\Product::where('products.type', 'restaurant')->with('product_variants', 'details', 'shop');
+                $query = \App\Model\Product::where('products.type', 'restaurant')->with('product_variants', 'details', 'shop')->orderBy('created_at', 'desc');
 
                 if (\Myhelper::hasNotRole(['admin', 'superadmin'])) {
                     $query->where('shop_id', \Myhelper::getShop());
