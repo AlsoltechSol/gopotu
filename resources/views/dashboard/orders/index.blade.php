@@ -296,7 +296,7 @@
                                 html += `<a class="btn btn-xs btn-info mg" href="javascript:;" onclick="editStatus('`+full.id+`', '`+full.status+`', '`+full.expected_delivery+`')" data-toggle="tooltip" data-placement="top" title="Update Status"><i class="fa fa-edit"></i></a>`;
                             /* @endif */
                         /* @endif */
-
+                        html += `<a class="btn btn-xs btn-danger mg" href="{{route('dashboard.orders.cancel')}}/`+full.id+`" data-toggle="tooltip" data-placement="top" title="Cancel"><i class="fa fa-ban"></i></a>`;
                         /* @if(Myhelper::can('assign_delivery_boy')) */
                             if(['accepted','processed'].includes(full.status) && !full.deliveryboy_id){
                                 html += `<a class="btn btn-xs btn-info mg" href="javascript:;" onclick="assignDeliveryBoy('`+full.id+`')" data-toggle="tooltip" data-placement="top" title="Assign Delivery Boy"><i class="fa fa-truck"></i></a>`;

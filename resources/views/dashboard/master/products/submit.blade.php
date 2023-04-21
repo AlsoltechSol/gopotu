@@ -75,7 +75,9 @@
                         </div>
 
                         <div id="scheme" class="form-group col-md-12">
-
+                            {{-- <label>Select Scheme <span class="text-danger">*</span></label> --}}
+                                 
+                       
                         </div>
 
                         <div class="form-group col-md-12">
@@ -159,18 +161,45 @@
 
         var scheme = document.getElementById('scheme');
         function selectCategory(src){
+
+            $.ajax({
+    type: "get",
+    url: `/category-schemes/${src.value}`,
+    success: function(res) {
+        console.log(typeof res.scheme.id);
+        var dynamicValue = 2; // or set dynamicValue to the value you want to use
+        // res.scheme.id.toString();
+        console.log(typeof dynamicValue);
+
+        // console.log(res.scheme.id );
+        // $('.scheme').remove();
+        // $('#scheme').append(`
+        //     <select name="scheme_id" class="form-control brands-select2 scheme" style="width: 100%">
+        //         <option value="">Select scheme from the dropdown</option>
+        //         @foreach ($schemes as $item)
+        //             <option {{$item->id == @dynamicValue ? 'selected' : ''}} value="{{ $item->id }}">{{ $item->name }}</option>
+        //         @endforeach
+        //     </select>
+        // `);
+
+
+    // var schemes = '{{$schemes}}';
+    var schemes =  {!! json_encode($schemes) !!}
+    console.log(schemes);
+    var dynamicValue = res.scheme.id; // Replace with the value you want to use
+    var options = '<option value="">Select scheme from the dropdown</option>';
+    schemes.forEach(function(scheme) {
+        options += '<option ' + (scheme.id == dynamicValue ? 'selected' : '') + ' value="' + scheme.id + '">' + scheme.name + '</option>';
+    });
+    $('#scheme').html('<select name="scheme_id" class="form-control brands-select2 scheme" style="width: 100%">' + options + '</select>');
+
+
         
-          $('#scheme').append(
-                `
-                                <label>Select Scheme <span class="text-danger">*</span></label>
-                            <select name="scheme_id" class="form-control brands-select2" style="width: 100%">
-                                <option value="">Select from the dropdown</option>
-                                @foreach ($schemes as $item)
-                                    <option {{$item->id == 11 ? 'selected' : ''}}  value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>
-                            `
-            )
+    },
+});
+             
+
+                
         }
         
         $(function () {

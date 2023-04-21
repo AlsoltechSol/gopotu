@@ -95,6 +95,31 @@ class OrdersController extends Controller
         return view('dashboard.orders.view', $data);
     }
 
+    
+    public function cancel($id, Request $post)
+    {
+        $data['activemenu'] = [
+            'main' => 'orders',
+            'sub' => 'index',
+        ];
+
+        if (!\Myhelper::can('view_order')) {
+            abort(401);
+        }
+
+        $order = Order::with('shop', 'user', 'order_products', 'return_replacements', 'return_replacements.returnreplacement_items')->where('id', $id)->first();
+        $order->status = 'cancelled';
+        $order->save();
+        if (!$order) {
+            abort(404);
+        }
+
+        // dd($order->return_replacements->toArray());
+
+        $data['order'] = $order;
+        return back();
+    }
+
     public function update(Request $post)
     {
         switch ($post->type) {

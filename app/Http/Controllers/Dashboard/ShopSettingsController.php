@@ -44,7 +44,7 @@ class ShopSettingsController extends Controller
             'shop_id' => 'required|exists:shops,id',
             'shop_name' => 'required',
             'shop_tagline' => 'nullable',
-            'shop_image' => 'nullable|mimes:jpeg,jpg,png,gif|dimensions:width=350,height=200',
+            'shop_image' => 'nullable|mimes:jpeg,jpg,png,gif,webp|dimensions:width=350,height=200',
             'shop_mobile' => 'required|digits:10',
             'shop_whatsapp' => 'required|digits:10',
             'shop_email' => 'required|email',

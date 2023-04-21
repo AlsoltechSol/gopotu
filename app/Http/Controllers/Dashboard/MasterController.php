@@ -193,7 +193,7 @@ class MasterController extends Controller
 
                 $data['categories'] = Category::where('type', $data['type'])->with('sub_categories')->where('parent_id', NULL)->orderBy('name', 'ASC')->get();
                 $data['brands'] = Brand::orderBy('name', 'ASC')->get();
-
+                $schemes = Scheme::all();
                 break;
 
             default:
@@ -204,7 +204,7 @@ class MasterController extends Controller
             abort(401);
         }
 
-        return view('dashboard.master.' . $view, $data);
+        return view('dashboard.master.' . $view, $data, compact('schemes'));
     }
 
     public function submit(Request $post)
@@ -223,7 +223,7 @@ class MasterController extends Controller
                 $rules = [
                     'id' => 'required|exists:brands',
                     'name' => 'required',
-                    'icon' => 'nullable|mimes:jpeg,jpg,png,gif',
+                    'icon' => 'nullable|mimes:jpeg,jpg,png,gif,webp',
                 ];
 
                 $permission = 'add_brand';
@@ -250,7 +250,7 @@ class MasterController extends Controller
                     'parent_id' => 'nullable|exists:categories,id',
                     'name' => 'required',
                     'type' => 'required|in:mart,restaurant,service',
-                    'icon' => 'required|mimes:jpeg,jpg,png,gif',
+                    'icon' => 'required|mimes:jpeg,jpg,png,gif,webp',
                 ];
 
                 $permission = 'add_category';
@@ -262,7 +262,7 @@ class MasterController extends Controller
                     'parent_id' => 'nullable|exists:categories,id',
                     'name' => 'required',
                     'type' => 'required|in:mart,restaurant,service',
-                    'icon' => 'nullable|mimes:jpeg,jpg,png,gif',
+                    'icon' => 'nullable|mimes:jpeg,jpg,png,gif,webp',
                 ];
 
                 $permission = 'add_category';
@@ -301,8 +301,9 @@ class MasterController extends Controller
                     'category_id' => 'required|exists:categories,id',
                     'brand_id' => 'required|exists:brands,id',
                     'description' => 'required',
-                    'product_image' => 'required|mimes:jpeg,jpg,png,gif',
+                    'product_image' => 'required|mimes:jpeg,jpg,png,gif,webp',
                     'tax_rate' => 'nullable|numeric|min:0|max:100',
+                    'scheme_id' => 'required|exists:schemes,id',
                 ];
 
                 $permission = 'add_product_master';
@@ -325,7 +326,7 @@ class MasterController extends Controller
                     'category_id' => 'required|exists:categories,id',
                     'brand_id' => 'required|exists:brands,id',
                     'description' => 'required',
-                    'product_image' => 'nullable|mimes:jpeg,jpg,png,gif',
+                    'product_image' => 'nullable|mimes:jpeg,jpg,png,gif,webp',
                     'tax_rate' => 'nullable|numeric|min:0|max:100',
                 ];
 
@@ -351,7 +352,7 @@ class MasterController extends Controller
             case 'product-image-upload':
                 $rules = [
                     'id' => 'required|exists:product_masters',
-                    'file' => 'required|mimes:jpeg,jpg,png,gif',
+                    'file' => 'required|mimes:jpeg,jpg,png,gif,webp',
                 ];
 
                 $permission = 'edit_product_master';
@@ -473,7 +474,7 @@ class MasterController extends Controller
             case 'appbanner-new':
                 $rules = [
                     'position' => 'required|in:top,middle,footer',
-                    'file' => 'required|mimes:jpeg,jpg,png,gif',
+                    'file' => 'required|mimes:jpeg,jpg,png,gif,webp',
                     'type' => 'nullable|in:mart,restaurant,service|required_if:position,==,top',
                 ];
 

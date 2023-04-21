@@ -170,7 +170,7 @@ class HomeController extends Controller
 
             case 'profileimage':
                 $rules = [
-                    'profile_image' => 'required|mimes:jpeg,jpg,png,gif|max:1',
+                    'profile_image' => 'required|mimes:jpeg,jpg,png,gif,webp|max:1',
                 ];
                 break;
 
@@ -179,34 +179,34 @@ class HomeController extends Controller
                     if (in_array($userdata->role->slug, ['deliveryboy'])) {
                         $rules['drivinglicense_number'] = 'required';
                         $rules['drivinglicense_expiry'] = 'required|date|after:today';
-                        $rules['drivinglicense_back_file'] = 'nullable|mimes:jpeg,jpg,png,gif';
+                        $rules['drivinglicense_back_file'] = 'nullable|mimes:jpeg,jpg,png,gif,webp';
 
                         if (@$userdata->documents->drivinglicense_front) {
-                            $rules['drivinglicense_front_file'] = 'nullable|mimes:jpeg,jpg,png,gif';
+                            $rules['drivinglicense_front_file'] = 'nullable|mimes:jpeg,jpg,png,gif,webp';
                         } else {
-                            $rules['drivinglicense_front_file'] = 'required|mimes:jpeg,jpg,png,gif';
+                            $rules['drivinglicense_front_file'] = 'required|mimes:jpeg,jpg,png,gif,webp';
                         }
                     }
 
                     if (in_array($userdata->role->slug, ['branch', 'deliveryboy'])) {
                         $rules['govtid_type'] = 'required|in:aadhaar,pancard';
                         $rules['govtid_number'] = 'required';
-                        $rules['govtid_back_file'] = 'nullable|mimes:jpeg,jpg,png,gif';
+                        $rules['govtid_back_file'] = 'nullable|mimes:jpeg,jpg,png,gif,webp';
 
                         if (@$userdata->documents->govtid_front) {
-                            $rules['govtid_front_file'] = 'nullable|mimes:jpeg,jpg,png,gif';
+                            $rules['govtid_front_file'] = 'nullable|mimes:jpeg,jpg,png,gif,webp';
                         } else {
-                            $rules['govtid_front_file'] = 'required|mimes:jpeg,jpg,png,gif';
+                            $rules['govtid_front_file'] = 'required|mimes:jpeg,jpg,png,gif,webp';
                         }
                     }
 
                     if (in_array($userdata->role->slug, ['branch'])) {
                         $rules['tradelicense_number'] = 'nullable';
-                        $rules['tradelicense_doc'] = 'nullable|mimes:jpeg,jpg,png,gif';
+                        $rules['tradelicense_doc'] = 'nullable|mimes:jpeg,jpg,png,gif,webp';
                         $rules['fssaireg_number'] = 'nullable';
-                        $rules['fssaireg_doc'] = 'nullable|mimes:jpeg,jpg,png,gif';
+                        $rules['fssaireg_doc'] = 'nullable|mimes:jpeg,jpg,png,gif,webp';
                         $rules['gstin_number'] = 'nullable|string|max:15|min:15|regex:^\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}^';
-                        $rules['gstin_doc'] = 'nullable|mimes:jpeg,jpg,png,gif';
+                        $rules['gstin_doc'] = 'nullable|mimes:jpeg,jpg,png,gif,webp';
                     }
                 } else {
                     return response()->json(['status' => 'Unsupported request'], 400);
@@ -225,9 +225,9 @@ class HomeController extends Controller
                         ];
 
                         if (@$userdata->bankdetails->pancard_file) {
-                            $rules['pancard_file'] = 'nullable|mimes:jpeg,jpg,png,gif';
+                            $rules['pancard_file'] = 'nullable|mimes:jpeg,jpg,png,gif,webp';
                         } else {
-                            $rules['pancard_file'] = 'required|mimes:jpeg,jpg,png,gif';
+                            $rules['pancard_file'] = 'required|mimes:jpeg,jpg,png,gif,webp';
                         }
                     }
                 } else {

@@ -45,7 +45,7 @@
                                         </tr>
                                         <tr>
                                             <th>Category</th>
-                                            <td>{{$product_master->category->name ?? "N/A"}}</td>
+                                            <td>{{$product_master->category->scheme_id ?? "N/A"}}</td>
                                         </tr>
                                         <tr>
                                             <th>Brand</th>
@@ -136,6 +136,7 @@
                                     <th class="text-left">Color</th>
                                     <th class="text-center">Price</th>
                                     <th class="text-center">Offered Price</th>
+                                    <th class="text-center">Listing Price</th>
                                     <th class="text-center">Quantity (Stock Available)</th>
                                     <th class="text-center">SKU</th>
                                     <th class="text-center">Action</th>
@@ -143,6 +144,7 @@
 
                                 <tbody>
                                     @if (isset($product))
+                                    
                                         @foreach ($product->product_variants as $item)
                                             <tr id="row-{{ $item->color ? str_replace('#', '', $item->color) : 'null' }}-{{ $item->variant ? str_replace(':', '-', $item->variant) : 'null' }}">
                                                 <td>
@@ -171,10 +173,19 @@
                                                         <span class="input-group-addon">.00</span>
                                                     </div>
                                                 </td>
+                                              
+
                                                 <td>
                                                     <div class="input-group">
                                                         <span class="input-group-addon">{!!config('app.currency.faicon')!!}</span>
                                                             <input type="number" name="offeredprice[]" class="form-control" placeholder="" value="{{$item->offeredprice}}">
+                                                        <span class="input-group-addon">.00</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">{!!config('app.currency.faicon')!!}</span>
+                                                            <input type="number" name="listingprice[]" class="form-control" placeholder="" value="{{$item->listingprice}}">
                                                         <span class="input-group-addon">.00</span>
                                                     </div>
                                                 </td>
@@ -332,6 +343,13 @@
                                     </div>\
                                 </td>\
                                 <td>\
+                        <div class="input-group">\
+                            <span class="input-group-addon">{!!config('app.currency.faicon')!!}</span>\
+                                <input type="number" name="listingprice[]" class="form-control" placeholder="">\
+                            <span class="input-group-addon">.00</span>\
+                        </div>\
+                    </td>\
+                                <td>\
                                     <input type="number" name="quantity[]" class="form-control" placeholder="">\
                                 </td>\
                                 <td>\
@@ -376,6 +394,13 @@
                                     <span class="input-group-addon">.00</span>\
                                 </div>\
                             </td>\
+                            <td>\
+                        <div class="input-group">\
+                            <span class="input-group-addon">{!!config('app.currency.faicon')!!}</span>\
+                                <input type="number" name="listingprice[]" class="form-control" placeholder="">\
+                            <span class="input-group-addon">.00</span>\
+                        </div>\
+                    </td>\
                             <td>\
                                 <input type="number" name="quantity[]" class="form-control" placeholder="">\
                             </td>\
@@ -423,6 +448,13 @@
                                 </div>\
                             </td>\
                             <td>\
+                        <div class="input-group">\
+                            <span class="input-group-addon">{!!config('app.currency.faicon')!!}</span>\
+                                <input type="number" name="listingprice[]" class="form-control" placeholder="">\
+                            <span class="input-group-addon">.00</span>\
+                        </div>\
+                    </td>\
+                            <td>\
                                 <input type="number" name="quantity[]" class="form-control" placeholder="">\
                             </td>\
                             <td>\
@@ -441,6 +473,7 @@
                 $('[name="color[]"]').val('');
                 $('[name="price[]"]').val('');
                 $('[name="offeredprice[]"]').val('');
+                $('[name="listingprice[]"]').val('');
                 $('[name="quantity[]"]').val('');
 
                 html += `<tr>\
@@ -463,6 +496,13 @@
                         <div class="input-group">\
                             <span class="input-group-addon">{!!config('app.currency.faicon')!!}</span>\
                                 <input type="number" name="offeredprice[]" class="form-control" placeholder="">\
+                            <span class="input-group-addon">.00</span>\
+                        </div>\
+                    </td>\
+                    <td>\
+                        <div class="input-group">\
+                            <span class="input-group-addon">{!!config('app.currency.faicon')!!}</span>\
+                                <input value="" type="number" name="listingprice[]" class="form-control" placeholder="">\
                             <span class="input-group-addon">.00</span>\
                         </div>\
                     </td>\

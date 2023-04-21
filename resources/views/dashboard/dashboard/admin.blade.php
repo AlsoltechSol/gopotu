@@ -191,7 +191,7 @@
                                                 @if ($item->availability == 'comingsoon')
                                                     Coming Soon
                                                 @else
-                                                    {!! config('app.currency.faicon') !!} {{ $item->product_variants[0]->purchase_price }}
+                                                    {!! config('app.currency.faicon') !!} 
                                                 @endif
                                             </span>
                                         </a>
