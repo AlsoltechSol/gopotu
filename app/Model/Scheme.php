@@ -23,4 +23,8 @@ class Scheme extends Model
     public function categories(){
         return $this->hasMany(Category::class, 'scheme_id');
     }
+
+    public function productMasters(){
+        return $this->hasMany(ProductMaster::class, 'scheme_id');
+    }
 }
