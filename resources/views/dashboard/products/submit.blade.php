@@ -45,15 +45,29 @@
                                         </tr>
                                         <tr>
                                             <th>Category</th>
-                                            <td>{{$product_master->category->scheme_id ?? "N/A"}}</td>
+                                            <td>{{$product_master->category->name ?? "N/A"}}</td>
                                         </tr>
                                         <tr>
                                             <th>Brand</th>
                                             <td>{{$product_master->brand->name ?? "N/A"}}</td>
                                         </tr>
+                                        <input type="hidden" id="category_id" value="{{$product_master->category->id}}">
+                                        <input type="hidden" id="product_id" value="{{$product_master->id}}">
                                         <tr>
                                             <th>Description</th>
                                             <td>{!! $product_master->description ?? "N/A" !!}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Scheme</th>
+                                           
+                                            @if ($product_master->scheme_id)
+                                                <td>{!! $product_master->scheme->name ?? "N/A" !!}(Charges:{{\App\Model\Commission::where('scheme_id',$product_master->scheme_id)->where('provider_id', 1)->first()->value ?? "N/A" }}-{{ \App\Model\Commission::where('scheme_id',$product_master->scheme_id)->where('provider_id', 1)->first()->type ?? "N/A" }})</td>
+                                            @else
+                                                <td>{!! $product_master->category->scheme->name ?? "N/A" !!}(Charges:{{\App\Model\Commission::where('scheme_id',$product_master->category->scheme_id)->where('provider_id', 1)->first()->value ?? "N/A" }}-{{ \App\Model\Commission::where('scheme_id',$product_master->category->scheme_id)->where('provider_id', 1)->first()->type ?? "N/A" }})</td>
+                                            @endif
+                                          
+                                            <td></td>
+                                           
                                         </tr>
                                     </table>
                                 </div>
@@ -61,6 +75,22 @@
                         </div>
 
                         <div class="col-md-12"><hr></div>
+                        
+                        @if(!isset($product) || (isset($product) ))
+                        <div class="col-md-12">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" style="margin: 8px 0;">Scheme <span class="text-danger">*</span></label>
+                                <div class="col-sm-10">
+                                    <select onchange="changeScheme(this)" id="scheme_change" name="scheme_id" class="form-control">
+                                        @foreach ($schemes as $item)
+                                            <option {{$product_master->category->scheme_id == $item->id ? 'selected' : ''}} value="{{$item->id}}">{{$item->name}}(Charges:{{\App\Model\Commission::where('scheme_id',$item->id)->where('provider_id', 1)->first()->value ?? "N/A" }}-{{ \App\Model\Commission::where('scheme_id',$item->id)->where('provider_id', 1)->first()->type ?? "N/A" }})</option>
+                                        @endforeach
+                                       
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    @endif
 
                         @if(!isset($product) || (isset($product) && in_array($product->availability, ['comingsoon'])))
                             <div class="col-md-12">
@@ -75,6 +105,7 @@
                                 </div>
                             </div>
                         @endif
+
 
                         {{-- <div class="col-md-12 product-av-blocks"><hr></div> --}}
                     </div>
@@ -136,7 +167,10 @@
                                     <th class="text-left">Color</th>
                                     <th class="text-center">Price</th>
                                     <th class="text-center">Offered Price</th>
-                                    <th class="text-center">Listing Price</th>
+                                    @if (Auth::user()->role->name != 'Merchant')
+                                        <th class="text-center">Listing Price</th>                                    
+                                    @endif
+                                    
                                     <th class="text-center">Quantity (Stock Available)</th>
                                     <th class="text-center">SKU</th>
                                     <th class="text-center">Action</th>
@@ -182,6 +216,7 @@
                                                         <span class="input-group-addon">.00</span>
                                                     </div>
                                                 </td>
+                                                @if (Auth::user()->role->name != 'Merchant')
                                                 <td>
                                                     <div class="input-group">
                                                         <span class="input-group-addon">{!!config('app.currency.faicon')!!}</span>
@@ -189,6 +224,7 @@
                                                         <span class="input-group-addon">.00</span>
                                                     </div>
                                                 </td>
+                                                @endif
                                                 <td>
                                                     <input type="number" name="quantity[]" class="form-control" placeholder="" value="{{$item->quantity}}">
                                                 </td>
@@ -342,6 +378,7 @@
                                         <span class="input-group-addon">.00</span>\
                                     </div>\
                                 </td>\
+                                @if (Auth::user()->role->name != 'Merchant')
                                 <td>\
                         <div class="input-group">\
                             <span class="input-group-addon">{!!config('app.currency.faicon')!!}</span>\
@@ -349,6 +386,7 @@
                             <span class="input-group-addon">.00</span>\
                         </div>\
                     </td>\
+                    @endif
                                 <td>\
                                     <input type="number" name="quantity[]" class="form-control" placeholder="">\
                                 </td>\
@@ -394,6 +432,7 @@
                                     <span class="input-group-addon">.00</span>\
                                 </div>\
                             </td>\
+                            @if (Auth::user()->role->name != 'Merchant')
                             <td>\
                         <div class="input-group">\
                             <span class="input-group-addon">{!!config('app.currency.faicon')!!}</span>\
@@ -401,6 +440,7 @@
                             <span class="input-group-addon">.00</span>\
                         </div>\
                     </td>\
+                    @endif
                             <td>\
                                 <input type="number" name="quantity[]" class="form-control" placeholder="">\
                             </td>\
@@ -447,6 +487,7 @@
                                     <span class="input-group-addon">.00</span>\
                                 </div>\
                             </td>\
+                            @if (Auth::user()->role->name != 'Merchant')
                             <td>\
                         <div class="input-group">\
                             <span class="input-group-addon">{!!config('app.currency.faicon')!!}</span>\
@@ -454,6 +495,7 @@
                             <span class="input-group-addon">.00</span>\
                         </div>\
                     </td>\
+                    @endif
                             <td>\
                                 <input type="number" name="quantity[]" class="form-control" placeholder="">\
                             </td>\
@@ -499,6 +541,7 @@
                             <span class="input-group-addon">.00</span>\
                         </div>\
                     </td>\
+                    @if (Auth::user()->role->name != 'Merchant')
                     <td>\
                         <div class="input-group">\
                             <span class="input-group-addon">{!!config('app.currency.faicon')!!}</span>\
@@ -506,6 +549,7 @@
                             <span class="input-group-addon">.00</span>\
                         </div>\
                     </td>\
+                    @endif
                     <td>\
                         <input type="number" name="quantity[]" class="form-control" placeholder="">\
                     </td>\
@@ -639,6 +683,33 @@
                         };
                     },
                 }
+            });
+        }
+
+
+     
+       function changeScheme(src) {
+
+            var product_id = $('#product_id').val();
+            // let pilot = $('#pilot').find(":selected").val();
+            let scheme_id = src.value;
+        
+            $.ajax({
+                url: `/update-product/${product_id}`,
+                type: "POST",
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    scheme_id: scheme_id,
+                    
+                },
+                success: function(response) {
+                    
+                    console.log(response);
+
+                },
+                error: function(response) {
+                    
+                },
             });
         }
     </script>

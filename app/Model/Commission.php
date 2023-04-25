@@ -17,4 +17,6 @@ class Commission extends Model
     {
         return date('d M y - h:i A', strtotime($value));
     }
+
+
 }

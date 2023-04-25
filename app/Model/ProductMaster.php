@@ -40,4 +40,8 @@ class ProductMaster extends Model
     {
         return asset('uploads/product/' . $this->image);
     }
+
+    public function scheme(){
+        return $this->belongsTo(Scheme::class, 'scheme_id');
+    }
 }

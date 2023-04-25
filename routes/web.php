@@ -184,5 +184,7 @@ Route::prefix('/dashboard')->name('dashboard.')->namespace('Dashboard')->middlew
 
 Route::get('/category-schemes/{category}', [App\Http\Controllers\Dashboard\ProductsController::class, 'getSchemes']);
 
+Route::post('/update-product/{product}', [App\Http\Controllers\Dashboard\ProductsController::class, 'updateProduct'])->name('product.scheme');
+
 Route::get('/{any}', 'PagesController@cmsPages')->where('any', '.*')->name('pages.cms');
 

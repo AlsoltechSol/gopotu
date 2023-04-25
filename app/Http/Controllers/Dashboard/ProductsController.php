@@ -8,6 +8,7 @@ use App\Model\Brand;
 use App\Model\Cart;
 use App\Model\Category;
 use App\Model\Color;
+use App\Model\Commission;
 use App\Model\OrderProduct;
 use App\Model\Product;
 use App\Model\ProductAttribute;
@@ -15,6 +16,7 @@ use App\Model\ProductAttributeVariant;
 use App\Model\ProductImage;
 use App\Model\ProductMaster;
 use App\Model\ProductVariant;
+use App\Model\Scheme;
 use Carbon\Carbon;
 
 class ProductsController extends Controller
@@ -103,7 +105,8 @@ class ProductsController extends Controller
         $data['product_master'] = ProductMaster::where('type', 'mart')->findorfail($master_id);
         $data['colors'] = Color::orderBy('name', 'ASC')->get();
         $data['attributes'] = ProductAttribute::orderBy('name', 'ASC')->get();
-        return view('dashboard.products.submit', $data);
+        $schemes = Scheme::all();
+        return view('dashboard.products.submit', $data, compact('schemes'));
     }
 
     public function edit($id)
@@ -138,11 +141,13 @@ class ProductsController extends Controller
         $data['colors'] = Color::orderBy('name', 'ASC')->get();
         $data['attributes'] = ProductAttribute::orderBy('name', 'ASC')->get();
 
-        return view('dashboard.products.submit', $data);
+        $schemes = Scheme::all();
+        return view('dashboard.products.submit', $data, compact('schemes'));
     }
 
     public function submit(Request $post)
     {
+        return $post;
         switch ($post->operation) {
             case 'new':
                 $permission = "add_product";
@@ -257,13 +262,35 @@ class ProductsController extends Controller
                         }
                     }
 
+                    $product_master = ProductMaster::where('id', $product_document['master_id'])->first();
+
+                    $scheme_id = $product_master->category->scheme_id;
+
+                    $commission = Commission::where('scheme_id', $scheme_id)->where('provider_id')->first();
+
+                    $commission_type = '';
+                    $commission_value = '';
+                    $listing_price = '';
+
+                    if (isset($commission)){
+                        $commission_type = $commission->type;
+                        $commission_value = $commission->value;
+                    }
+
+                    if ($commission_type == 'flat'){
+                       $listing_price =  $post->offeredprice[$key] + $commission_value;
+                    }else{
+                        $listing_price =  $post->offeredprice[$key] + 0.01*$post->offeredprice[$key]*$commission_value;
+                    }
+
+
                     $productvariant_document[] = array(
                         'product_id' => null,
                         'variant' => $post->variant[$key],
                         'color' => $post->color[$key],
                         'price' => $post->price[$key],
                         'offeredprice' => $post->offeredprice[$key],
-                        'listingprice' => $post->listingprice[$key],
+                        'listingprice' => $listing_price,
                         'quantity' => $post->quantity[$key],
                         'sku' => $post->sku[$key],
                     );
@@ -620,6 +647,14 @@ class ProductsController extends Controller
         
         return response()->json([
             'scheme' => $scheme
+        ]);
+    }
+
+    public function updateProduct(ProductMaster $product, Request $request){
+        $product->scheme_id = $request->scheme_id;
+        $product->save();
+        return response()->json([
+            'message' => 'Scheme Updated'
         ]);
     }
 }
