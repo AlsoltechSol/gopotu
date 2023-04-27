@@ -17,6 +17,7 @@ use App\Model\ProductImage;
 use App\Model\ProductMaster;
 use App\Model\ProductVariant;
 use App\Model\Scheme;
+use App\Model\Shop;
 use Carbon\Carbon;
 
 class ProductsController extends Controller
@@ -32,7 +33,9 @@ class ProductsController extends Controller
             abort(401);
         }
 
-        return view('dashboard.products.index', $data);
+        $shops = Shop::all();
+
+        return view('dashboard.products.index', compact('shops'));
     }
 
     public function view($id = "none")
@@ -147,7 +150,8 @@ class ProductsController extends Controller
 
     public function submit(Request $post)
     {
-        return $post;
+       // return 'hi';
+       // return $post;
         switch ($post->operation) {
             case 'new':
                 $permission = "add_product";
@@ -264,9 +268,13 @@ class ProductsController extends Controller
 
                     $product_master = ProductMaster::where('id', $product_document['master_id'])->first();
 
-                    $scheme_id = $product_master->category->scheme_id;
+                    $scheme_id = $product_master->scheme_id;
 
-                    $commission = Commission::where('scheme_id', $scheme_id)->where('provider_id')->first();
+                   if ($scheme_id == 0){
+                        $scheme_id = $product_master->category->scheme_id;
+                   }
+                  
+                    $commission = Commission::where('scheme_id', $scheme_id)->where('provider_id', '1')->first();
 
                     $commission_type = '';
                     $commission_value = '';
@@ -320,23 +328,42 @@ class ProductsController extends Controller
 
             case 'edit':
                 $product = Product::findorfail($post->id);
+               
 
+              
+                
                 if ($product->variant && (!$post->variants || count($post->variants) < 1)) {
+                   
                     return response()->json(['status' => 'Please select a variant option to continue'], 400);
                 }
+
+              
 
                 $product_document = array();
                 $product_document['type'] = 'mart';
                 $product_document['colors'] = json_encode($post->available_colors);
                 $product_document['variant_options'] = json_encode($post->variants);
+                $product_document['master_id'] = $product->master_id;
+
+               // dd($product_document['master_id']);
 
                 if (!$product->variant) {
                     $product_document['variant'] = $post->available_variant;
                 }
 
+              
                 $productvariant_document = array();
+
+               
+
+
                 foreach ($post->price as $key => $item) {
+
+                 
+                    
                     if (in_array($post->availability, ['instock', 'outofstock'])) {
+                        
+
                         if (!$post->price[$key]) {
                             return response()->json(['status' => 'Product price is required for Row ' . ($key + 1)], 400);
                         }
@@ -362,6 +389,37 @@ class ProductsController extends Controller
                         }
                     }
 
+              
+
+                    
+                    $product_master = ProductMaster::where('id', $product_document['master_id'])->first();
+
+                    
+                    $scheme_id = $product_master->scheme_id;
+
+                   if ($scheme_id == 0){
+                        $scheme_id = $product_master->category->scheme_id;
+                   }
+                  
+                    $commission = Commission::where('scheme_id', $scheme_id)->where('provider_id', '1')->first();
+
+                    $commission_type = '';
+                    $commission_value = '';
+                    $listing_price = '';
+
+                    if (isset($commission)){
+                        $commission_type = $commission->type;
+                        $commission_value = $commission->value;
+                    }
+
+                    if ($commission_type == 'flat'){
+                       $listing_price =  $post->offeredprice[$key] + $commission_value;
+                    }else{
+                        $listing_price =  $post->offeredprice[$key] + 0.01*$post->offeredprice[$key]*$commission_value;
+                    }
+
+
+                
 
                     $productvariant_document[] = array(
                         'id' => $post->variant_id[$key],
@@ -370,13 +428,16 @@ class ProductsController extends Controller
                         'color' => $post->color[$key],
                         'price' => $post->price[$key],
                         'offeredprice' => $post->offeredprice[$key],
-                        'listingprice' => $post->listingprice[$key],
+                        'listingprice' => $listing_price,
                         'quantity' => $post->quantity[$key],
                         'sku' => $post->sku[$key],
                     );
+
+                    // dd($productvariant_document);
                 }
 
                 $product_update = Product::where('id', $product->id)->update($product_document);
+                
                 if ($product_update) {
                     if (in_array($post->availability, ['instock', 'outofstock'])) {
                         ProductVariant::where('product_id', $product->id)->delete();

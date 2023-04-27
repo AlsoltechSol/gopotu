@@ -12,6 +12,28 @@
             <li class="active">View All</li>
         </ol>
     </section>
+
+    
+    <section class="content">
+        @php
+            $customfilter = true;
+            $customfilter_array = [
+                (object) [
+                    'label' => "Type",
+                    'name' => "type",
+                    'type' => "select2",
+                    'options' => [
+                        '' => "Select Store",
+                       
+                    ]
+                ]
+            ];
+        @endphp
+        @include('inc.inhouse.filter')
+
+       
+    </section>
+    
     <section class="content">
         <div class="box">
             <div class="box-header with-border">
@@ -33,6 +55,7 @@
                         <th>Image</th>
                         <th>Product Price</th>
                         <th>Offered Price</th>
+                        <th>Listing Price</th>
                         <th>Top Offer</th>
                         <th>Last Updated</th>
                         <th>Status</th>
@@ -152,6 +175,23 @@
                     },
                     searchable: false,
                     orderable: false,
+                },
+                {
+                    data:'product_variants',
+                        name: 'product_variants',
+                        render: function(data, type, full, meta){
+                            let html = ''
+
+                            if(data[0]?.listingprice){
+                                html += `<b class="text-primary">{!!config('app.currency.faicon')!!}`+data[0]?.listingprice+`</b>`;
+                            } else{
+                                html += 'N/A';
+                            }
+
+                            return html;
+                        },
+                        searchable: false,
+                        orderable: false,
                 },
                 {
                     data:'top_offer',
