@@ -26,6 +26,15 @@
                         'mart' => "Mart",
                         'restaurant' => "Restaurant",
                     ]
+                ],
+                (object) [
+                    'label' => "Type",
+                    'name' => "shops",
+                    'type' => "select2",
+                    'options' => [
+                        '' => "Select Shops",
+                        ''
+                    ]
                 ]
             ];
         @endphp

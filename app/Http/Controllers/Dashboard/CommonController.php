@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Dashboard;
 use App\Helpers\Myhelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class CommonController extends Controller
 {
@@ -16,6 +18,20 @@ class CommonController extends Controller
                 $query = \App\User::whereHas('role', function ($q) {
                     $q->where('slug', 'user');
                 });
+
+                $request['searchdata'] = [];
+                break;
+
+            case 'mobile':
+                $query = \App\User::whereHas('role', function ($q) {
+                    $q->where('slug', 'user');
+                });
+
+                $request['searchdata'] = [];
+                break;
+                
+            case 'order_id':
+                $query = DB::table('orders')->select('id');
 
                 $request['searchdata'] = [];
                 break;
@@ -141,6 +157,8 @@ class CommonController extends Controller
                 break;
 
             case 'orders':
+
+
                 $query = \App\Model\Order::with('user', 'deliveryboy', 'shop');
 
                 if (\Myhelper::hasRole(['branch'])) {
@@ -150,7 +168,7 @@ class CommonController extends Controller
                     $query->whereIn('status', ['received', 'accepted', 'processed', 'intransit', 'outfordelivery', 'delivered', 'cancelled', 'returned']);
                 }
 
-                $request['searchdata'] = ['user_id', 'type', 'status'];
+                $request['searchdata'] = ['user_id', 'type', 'status', 'cust_mobile', 'id'];
 
                 $request['datasearchcolumns'] = [
                     'id', 'code', 'cust_mobile', 'cust_name', 'status', 'cust_address', 'user_id', 'user.email', 'user.name', 'user.mobile', 'payment_mode'
@@ -376,6 +394,12 @@ class CommonController extends Controller
                 switch ($type) {
                     case 'user':
                         return response()->json(['result' => $query->pluck('name', 'id')], 200);
+                        break;
+                    case 'mobile':
+                        return response()->json(['result' => $query->pluck('mobile', 'id')], 200);
+                        break;
+                    case 'order_id':
+                        return response()->json(['result' => $query->pluck('id')], 200);
                         break;
                 }
                 break;

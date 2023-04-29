@@ -19,6 +19,9 @@
                 'daterange' => true,
                 'cattypefilter' => true,
                 'orderstatusfilter' => true,
+                'mobilenofilter' => true,
+                'orderidfilter' => true,
+                'cityfilter' => true
             ];
 
             if(Myhelper::hasRole(['superadmin', 'admin'])) {
@@ -179,9 +182,12 @@
                 type: "POST",
                 data:function( d )
                 {
+                    console.log(d);
                     d.daterange = $('#searchform').find('[name="daterange"]').val();
                     d.user_id = $('#searchform').find('[name="user_id"]').val();
+                    d.id = $('#searchform').find('[name="order_id"]').val();
                     d.type = $('#searchform').find('[name="type"]').val();
+                    d.cust_mobile = $('#searchform').find('[name="cust_mobile"]').val();
                     d.status = $('#searchform').find('[name="orderstatus"]').val();
                     d._token = '{{csrf_token()}}';
                 },

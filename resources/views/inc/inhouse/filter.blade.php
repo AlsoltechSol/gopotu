@@ -18,13 +18,14 @@
                                 <i class="fa fa-clock-o"></i>
                             </div>
                             <select id="datefilter" class="form-control select2">
-                                <option value="">Select from the dropdown</option>
+                                <option value="">Select from the dropdown <span style="color: red !important" class="text-danger">*</span></option>
                                 <option value="{{ Carbon\Carbon::now()->format('m/d/Y') }} - {{ Carbon\Carbon::now()->format('m/d/Y') }}">Daily</option>
                                 <option value="{{ Carbon\Carbon::now()->firstOfMonth()->format('m/d/Y') }} - {{ Carbon\Carbon::now()->format('m/d/Y') }}">Monthly</option>
                                 <option value="{{ Carbon\Carbon::now()->startOfYear()->format('m/d/Y') }} - {{ Carbon\Carbon::now()->format('m/d/Y') }}">Annually</option>
                             </select>
                         </div>
                     </div>
+                   
                 @endif
 
                 @if(isset($filteroptions['userfilter']) && $filteroptions['userfilter'] == true)
@@ -75,25 +76,49 @@
                     </div>
                 @endif
 
-                @if (isset($status_filter) && $status_filter == true)
+                
+                @if(isset($filteroptions['mobilenofilter']) && $filteroptions['mobilenofilter'] == true)
                     <div class="form-group col-lg-4">
                         <div class="input-group">
                             <div class="input-group-addon">
-                                <i class="fa fa-shopping-cart"></i>
+                                <i class="fa fa-phone"></i>
                             </div>
-                            <select name="status" class="form-control select2" style="width: 100%">
-                                <option value="">Select Status</option>
-                                @foreach ($status_array as $key => $value)
-                                    <option value="{{$key}}">{{$value}}</option>
-                                @endforeach
+                            <select name="cust_mobile" class="form-control select2" style="width: 100%">
+                                <option value="">Select Mobile</option>
                             </select>
                         </div>
                     </div>
                 @endif
 
+                @if(isset($filteroptions['orderidfilter']) && $filteroptions['orderidfilter'] == true)
+                <div class="form-group col-lg-4">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-list"></i>
+                        </div>
+                        <select name="order_id" class="form-control select2" style="width: 100%">
+                            <option value="">Select OrderId</option>
+                        </select>
+                    </div>
+                </div>
+            @endif
+
+            @if(isset($filteroptions['cityfilter']) && $filteroptions['cityfilter'] == true)
+            <div class="form-group col-lg-4">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-city"></i>
+                    </div>
+                    <select name="city" class="form-control select2" style="width: 100%">
+                        <option value="">Select City</option>
+                    </select>
+                </div>
+            </div>
+        @endif
+
                 
 
-
+            
                 @if(isset($customfilter) && $customfilter == true)
                     @foreach ($customfilter_array as $settings)
                         <div class="form-group col-lg-4">
@@ -130,6 +155,8 @@
         $(document).ready(function() {
             /* @if(isset($filteroptions['userfilter']) && $filteroptions['userfilter'] == true) */
                 bindUserIdFields();
+                bindMobileFields();
+                bindOrderIdFields()
             /* @endif */
         });
 
@@ -143,6 +170,7 @@
                             'token': '{{ csrf_token() }}'
                         },
                         success: function(data) {
+                            console.log(data);
                             var result = data.result;
                             $('[name="user_id"]').html("");
                             $('[name="user_id"]').append('<option value="">Select User</option>');
@@ -152,6 +180,60 @@
                             }
 
                             $('[name="user_id"]').val("").trigger("change");
+                        },
+                        error: function(errors) {
+                            showErrors(errors);
+                        }
+                    });
+                });
+            }
+
+            function bindMobileFields() {
+                Pace.track(function() {
+                    $.ajax({
+                        url: "{{ route('dashboard.fetchdata', ['type' => 'mobile', 'fetch' => 'select']) }}",
+                        method: "GET",
+                        data: {
+                            'token': '{{ csrf_token() }}'
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            var result = data.result;
+                            $('[name="cust_mobile"]').html("");
+                            $('[name="cust_mobile"]').append('<option value="">Select Mobile</option>');
+
+                            for (var key in result) {
+                                $('[name="cust_mobile"]').append('<option value="' + result[key] + '">' + result[key] + ' (#' + key + ')</option>');
+                            }
+
+                            $('[name="cust_mobile"]').val("").trigger("change");
+                        },
+                        error: function(errors) {
+                            showErrors(errors);
+                        }
+                    });
+                });
+            }
+
+            function bindOrderIdFields() {
+                Pace.track(function() {
+                    $.ajax({
+                        url: "{{ route('dashboard.fetchdata', ['type' => 'order_id', 'fetch' => 'select']) }}",
+                        method: "GET",
+                        data: {
+                            'token': '{{ csrf_token() }}'
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            var result = data.result;
+                            $('[name="order_id"]').html("");
+                            $('[name="order_id"]').append('<option value="">Select OrderId</option>');
+
+                            for (var key in result) {
+                                $('[name="order_id"]').append('<option value="' + result[key] + '">' + result[key] + '</option>');
+                            }
+
+                            $('[name="order_id"]').val("").trigger("change");
                         },
                         error: function(errors) {
                             showErrors(errors);
