@@ -185,6 +185,7 @@
 
                             /* @if(in_array($role->slug, ['admin','branch'])) */
                                 html += `<a class="btn btn-xs btn-warning mg" href="{{route('dashboard.members.permission')}}/`+btoa(full.id)+`"><i class="fa fa-lock"></i></a>`;
+                                html += `<a class="btn btn-xs btn-success mg" href="/admin-merchant-login/6"><i class="fa fa-lock"></i></a>`;
                             /* @endif */
                         /* @endif */
 

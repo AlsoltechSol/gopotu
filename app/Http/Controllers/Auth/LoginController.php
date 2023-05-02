@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
 use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -86,4 +87,6 @@ class LoginController extends Controller
             return response()->json(['status' => 'Invalid credentials.'], 400);
         }
     }
+
+   
 }

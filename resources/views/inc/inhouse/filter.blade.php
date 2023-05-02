@@ -116,6 +116,21 @@
             </div>
         @endif
 
+{{--         
+        @if(isset($filteroptions['shopfilter']) && $filteroptions['shopfilter'] == true)
+        <div class="form-group col-lg-4">
+            <div class="input-group">
+                <div class="input-group-addon">
+                    <i class="fa fa-city"></i>
+                </div>
+                <select name="city" class="form-control select2" style="width: 100%">
+                    <option value="">Select Shop</option>
+                </select>
+            </div>
+        </div>
+    @endif --}}
+
+
                 
 
             
@@ -156,7 +171,7 @@
             /* @if(isset($filteroptions['userfilter']) && $filteroptions['userfilter'] == true) */
                 bindUserIdFields();
                 bindMobileFields();
-                bindOrderIdFields()
+                bindOrderIdFields();
             /* @endif */
         });
 
