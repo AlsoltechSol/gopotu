@@ -16,6 +16,10 @@
     <section class="content">
         @php
             $customfilter = true;
+            $filteroptions = [
+              
+                'shopfilter' => true
+            ];
             $customfilter_array = [
                 (object) [
                     'label' => "Type",
@@ -27,15 +31,19 @@
                         'restaurant' => "Restaurant",
                     ]
                 ],
+
                 (object) [
                     'label' => "Type",
-                    'name' => "shops",
+                    'name' => "type",
                     'type' => "select2",
                     'options' => [
                         '' => "Select Shops",
-                        ''
+                       
+                        'mart' => "Mart",
+                        'restaurant' => "Restaurant",
                     ]
-                ]
+                ],
+               
             ];
         @endphp
         @include('inc.inhouse.filter')

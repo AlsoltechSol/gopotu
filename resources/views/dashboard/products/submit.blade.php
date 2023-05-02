@@ -83,7 +83,7 @@
                                 <div class="col-sm-10">
                                     <select onchange="changeScheme(this)" id="scheme_change" name="scheme_id" class="form-control">
                                         @foreach ($schemes as $item)
-                                            <option {{$product_master->category->scheme_id == $item->id ? 'selected' : ''}} value="{{$item->id}}">{{$item->name}}(Charges:{{\App\Model\Commission::where('scheme_id',$item->id)->where('provider_id', 1)->first()->value ?? "N/A" }}-{{ \App\Model\Commission::where('scheme_id',$item->id)->where('provider_id', 1)->first()->type ?? "N/A" }})</option>
+                                            <option {{$product_master->scheme_id == $item->id ? 'selected' : ''}} value="{{$item->id}}">{{$item->name}}(Charges:{{\App\Model\Commission::where('scheme_id',$item->id)->where('provider_id', 1)->first()->value ?? "N/A" }}-{{ \App\Model\Commission::where('scheme_id',$item->id)->where('provider_id', 1)->first()->type ?? "N/A" }})</option>
                                         @endforeach
                                        
                                     </select>
@@ -92,7 +92,7 @@
                         </div>
                     @endif
 
-                        @if((isset($product)))
+                        @if((isset($product) || !isset($product)))
                             <div class="col-md-12">
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label" style="margin: 8px 0;">Product Availability <span class="text-danger">*</span></label>
