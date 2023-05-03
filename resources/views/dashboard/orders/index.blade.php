@@ -188,6 +188,7 @@
                     d.id = $('#searchform').find('[name="order_id"]').val();
                     d.type = $('#searchform').find('[name="type"]').val();
                     d.cust_mobile = $('#searchform').find('[name="cust_mobile"]').val();
+                    d.cust_location = $('#searchform').find('[name="city"]').val();
                     d.status = $('#searchform').find('[name="orderstatus"]').val();
                     d._token = '{{csrf_token()}}';
                 },

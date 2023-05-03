@@ -51,6 +51,7 @@
 
                                         <div class="form-group col-md-6">
                                             @if(isset($shop) && $shop->shop_logo != null)
+                                            <a class="text-success"><i class="fa fa-check-circle"></i>&nbsp;Uploaded</a>
                                                 <a href="{{ $shop->shop_logo_path }}" data-toggle="lightbox" class="btn btn-danger btn-xs pull-right mb-1">Current Image</a>
                                             @endif
                                             <label>Shop Image &nbsp;&nbsp;<code>Dimension - 350 X 200</code></label>

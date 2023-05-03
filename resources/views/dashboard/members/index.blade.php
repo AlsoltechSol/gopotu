@@ -178,6 +178,7 @@
                 },
                 {
                     render: function(data, type, full, meta){
+                        console.log(full);
                         var html = '';
 
                         /* @if(Myhelper::can('edit_'.$role->slug)) */
@@ -185,7 +186,7 @@
 
                             /* @if(in_array($role->slug, ['admin','branch'])) */
                                 html += `<a class="btn btn-xs btn-warning mg" href="{{route('dashboard.members.permission')}}/`+btoa(full.id)+`"><i class="fa fa-lock"></i></a>`;
-                                html += `<a class="btn btn-xs btn-success mg" href="/admin-merchant-login/6"><i class="fa fa-lock"></i></a>`;
+                                html += `<a title="login" class="btn btn-xs btn-success mg" href="/admin-merchant-login/${full.id}"><i class="fa fa-sign-in"></i></a>`;
                             /* @endif */
                         /* @endif */
 

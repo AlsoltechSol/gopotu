@@ -154,6 +154,7 @@
                                             <div class="form-group col-md-6">
                                                 <label>Driving License Front Side @if(!@$user->documents->drivinglicense_front)<span class="text-danger">*</span>@endif</label>
                                                 @if(@$user->documents->drivinglicense_front)
+                                                <a class="text-success"><i class="fa fa-check-circle"></i>&nbsp;Uploaded</a>
                                                     <a href="{{ $user->documents->drivinglicense_front_path }}" data-toggle="lightbox" class="btn btn-danger btn-xs pull-right mb-1">View Uploaded Document</a>
                                                 @endif
 
@@ -163,6 +164,7 @@
                                             <div class="form-group col-md-6">
                                                 <label>Driving License Back Side</label>
                                                 @if(@$user->documents->drivinglicense_back)
+                                                <a class="text-success"><i class="fa fa-check-circle"></i>&nbsp;Uploaded</a>
                                                     <a href="{{ $user->documents->drivinglicense_back_path }}" data-toggle="lightbox" class="btn btn-danger btn-xs pull-right mb-1">View Uploaded Document</a>
                                                 @endif
 
@@ -193,6 +195,7 @@
                                             <div class="form-group col-md-6">
                                                 <label>Government ID Front Side @if(!@$user->documents->govtid_front)<span class="text-danger">*</span>@endif</label>
                                                 @if(@$user->documents->govtid_front)
+                                                <a class="text-success"><i class="fa fa-check-circle"></i>&nbsp;Uploaded</a>
                                                     <a href="{{ $user->documents->govtid_front_path }}" data-toggle="lightbox" class="btn btn-danger btn-xs pull-right mb-1">View Uploaded Document</a>
                                                 @endif
 
@@ -202,6 +205,7 @@
                                             <div class="form-group col-md-6">
                                                 <label>Government ID Back Side</label>
                                                 @if(@$user->documents->govtid_back)
+                                                <a class="text-success"><i class="fa fa-check-circle"></i>&nbsp;Uploaded</a>
                                                     <a href="{{ $user->documents->govtid_back_path }}" data-toggle="lightbox" class="btn btn-danger btn-xs pull-right mb-1">View Uploaded Document</a>
                                                 @endif
 
@@ -222,6 +226,7 @@
                                             <div class="form-group col-md-6">
                                                 <label>Trade License Document</label>
                                                 @if(@$user->documents->tradelicense_doc)
+                                                <a class="text-success"><i class="fa fa-check-circle"></i>&nbsp;Uploaded</a>
                                                     <a href="{{ $user->documents->tradelicense_doc_path }}" data-toggle="lightbox" class="btn btn-danger btn-xs pull-right mb-1">View Uploaded Document</a>
                                                 @endif
 
@@ -240,6 +245,7 @@
                                             <div class="form-group col-md-6">
                                                 <label>FSSAI Registration Certificate</label>
                                                 @if(@$user->documents->fssaireg_doc)
+                                                <a class="text-success"><i class="fa fa-check-circle"></i>&nbsp;Uploaded</a>
                                                     <a href="{{ $user->documents->fssaireg_doc_path }}" data-toggle="lightbox" class="btn btn-danger btn-xs pull-right mb-1">View Uploaded Document</a>
                                                 @endif
 
@@ -258,6 +264,7 @@
                                             <div class="form-group col-md-6">
                                                 <label>GSTIN Certificate</label>
                                                 @if(@$user->documents->gstin_doc)
+                                                <a class="text-success"><i class="fa fa-check-circle"></i>&nbsp;Uploaded</a>
                                                     <a href="{{ $user->documents->gstin_doc_path }}" data-toggle="lightbox" class="btn btn-danger btn-xs pull-right mb-1">View Uploaded Document</a>
                                                 @endif
 
@@ -312,6 +319,7 @@
                                         <div class="form-group col-md-4">
                                             <label>Pancard Image @if(!@$user->bankdetails->pancard_file)<span class="text-danger">*</span>@endif</label>
                                             @if(@$user->bankdetails->pancard_file)
+                                            <a class="text-success"><i class="fa fa-check-circle"></i>&nbsp;Uploaded</a>
                                                 <a href="{{ $user->bankdetails->pancard_file_path }}" data-toggle="lightbox" class="btn btn-danger btn-xs pull-right mb-1">View Uploaded Document</a>
                                             @endif
 
