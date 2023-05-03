@@ -172,6 +172,7 @@
                 bindUserIdFields();
                 bindMobileFields();
                 bindOrderIdFields();
+                bindCityFields();
             /* @endif */
         });
 
@@ -249,6 +250,33 @@
                             }
 
                             $('[name="order_id"]').val("").trigger("change");
+                        },
+                        error: function(errors) {
+                            showErrors(errors);
+                        }
+                    });
+                });
+            }
+
+            function bindCityFields() {
+                Pace.track(function() {
+                    $.ajax({
+                        url: "{{ route('dashboard.fetchdata', ['type' => 'city', 'fetch' => 'select']) }}",
+                        method: "GET",
+                        data: {
+                            'token': '{{ csrf_token() }}'
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            var result = data.result;
+                            $('[name="city"]').html("");
+                            $('[name="city"]').append('<option value="">Select City</option>');
+
+                            for (var key in result) {
+                                $('[name="city"]').append('<option value="' + result[key] + '">' + result[key] + '</option>');
+                            }
+
+                            $('[name="city"]').val("").trigger("change");
                         },
                         error: function(errors) {
                             showErrors(errors);

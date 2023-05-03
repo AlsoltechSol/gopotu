@@ -11,9 +11,6 @@
 |
 */
 
-use App\User;
-use Illuminate\Support\Facades\Auth;
-
 Route::get('/', 'PagesController@index')->name('index');
 Route::get('app/share', 'PagesController@appShare')->name('appshare');
 
@@ -185,11 +182,10 @@ Route::prefix('/dashboard')->name('dashboard.')->namespace('Dashboard')->middlew
     });
 });
 
-Route::get('/admin-merchant-login/{user}', function(User $user){
-   // return $user;
-    Auth::login($user);
-    //return 'hi';
-})->name('merchant.login');
+
+Route::get('/admin-merchant-login/{user}', [\App\Http\Controllers\HomeController::class, 'merchantLogin'])->name('merchant.login');
+
+Route::get('/admin-login', [\App\Http\Controllers\HomeController::class, 'adminLogin'])->name('admin.login');
 
 Route::get('/category-schemes/{category}', [App\Http\Controllers\Dashboard\ProductsController::class, 'getSchemes']);
 

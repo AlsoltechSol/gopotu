@@ -95,7 +95,7 @@
                             <select name="scheme_id" class="form-control select2" style="width: 100%">
                                 <option value="">Select from the dropdown</option>
                                 @foreach ($schemes as $item)
-                                    <option value="{{$item->id}}">{{$item->name}}</option>
+                                    <option value="{{$item->id}}">{{isset(\App\Model\Commission::where('scheme_id',$item->id)->where('provider_id', 1)->first()->value) ? ucwords($item->name) : ''}}</option>
                                 @endforeach
                                 
                                
