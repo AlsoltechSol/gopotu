@@ -12,16 +12,17 @@
             <li class="active">View All</li>
         </ol>
     </section>
+    
 
     <section class="content">
         @php
             $filteroptions = [
-                'daterange' => true,
-                'cattypefilter' => true,
+               'daterange' => true,
+               // 'cattypefilter' => true,
                 'orderstatusfilter' => true,
                 'mobilenofilter' => true,
                 'orderidfilter' => true,
-                'cityfilter' => true
+                //'cityfilter' => true
             ];
 
             if(Myhelper::hasRole(['superadmin', 'admin'])) {
@@ -146,14 +147,36 @@
                             </select>
                         </div>
                     </div>
+                  
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">Submit</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     </div>
+                    <!-- Button trigger modal -->
+
                 </form>
             </div>
         </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  ...
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
 @endsection
 
@@ -185,7 +208,7 @@
                     console.log(d);
                     d.daterange = $('#searchform').find('[name="daterange"]').val();
                     d.user_id = $('#searchform').find('[name="user_id"]').val();
-                    d.id = $('#searchform').find('[name="order_id"]').val();
+                    d.code = $('#searchform').find('[name="order_id"]').val();
                     d.type = $('#searchform').find('[name="type"]').val();
                     d.cust_mobile = $('#searchform').find('[name="cust_mobile"]').val();
                     d.cust_location = $('#searchform').find('[name="city"]').val();
@@ -303,10 +326,13 @@
                                 html += `<a class="btn btn-xs btn-info mg" href="javascript:;" onclick="editStatus('`+full.id+`', '`+full.status+`', '`+full.expected_delivery+`')" data-toggle="tooltip" data-placement="top" title="Update Status"><i class="fa fa-edit"></i></a>`;
                             /* @endif */
                         /* @endif */
-                        html += `<a class="btn btn-xs btn-danger mg" href="{{route('dashboard.orders.cancel')}}/`+full.id+`" data-toggle="tooltip" data-placement="top" title="Cancel"><i class="fa fa-ban"></i></a>`;
+                        if(['accepted','processed'].includes(full.status)){
+                            html += `<a onclick="cancelModal()" class="btn btn-xs btn-danger mg" href="{{route('dashboard.orders.cancel')}}/`+full.id+`" data-toggle="tooltip" data-placement="top" title="Cancel"><i class="fa fa-ban"></i></a>`;
+                        }
+                      
                         /* @if(Myhelper::can('assign_delivery_boy')) */
                             if(['accepted','processed'].includes(full.status) && !full.deliveryboy_id){
-                                html += `<a class="btn btn-xs btn-info mg" href="javascript:;" onclick="assignDeliveryBoy('`+full.id+`')" data-toggle="tooltip" data-placement="top" title="Assign Delivery Boy"><i class="fa fa-truck"></i></a>`;
+                                html += `<a data-toggle="modal" data-target="#exampleModal" class="btn btn-xs btn-info mg" href="javascript:;" onclick="assignDeliveryBoy('`+full.id+`')" data-toggle="tooltip" data-placement="top" title="Assign Delivery Boy"><i class="fa fa-truck"></i></a>`;
                             }
                         /* @endif */
 
@@ -335,6 +361,10 @@
                 $('[data-toggle="tooltip"]').tooltip()
             }
         });
+
+        function cancelModal(){
+            alert('hi')
+        }
 
         function editStatus(id, status, expected_delivery){
             $('#statusform').find('[name="status"]').find('option').attr('disabled', true)

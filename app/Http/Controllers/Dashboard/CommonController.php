@@ -31,7 +31,7 @@ class CommonController extends Controller
                 break;
 
             case 'order_id':
-                $query = DB::table('orders')->select('id');
+                $query = DB::table('orders')->select('code');
 
                 $request['searchdata'] = [];
                 break;
@@ -405,7 +405,7 @@ class CommonController extends Controller
                         return response()->json(['result' => $query->pluck('mobile', 'id')], 200);
                         break;
                     case 'order_id':
-                        return response()->json(['result' => $query->pluck('id')], 200);
+                        return response()->json(['result' => $query->pluck('code')], 200);
                         break;
                     case 'city':
                         return response()->json(['result' => $query->pluck('cust_location')], 200);
