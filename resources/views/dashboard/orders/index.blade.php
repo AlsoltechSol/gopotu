@@ -12,16 +12,17 @@
             <li class="active">View All</li>
         </ol>
     </section>
+    
 
     <section class="content">
         @php
             $filteroptions = [
                 'daterange' => true,
-                'cattypefilter' => true,
+               // 'cattypefilter' => true,
                 'orderstatusfilter' => true,
                 'mobilenofilter' => true,
                 'orderidfilter' => true,
-                'cityfilter' => true
+                //'cityfilter' => true
             ];
 
             if(Myhelper::hasRole(['superadmin', 'admin'])) {
@@ -110,9 +111,58 @@
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     </div>
                 </form>
+
+              
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="cancelmodal">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Cancel Order</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <form action="{{route('dashboard.orders.cancel')}}" method="POST" id="cancelform" enctype="multipart/form-data">
+                    @csrf
+                    @method('put')
+                    <input type="hidden" name="id" value="">
+                    {{-- <input type="hidden" name="type" value="orderstatus"> --}}
+
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>Cancel Order <span class="text-danger">*</span></label>
+                            <select id="reason" onchange="reasonChange(this)" name="admin_cancellation_reason" class="form-control select2" style="width: 100%">
+                               <option disabled value="">Select Cancellation Reson</option>
+                               <option value="reason1">Reason 1</option>
+                               <option value="reason2">Reason 2</option>
+                               <option value="reason3">Reason 3</option>
+                               <option value="reason4">Reason 4</option>
+                               <option value="others">Others</option>
+                            </select>
+                        </div>
+
+                        <div  class="form-group">
+                            <label for="">Custom Reason</label>
+                            <input id="other" class="form-control" type="text" name="admin_cancellation_reason" required disabled>
+                        </div>
+
+                      
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Submit</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+                </form>
+
+              
+            </div>
+        </div>
+    </div>
+
 
     <div class="modal fade" id="assigndeliveryboymodal">
         <div class="modal-dialog modal-sm">
@@ -146,14 +196,79 @@
                             </select>
                         </div>
                     </div>
+                  
 
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-success">Submit</button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                     </div>
+                    <!-- Button trigger modal -->
+
                 </form>
             </div>
         </div>
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Cancellation Reason</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <section>
+                    <form action=" " method=" ">
+                
+                        <div class="form-check form-group">
+                            <h3>Property cancellation policy</h3>
+                            <input class="form-check-input" type="radio" name=" " id="property-details-refund-policy-relaxed" value=" ">
+                            <label class="form-check-label" for="property-details-refund-policy-relaxed">
+                    Relaxed - <ins>14 days (100% refund); 7 days (50% refund)</ins>
+                  </label>
+                        </div>
+                        <div class="form-check form-group">
+                            <input class="form-check-input" type="radio" name=" " id="property-details-refund-policy-moderate" value=" ">
+                            <label class="form-check-label" for="property-details-refund-policy-moderate">
+                    Moderate - <ins>30 days (100% refund); 14 days (50% refund)</ins>
+                  </label>
+                        </div>
+                        <div class="form-check form-group">
+                            <input class="form-check-input" type="radio" name=" " id="property-details-refund-policy-firm" value=" ">
+                            <label class="form-check-label" for="property-details-refund-policy-firm">
+                        Firm - <ins>60 days (100% refund); 30 days (50% refund)</ins>
+                  </label>
+                        </div>
+                        <div class="form-check form-group">
+                            <input class="form-check-input" type="radio" name=" " id="property-details-refund-policy-strict" value=" ">
+                            <label class="form-check-label" for="property-details-refund-policy-strict">
+                    Strict - <ins>60 days (100% refund)</ins>
+                  </label>
+                        </div>
+                        <div class="form-check form-group">
+                            <input class="form-check-input" type="radio" name=" " id="property-details-refund-policy-none" value=" " checked>
+                            <label class="form-check-label" for="property-details-refund-policy-relaxed">
+                    None - <ins>(No refunds)</ins>
+                  </label>
+                        </div>
+                
+                        <em>Cancellations must be made by 12:00 PM on the appropriate day.</em><br>
+                
+                        <div class="form-group">
+                            <h3>Check-in/Check-out policy</h3>
+                            <label for="property-details-checkin_times">Describe the times to check-in and when to check-out.</label>
+                            <textarea class="form-control" id="property-details-checkin_times" rows="3" cols=" "></textarea>
+                        </div>
+                
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </section>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
     </div>
 @endsection
 
@@ -174,6 +289,12 @@
 
 @push('script')
     <script>
+
+        function reasonChange(src){
+            if (src.value == 'others'){
+                document.getElementById("other").disabled = false;
+            }
+        }
         $('#my-datatable').DataTable({
             processing: true,
             serverSide: true,
@@ -185,10 +306,10 @@
                     console.log(d);
                     d.daterange = $('#searchform').find('[name="daterange"]').val();
                     d.user_id = $('#searchform').find('[name="user_id"]').val();
-                    d.id = $('#searchform').find('[name="order_id"]').val();
-                    d.type = $('#searchform').find('[name="type"]').val();
+                    d.code = $('#searchform').find('[name="order_id"]').val();
+                    // d.type = $('#searchform').find('[name="type"]').val();
                     d.cust_mobile = $('#searchform').find('[name="cust_mobile"]').val();
-                    d.cust_location = $('#searchform').find('[name="city"]').val();
+                    // d.cust_location = $('#searchform').find('[name="city"]').val();
                     d.status = $('#searchform').find('[name="orderstatus"]').val();
                     d._token = '{{csrf_token()}}';
                 },
@@ -220,7 +341,7 @@
                     name: 'user',
                     render: function(data, type, full, meta){
                         return `Name: <b>`+data.name+`</b><br>\
-                            Email: <b>`+data.email+`</b><br>\
+                            Email: <b>`+data.email.substring(0,10)+ "..." +`</b><br>\
                             Mobile: <b>`+data.mobile+`</b><br>\
                             Unique ID: <b class="text-danger">(#`+data.id+`)</b>`;
                     },
@@ -240,7 +361,7 @@
                 },
                 {
                     render: function(data, type, full, meta){
-                        return `Name: <b>`+full.shop.shop_name+`</b><br>\
+                        return `Name: <b>`+full.shop.shop_name.substring(0,10)+ "..." +` </b><br>\
                             Mobile: <b>`+full.shop.shop_mobile+`</b><br>\
                             Location: <b><a target="_blank" href="https://maps.google.com/?q=` + full.shop.shop_latitude + `,` + full.shop.shop_longitude + `">View on Map</a></b> <br>\
                             Postal Code: <b>`+full.shop.shop_address?.postal_code+`</b>`;
@@ -303,10 +424,13 @@
                                 html += `<a class="btn btn-xs btn-info mg" href="javascript:;" onclick="editStatus('`+full.id+`', '`+full.status+`', '`+full.expected_delivery+`')" data-toggle="tooltip" data-placement="top" title="Update Status"><i class="fa fa-edit"></i></a>`;
                             /* @endif */
                         /* @endif */
-                        html += `<a class="btn btn-xs btn-danger mg" href="{{route('dashboard.orders.cancel')}}/`+full.id+`" data-toggle="tooltip" data-placement="top" title="Cancel"><i class="fa fa-ban"></i></a>`;
+                        if(['accepted','processed', 'intransit'].includes(full.status)){
+                            html += `<a class="btn btn-xs btn-danger mg" href="javascript:;" onclick="cancelOrder('`+full.id+`')" data-toggle="tooltip" data-placement="top" title="Cancel"><i class="fa fa-ban"></i></a>`;
+                        }
+                      
                         /* @if(Myhelper::can('assign_delivery_boy')) */
                             if(['accepted','processed'].includes(full.status) && !full.deliveryboy_id){
-                                html += `<a class="btn btn-xs btn-info mg" href="javascript:;" onclick="assignDeliveryBoy('`+full.id+`')" data-toggle="tooltip" data-placement="top" title="Assign Delivery Boy"><i class="fa fa-truck"></i></a>`;
+                                html += `<a data-toggle="modal" data-target="#exampleModal" class="btn btn-xs btn-info mg" href="javascript:;" onclick="assignDeliveryBoy('`+full.id+`')" data-toggle="tooltip" data-placement="top" title="Assign Delivery Boy"><i class="fa fa-truck"></i></a>`;
                             }
                         /* @endif */
 
@@ -335,6 +459,7 @@
                 $('[data-toggle="tooltip"]').tooltip()
             }
         });
+
 
         function editStatus(id, status, expected_delivery){
             $('#statusform').find('[name="status"]').find('option').attr('disabled', true)
@@ -400,6 +525,17 @@
             $('#statusmodal').modal();
         }
 
+        function cancelOrder(id){
+            $('#cancelform').find('[name="admin_cancellation_reason"]').find('option')
+           // var admin_cancellation_reason = $('#reason').val();
+
+        //    $('#cancelform').find('[name="admin_cancellation_reason"]').val(admin_cancellation_reason).trigger("change");
+           // var admin_cancellation_reason = $('#reason').val();
+          
+            $('#cancelform').find('[name="id"]').val(id);
+            $('#cancelmodal').modal();
+        }
+
         $('#statusform').validate({
             rules: {
                 status: {
@@ -426,6 +562,44 @@
                         success:function(data){
                             notify(data.status, 'success');
                             $('#statusmodal').modal('hide');
+                            form.find('button[type="submit"]').button('reset');
+                            $('#my-datatable').dataTable().api().ajax.reload();
+                        },
+                        error: function(errors) {
+                            form.find('button[type="submit"]').button('reset');
+                            showErrors(errors, form);
+                        }
+                    });
+                });
+            }
+        });
+
+        $('#cancelform').validate({
+            rules: {
+                admin_cancellation_reason: {
+                    required: true,
+                },
+            },
+            errorElement: "p",
+            errorPlacement: function ( error, element ) {
+                if ( element.prop("tagName").toLowerCase() === "select" ) {
+                    error.insertAfter( element.closest( ".form-group" ).find("span.select2") );
+                } else {
+                    error.insertAfter( element );
+                }
+            },
+            submitHandler: function() {
+                var form = $('#cancelform');
+
+                Pace.track(function(){
+                    form.ajaxSubmit({
+                        dataType:'json',
+                        beforeSubmit:function(){
+                            form.find('button[type="submit"]').button('loading');
+                        },
+                        success:function(data){
+                            notify(data.status, 'success');
+                            $('#cancelmodal').modal('hide');
                             form.find('button[type="submit"]').button('reset');
                             $('#my-datatable').dataTable().api().ajax.reload();
                         },

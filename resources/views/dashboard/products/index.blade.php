@@ -56,6 +56,7 @@
                         <th>Product Price</th>
                         <th>Offered Price</th>
                         <th>Listing Price</th>
+                        <th>Admin Charge</th>
                         <th>Top Offer</th>
                         <th>Last Updated</th>
                         <th>Status</th>
@@ -179,11 +180,30 @@
                 {
                     data:'product_variants',
                         name: 'product_variants',
+                        
                         render: function(data, type, full, meta){
                             let html = ''
 
                             if(data[0]?.listingprice){
                                 html += `<b class="text-primary">{!!config('app.currency.faicon')!!}`+data[0]?.listingprice+`</b>`;
+                            } else{
+                                html += 'N/A';
+                            }
+
+                            return html;
+                        },
+                        searchable: false,
+                        orderable: false,
+                },
+              
+                {
+                    data:'product_variants',
+                        name: 'product_variants',
+                        render: function(data, type, full, meta){
+                            let html = ''
+
+                            if(data[0]?.listingprice){
+                                html += `<b class="text-primary">{!!config('app.currency.faicon')!!}`+(parseInt(data[0]?.listingprice) - parseInt(data[0]?.offeredprice))+`</b>`;
                             } else{
                                 html += 'N/A';
                             }

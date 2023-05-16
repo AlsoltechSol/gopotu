@@ -384,13 +384,13 @@
                 </li>
             @endif
 
-            @if(Myhelper::hasrole('branch'))
+            {{-- @if(Myhelper::hasrole('branch'))
                 <li class="{{(isset($activemenu['main']) && $activemenu['main'] == 'mycommission') ? 'active' : ''}}">
                     <a href="{{route('dashboard.mycommission')}}"><i class="fa fa-coins"></i>
                         <span>My Commission</span>
                     </a>
                 </li>
-            @endif
+            @endif --}}
         </ul>
     </section>
 </aside>
