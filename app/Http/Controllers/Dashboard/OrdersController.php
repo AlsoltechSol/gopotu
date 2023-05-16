@@ -96,28 +96,18 @@ class OrdersController extends Controller
     }
 
     
-    public function cancel($id, Request $post)
+    public function cancel(Request $post)
     {
-        $data['activemenu'] = [
-            'main' => 'orders',
-            'sub' => 'index',
-        ];
-
-        if (!\Myhelper::can('view_order')) {
-            abort(401);
-        }
-
-        $order = Order::with('shop', 'user', 'order_products', 'return_replacements', 'return_replacements.returnreplacement_items')->where('id', $id)->first();
+        
+        $order = Order::findorfail($post->id);
+               
         $order->status = 'cancelled';
+        $order->admin_cancellation_reason = $post->admin_cancellation_reason;
         $order->save();
-        if (!$order) {
-            abort(404);
-        }
+      
+        return response()->json(['status' => 'Order cancelled successfully'], 200);
 
-        // dd($order->return_replacements->toArray());
-
-        $data['order'] = $order;
-        return back();
+       
     }
 
     public function update(Request $post)

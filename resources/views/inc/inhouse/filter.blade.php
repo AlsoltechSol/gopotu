@@ -8,11 +8,11 @@
                             <div class="input-group-addon">
                                 <i class="fa fa-clock-o"></i>
                             </div>
-                            <input type="text" class="form-control daterange" name="daterange" placeholder="Filter by Date Range">
+                            <input type="text" class="form-control daterange" name="daterange" placeholder="Filter by Date Range" value="">
                         </div>
                     </div>
 
-                    <div class="form-group col-lg-4">
+                    {{-- <div class="form-group col-lg-4">
                         <div class="input-group">
                             <div class="input-group-addon">
                                 <i class="fa fa-clock-o"></i>
@@ -25,7 +25,7 @@
                             </select>
                         </div>
                     </div>
-                   
+                    --}}
                 @endif
 
                 @if(isset($filteroptions['userfilter']) && $filteroptions['userfilter'] == true)
@@ -172,7 +172,7 @@
                 bindUserIdFields();
                 bindMobileFields();
                 bindOrderIdFields();
-                bindCityFields();
+                // bindCityFields();
             /* @endif */
         });
 
@@ -258,45 +258,58 @@
                 });
             }
 
-            function bindCityFields() {
-                Pace.track(function() {
-                    $.ajax({
-                        url: "{{ route('dashboard.fetchdata', ['type' => 'city', 'fetch' => 'select']) }}",
-                        method: "GET",
-                        data: {
-                            'token': '{{ csrf_token() }}'
-                        },
-                        success: function(data) {
-                            console.log(data);
-                            var result = data.result;
-                            $('[name="city"]').html("");
-                            $('[name="city"]').append('<option value="">Select City</option>');
+            // function bindCityFields() {
+            //     Pace.track(function() {
+            //         $.ajax({
+            //             url: "{{ route('dashboard.fetchdata', ['type' => 'city', 'fetch' => 'select']) }}",
+            //             method: "GET",
+            //             data: {
+            //                 'token': '{{ csrf_token() }}'
+            //             },
+            //             success: function(data) {
+            //                 console.log(data);
+            //                 var result = data.result;
+            //                 $('[name="city"]').html("");
+            //                 $('[name="city"]').append('<option value="">Select City</option>');
 
-                            for (var key in result) {
-                                $('[name="city"]').append('<option value="' + result[key] + '">' + result[key] + '</option>');
-                            }
+            //                 for (var key in result) {
+            //                     $('[name="city"]').append('<option value="' + result[key] + '">' + result[key] + '</option>');
+            //                 }
 
-                            $('[name="city"]').val("").trigger("change");
-                        },
-                        error: function(errors) {
-                            showErrors(errors);
-                        }
-                    });
-                });
-            }
+            //                 $('[name="city"]').val("").trigger("change");
+            //             },
+            //             error: function(errors) {
+            //                 showErrors(errors);
+            //             }
+            //         });
+            //     });
+            // }
         /* @endif */
 
         /* @if(isset($filteroptions['daterange']) && $filteroptions['daterange'] == true) */
+            // $('.daterange').daterangepicker({
+            //    // autoApply: true,
+            //    autoUpdateInput:false,
+            //     startDate:null,
+            //     endDate:null,
+            //     showDropdowns: true,
+            //     maxDate: new Date(),
+            // })
+
             $('.daterange').daterangepicker({
                 autoApply: true,
                 showDropdowns: true,
-                maxDate: new Date(),
-            })
+                maxDate: moment().endOf('day'), // Set the end date to today
+                startDate: '01/01/2000', // Set the start date to 01-01-2000
+            });
 
-            $('#datefilter').on('change', function(e) {
-                $('[name="daterange"]').val($(this).val());
-                $('[name="daterange"]').daterangepicker("refresh");
-            })
+          
+            
+
+            // $('#datefilter').on('change', function(e) {
+            //     $('[name="daterange"]').val($(this).val());
+            //     $('[name="daterange"]').daterangepicker("refresh");
+            // })
         /* @endif */
 
         $('.reset').on('click', function() {

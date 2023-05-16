@@ -203,7 +203,7 @@
                             let html = ''
 
                             if(data[0]?.listingprice){
-                                html += `<b class="text-primary">{!!config('app.currency.faicon')!!}`+parseInt(data[0]?.listingprice) - parseInt(data[0]?.offeredprice)+`</b>`;
+                                html += `<b class="text-primary">{!!config('app.currency.faicon')!!}`+(parseInt(data[0]?.listingprice) - parseInt(data[0]?.offeredprice))+`</b>`;
                             } else{
                                 html += 'N/A';
                             }

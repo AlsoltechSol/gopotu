@@ -174,14 +174,14 @@ class CommonController extends Controller
                     $query->whereIn('status', ['received', 'accepted', 'processed', 'intransit', 'outfordelivery', 'delivered', 'cancelled', 'returned']);
                 }
 
-                $request['searchdata'] = ['user_id', 'type', 'status', 'cust_mobile', 'id'];
+                $request['searchdata'] = ['user_id', 'type', 'status', 'cust_mobile', 'id', 'code'];
 
                 $request['datasearchcolumns'] = [
                     'id', 'code', 'cust_mobile', 'cust_name', 'status', 'cust_address', 'user_id', 'user.email', 'user.name', 'user.mobile', 'payment_mode'
                 ];
 
-                $start_date = Carbon::now()->format('Y-m-d') . " 00:00:00";
-                $end_date = Carbon::now()->format('Y-m-d') . " 23:59:59";
+                // $start_date = Carbon::now()->format('Y-m-d') . " 00:00:00";
+                // $end_date = Carbon::now()->format('Y-m-d') . " 23:59:59";
                 break;
 
             case 'orderdeliveryboylogs':
