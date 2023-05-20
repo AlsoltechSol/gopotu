@@ -328,7 +328,8 @@ class CartController extends Controller
                     }
 
 
-                    $price = ($item->quantity * $item->variant->purchase_price);
+                    $price = ($item->quantity * $item->variant->listingprice);
+                    // $price = ($item->quantity * $item->variant->purchase_price);
                     $item->sub_total = $price;
                     $item_total += $price;
                 } else {

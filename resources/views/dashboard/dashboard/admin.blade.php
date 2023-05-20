@@ -58,7 +58,7 @@
                 <div class="small-box bg-primary">
                     <div class="inner">
                         <h3>{{ $count['users'] }}</h3>
-                        <p>Total Users</p>
+                        <p>Total Admins</p>
                     </div>
                     <div class="icon">
                         <i class="fa fa-users"></i>
@@ -66,9 +66,39 @@
                     <a href="{{ route('dashboard.members.index', ['type' => 'user']) }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
+
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <h3>{{ $count['users'] }}</h3>
+                        <p>Total Merchants</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <a href="{{ route('dashboard.members.index', ['type' => 'user']) }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+
+              
+            </div>
+
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-primary">
+                    <div class="inner">
+                        <h3>{{ $count['users'] }}</h3>
+                        <p>Total Delivery Boys</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fa fa-users"></i>
+                    </div>
+                    <a href="{{ route('dashboard.members.index', ['type' => 'user']) }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                </div>
+
+              
+            </div>
         </div>
 
-        <div class="row">
+        {{-- <div class="row">
             <div class="col-md-6">
                 <div class="box">
                     <div class="box-header with-border">
@@ -94,7 +124,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <div class="row">
             <div class="col-md-8">
@@ -116,6 +146,7 @@
                                 </thead>
                                 <tbody>
                                     @if(count($latestorders) > 0)
+                                  
                                         @foreach ($latestorders as $item)
                                             <tr>
                                                 <td>{{ $item->created_at }}</td>
@@ -217,7 +248,7 @@
 
 @push('script')
     <script src="https://adminlte.io/themes/v3/plugins/chart.js/Chart.min.js"></script>
-    <script>
+    {{-- <script>
         $(function() {
             new Chart($('#weekly-report-chart').get(0).getContext('2d'), {
                 type: 'line',
@@ -305,5 +336,5 @@
                 },
             })
         });
-    </script>
+    </script> --}}
 @endpush

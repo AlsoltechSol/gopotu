@@ -72,6 +72,9 @@ class CheckoutController extends Controller
 
             $_cartData = $_cartList->getData();
 
+
+            return $_cartData;
+
             if ($_cartData->status == "error") {
                 return response()->json(['status' => 'error', 'message' => $_cartData->message, 'data' => \Myhelper::formatApiResponseData($data)]);
             }

@@ -293,6 +293,8 @@
         function reasonChange(src){
             if (src.value == 'others'){
                 document.getElementById("other").disabled = false;
+            }else{
+                document.getElementById("other").disabled = true;
             }
         }
         $('#my-datatable').DataTable({
