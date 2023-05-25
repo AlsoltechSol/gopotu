@@ -36,6 +36,8 @@ class MasterController extends Controller
             'sub' => $type,
         ];
 
+        $schemes = Scheme::all();
+
         switch ($type) {
             case 'brand':
                 $permission = "view_brand";
@@ -43,13 +45,13 @@ class MasterController extends Controller
                 break;
 
             case 'product':
-                $schemes = Scheme::all();
+               // $schemes = Scheme::all();
                 $permission = "view_product_master";
                 $view = "products.index";
                 break;
 
             case 'category':
-                $schemes = Scheme::all();
+              //  $schemes = Scheme::all();
                 $data['level'] = (object)[
                     'type' => 'level1',
                     'name' => 'Level One',
@@ -60,7 +62,7 @@ class MasterController extends Controller
                 break;
 
             case 'level2-category':
-                $schemes = Scheme::all();
+              //  $schemes = Scheme::all();
                 $data['activemenu']['sub'] = 'category';
                 $data['parent_category'] = Category::findorfail($value);
                 $data['level'] = (object)[
@@ -90,6 +92,7 @@ class MasterController extends Controller
                 break;
 
             case 'attribute':
+               // $schemes = Scheme::all();
                 $permission = "view_attribute";
                 $view = "attribute";
                 break;
@@ -103,6 +106,7 @@ class MasterController extends Controller
                 break;
 
             case 'top-appbanner':
+              //  $schemes = Scheme::all();
                 $data['activemenu']['sub'] = 'top-appbanner';
                 $permission = "view_app_banner";
                 $view = "appbanner";
@@ -110,6 +114,7 @@ class MasterController extends Controller
                 break;
 
             case 'middle-appbanner':
+              //  $schemes = Scheme::all();
                 $data['activemenu']['sub'] = 'middle-appbanner';
                 $permission = "view_app_banner";
                 $view = "appbanner";

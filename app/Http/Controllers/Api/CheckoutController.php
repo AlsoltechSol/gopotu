@@ -73,7 +73,7 @@ class CheckoutController extends Controller
             $_cartData = $_cartList->getData();
 
 
-            return $_cartData;
+            // return $_cartData;git 
 
             if ($_cartData->status == "error") {
                 return response()->json(['status' => 'error', 'message' => $_cartData->message, 'data' => \Myhelper::formatApiResponseData($data)]);
@@ -92,6 +92,7 @@ class CheckoutController extends Controller
                 $request['ordercode'] = config('app.shortname') . '-' . rand(1111111111, 9999999999);
             } while (Order::where("code", "=", $request->ordercode)->first() instanceof Order);
 
+           
             $order_document = array();
             $order_document['code'] = $request->ordercode;
             $order_document['shop_id'] = $selected_shop->id;
@@ -104,6 +105,7 @@ class CheckoutController extends Controller
             $order_document['cust_location'] = $_cartData->data->address->location;
             $order_document['cust_address'] = json_encode($_cartData->data->address->full_address);
             $order_document['item_total'] = $_cartData->data->item_total;
+            $order_document['merchant_total'] = $_cartData->data->merchant_total;
             $order_document['delivery_charge'] = $_cartData->data->delivery_charge;
             $order_document['coupon_discount'] = $_cartData->data->coupon_discount;
             $order_document['wallet_deducted'] = $_cartData->data->wallet_deducted;

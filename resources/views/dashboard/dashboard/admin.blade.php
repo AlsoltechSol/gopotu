@@ -146,7 +146,7 @@
                                 </thead>
                                 <tbody>
                                     @if(count($latestorders) > 0)
-                                  
+                                        
                                         @foreach ($latestorders as $item)
                                             <tr>
                                                 <td>{{ $item->created_at }}</td>

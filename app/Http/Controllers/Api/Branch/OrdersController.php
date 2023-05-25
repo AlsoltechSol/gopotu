@@ -135,6 +135,7 @@ class OrdersController extends Controller
 
     public function details(Request $request)
     {
+       
         $data = array();
         try {
             $rules = [
@@ -189,8 +190,12 @@ class OrdersController extends Controller
             );
 
             $order->branch_amount = $order->item_total - $order->admin_charge;
-
+            return $order;
+            $order->item_total = 100;
             $data['order'] = $order;
+            
+           
+           // return $data;
             return response()->json(['status' => 'success', 'message' => 'Success', 'data' => \Myhelper::formatApiResponseData($data)]);
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage(), 'data' => \Myhelper::formatApiResponseData($data)]);

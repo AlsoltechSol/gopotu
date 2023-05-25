@@ -266,9 +266,11 @@ class CartController extends Controller
 
             $checkout = ['status' => true, 'exception' => null];
             $item_total = 0;
+            $merchant_total = 0;
             $coupon_discount = 0;
             $wallet_cashback = 0;
             $payable_amount = 0;
+
 
             $default_address = UserAddress::where('user_id', $request->user_id)->where('guest_id', $request->guest_id)->where('is_default', 1)->first();
             if ($default_address && !$request->address_id) {
@@ -328,10 +330,17 @@ class CartController extends Controller
                     }
 
 
-                    $price = ($item->quantity * $item->variant->listingprice);
+                    $price = ($item->quantity * $item->variant->purchase_price);
+                    $m_price = ($item->quantity * $item->variant->offeredprice);
+                    if($item->variant->listingprice !== null){
+                        $price = ($item->quantity * $item->variant->listingprice);
+                    }
+                 //   $price = ($item->quantity * $item->variant->listingprice);
                     // $price = ($item->quantity * $item->variant->purchase_price);
                     $item->sub_total = $price;
                     $item_total += $price;
+                    
+                    $merchant_total += $m_price;
                 } else {
                     if ($checkout['status'] == true) {
                         $checkout = ['status' => false, 'exception' => 'Few item are currently not available'];
@@ -641,6 +650,7 @@ class CartController extends Controller
 
             $data['items'] = $items;
             $data['item_total'] = number_format((float)$item_total, 2, '.', '');
+            $data['merchant_total'] = number_format((float)$merchant_total, 2, '.', '');
             $data['delivery_charge'] = number_format((float)$delivery_charge, 2, '.', '');
             $data['coupon_discount'] = number_format((float)$coupon_discount, 2, '.', '');
             $data['wallet_deducted'] = number_format((float)$wallet_deducted, 2, '.', '');
