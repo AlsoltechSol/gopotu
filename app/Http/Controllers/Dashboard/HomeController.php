@@ -73,9 +73,20 @@ class HomeController extends Controller
             $data['count'] = array(
                 'neworders' => Order::whereIn('status', ['received'])->count(),
                 'todaysales' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', Carbon::now())->sum('payable_amount'),
+                'todayprofits' => (Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', Carbon::now())->sum('item_total') - Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', Carbon::now())->sum('merchant_total')),
+                'monthprofits' => (Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereMonth('created_at', Carbon::now())->sum('item_total') - Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', Carbon::now())->sum('merchant_total')),
                 'monthsales' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereMonth('created_at', Carbon::now())->whereYear('created_at', Carbon::now())->sum('payable_amount'),
                 'users' => User::whereHas('role', function ($q) {
                     $q->where('slug', 'user');
+                })->count(),
+                'admins' => User::whereHas('role', function ($q) {
+                    $q->where('slug', 'admin');
+                })->count(),
+                'merchants' => User::whereHas('role', function ($q) {
+                    $q->where('slug', 'branch');
+                })->count(),
+                'd-boy' => User::whereHas('role', function ($q) {
+                    $q->where('slug', 'deliveryboy');
                 })->count(),
             );
 

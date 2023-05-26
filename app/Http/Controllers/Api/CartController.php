@@ -335,6 +335,11 @@ class CartController extends Controller
                     if($item->variant->listingprice !== null){
                         $price = ($item->quantity * $item->variant->listingprice);
                     }
+
+                    // if($item->variant->offeredprice == null ||  $item->variant->offeredprice == 0){
+                    //     $m_price = $price;
+                    // }
+                   
                  //   $price = ($item->quantity * $item->variant->listingprice);
                     // $price = ($item->quantity * $item->variant->purchase_price);
                     $item->sub_total = $price;

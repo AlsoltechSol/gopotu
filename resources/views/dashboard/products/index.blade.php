@@ -14,27 +14,11 @@
     </section>
 
     
-    <section class="content">
-        @php
-            $customfilter = true;
-            $customfilter_array = [
-                (object) [
-                    'label' => "Type",
-                    'name' => "type",
-                    'type' => "select2",
-                    'options' => [
-                        '' => "Select Store",
-                       
-                    ]
-                ]
-            ];
-        @endphp
-        @include('inc.inhouse.filter')
-
-       
-    </section>
+  
     
     <section class="content">
+        {{-- {{dd(Myhelper::hasRole(['superadmin']))}} --}}
+        <div id="role-data" data-role="{{ Myhelper::hasRole(['superadmin']) ? 'superadmin' : 'other' }}"></div>
         <div class="box">
             <div class="box-header with-border">
                 <h3 class="box-title">All Products</h3>
@@ -55,8 +39,14 @@
                         <th>Image</th>
                         <th>Product Price</th>
                         <th>Offered Price</th>
-                        <th>Listing Price</th>
-                        <th>Admin Charge</th>
+                        
+                        @if( Myhelper::hasRole(['superadmin']))
+                            <th>Listing Price</th>
+                            <th>Admin Charge</th>
+                           
+                        @endif
+                        
+                       
                         <th>Top Offer</th>
                         <th>Last Updated</th>
                         <th>Status</th>
@@ -82,18 +72,10 @@
 
 @push('script')
     <script>
-        $('#my-datatable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: "{{route('dashboard.fetchdata', ['type' => 'martproducts'])}}",
-                type: "POST",
-                data:function( d )
-                {
-                    d._token = '{{csrf_token()}}';
-                },
-            },
-            columns:[
+
+        
+
+        var col = [
                 {
                     data:'id',
                     name: 'id',
@@ -177,36 +159,40 @@
                     searchable: false,
                     orderable: false,
                 },
+                
                 {
                     data:'product_variants',
                         name: 'product_variants',
                         
                         render: function(data, type, full, meta){
                             let html = ''
-
+                         
                             if(data[0]?.listingprice){
                                 html += `<b class="text-primary">{!!config('app.currency.faicon')!!}`+data[0]?.listingprice+`</b>`;
                             } else{
                                 html += 'N/A';
                             }
+                          
 
                             return html;
                         },
                         searchable: false,
                         orderable: false,
                 },
-              
+                
                 {
                     data:'product_variants',
                         name: 'product_variants',
                         render: function(data, type, full, meta){
                             let html = ''
+                          
 
                             if(data[0]?.listingprice){
                                 html += `<b class="text-primary">{!!config('app.currency.faicon')!!}`+(parseInt(data[0]?.listingprice) - parseInt(data[0]?.offeredprice))+`</b>`;
                             } else{
                                 html += 'N/A';
                             }
+                          
 
                             return html;
                         },
@@ -272,13 +258,36 @@
                     searchable: false,
                     className: 'text-center'
                 }
-            ],
-            "order": [
-                [0, 'asc']
-            ],
+            ];
+
+            var role = document.getElementById('role-data').getAttribute('data-role');
+    
+        // hide superadmin section for merchants
+        if (role !== 'superadmin') {
+            col.splice(7,1);
+            col.splice(8,1);
+        }
+       
+           
+        var dataTable = $('#my-datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{route('dashboard.fetchdata', ['type' => 'martproducts'])}}",
+                type: "POST",
+                data:function( d )
+                {
+                    d._token = '{{csrf_token()}}';
+                },
+            },
+            columns:col,
             "drawCallback": function( settings ) {
-                $('[data-toggle="tooltip"]').tooltip()
+                
+                $('[data-toggle="tooltip"]').tooltip();
+              
             }
+            
+           
         });
 
         function changeAction(id, operation = "changestatus"){

@@ -16,17 +16,19 @@
 
     <section class="content">
         @php
+
             $filteroptions = [
                 'daterange' => true,
                // 'cattypefilter' => true,
                 'orderstatusfilter' => true,
-                'mobilenofilter' => true,
-                'orderidfilter' => true,
+                
                 //'cityfilter' => true
             ];
 
             if(Myhelper::hasRole(['superadmin', 'admin'])) {
                 $filteroptions['userfilter'] = true;
+                $filteroptions['mobilenofilter'] = true;
+                $filteroptions['orderidfilter'] = true;
             }
         @endphp
         @include('inc.inhouse.filter')

@@ -190,8 +190,7 @@ class OrdersController extends Controller
             );
 
             $order->branch_amount = $order->item_total - $order->admin_charge;
-            return $order;
-            $order->item_total = 100;
+           
             $data['order'] = $order;
             
            
