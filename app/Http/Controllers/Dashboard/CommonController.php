@@ -42,6 +42,12 @@ class CommonController extends Controller
                 $request['searchdata'] = [];
                 break;
 
+            case 'shop':
+                $query = DB::table('shops')->select('shop_name');
+
+                $request['searchdata'] = [];
+                break;
+
             case 'admin':
                 $query = \App\User::whereHas('role', function ($q) {
                     $q->where('slug', 'admin');
@@ -409,6 +415,9 @@ class CommonController extends Controller
                         break;
                     case 'city':
                         return response()->json(['result' => $query->pluck('cust_location')], 200);
+                        break;
+                    case 'shop':
+                        return response()->json(['result' => $query->pluck('shop_name')], 200);
                         break;
                 }
                 break;

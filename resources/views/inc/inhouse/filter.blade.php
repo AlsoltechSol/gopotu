@@ -104,31 +104,31 @@
             @endif
 
             @if(isset($filteroptions['cityfilter']) && $filteroptions['cityfilter'] == true)
-            <div class="form-group col-lg-4">
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <i class="fa fa-city"></i>
+                <div class="form-group col-lg-4">
+                    <div class="input-group">
+                        <div class="input-group-addon">
+                            <i class="fa fa-city"></i>
+                        </div>
+                        <select name="city" class="form-control select2" style="width: 100%">
+                            <option value="">Select City</option>
+                        </select>
                     </div>
-                    <select name="city" class="form-control select2" style="width: 100%">
-                        <option value="">Select City</option>
-                    </select>
                 </div>
-            </div>
-        @endif
+            @endif
 
-{{--         
+        
         @if(isset($filteroptions['shopfilter']) && $filteroptions['shopfilter'] == true)
         <div class="form-group col-lg-4">
             <div class="input-group">
                 <div class="input-group-addon">
                     <i class="fa fa-city"></i>
                 </div>
-                <select name="city" class="form-control select2" style="width: 100%">
+                <select name="shop" class="form-control select2" style="width: 100%">
                     <option value="">Select Shop</option>
                 </select>
             </div>
         </div>
-    @endif --}}
+    @endif
 
 
                 
@@ -172,6 +172,7 @@
                 bindUserIdFields();
                 bindMobileFields();
                 bindOrderIdFields();
+                bindShop()
                 // bindCityFields();
             /* @endif */
         });
@@ -258,6 +259,33 @@
                 });
             }
 
+            function bindShop() {
+                Pace.track(function() {
+                    $.ajax({
+                        url: "{{ route('dashboard.fetchdata', ['type' => 'shop', 'fetch' => 'select']) }}",
+                        method: "GET",
+                        data: {
+                            'token': '{{ csrf_token() }}'
+                        },
+                        success: function(data) {
+                            console.log(data);
+                            var result = data.result;
+                            $('[name="shop"]').html("");
+                            $('[name="shop"]').append('<option value="">Select Shop</option>');
+
+                            for (var key in result) {
+                                $('[name="shop"]').append('<option value="' + result[key] + '">' + result[key] + '</option>');
+                            }
+
+                            $('[name="shop"]').val("").trigger("change");
+                        },
+                        error: function(errors) {
+                            showErrors(errors);
+                        }
+                    });
+                });
+            }
+
             // function bindCityFields() {
             //     Pace.track(function() {
             //         $.ajax({
@@ -285,6 +313,8 @@
             //     });
             // }
         /* @endif */
+
+        
 
         /* @if(isset($filteroptions['daterange']) && $filteroptions['daterange'] == true) */
             // $('.daterange').daterangepicker({

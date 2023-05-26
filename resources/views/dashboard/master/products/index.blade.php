@@ -32,17 +32,6 @@
                     ]
                 ],
 
-                (object) [
-                    'label' => "Type",
-                    'name' => "type",
-                    'type' => "select2",
-                    'options' => [
-                        '' => "Select Shops",
-                       
-                        'mart' => "Mart",
-                        'restaurant' => "Restaurant",
-                    ]
-                ],
                
             ];
         @endphp

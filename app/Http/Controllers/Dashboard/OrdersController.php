@@ -102,7 +102,12 @@ class OrdersController extends Controller
         $order = Order::findorfail($post->id);
                
         $order->status = 'cancelled';
-        $order->admin_cancellation_reason = $post->admin_cancellation_reason;
+        if (\Myhelper::hasRole(['superadmin', 'admin'])) {
+            $order->admin_cancellation_reason = $post->admin_cancellation_reason;
+        }else{
+            $order->merchant_cancellation_reason = $post->admin_cancellation_reason;
+        }
+       
         $order->save();
       
         return response()->json(['status' => 'Order cancelled successfully'], 200);

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Order extends Model
 {
     protected $fillable = [
-        'user_id', 'shop_id', 'type', 'code', 'cust_name', 'cust_mobile', 'cust_latitude', 'cust_longitude', 'cust_location', 'cust_address', 'item_total', 'delivery_charge', 'wallet_deducted', 'coupon_discount', 'payable_amount', 'wallet_cashback', 'admin_charge', 'status', 'expected_delivery', 'expected_intransit', 'coupon_id', 'payment_mode', 'payment_txnid', 'payment_refid', 'deliveryboy_id', 'deliveryboy_status', 'deliveryboy_reachedstore', 'shop_rating', 'shop_review', 'deliveryboy_rating', 'deliveryboy_review', 'status_log', 'user_cancel_reason'
+        'user_id', 'shop_id', 'type', 'code', 'cust_name', 'cust_mobile', 'cust_latitude', 'cust_longitude', 'cust_location', 'cust_address', 'item_total', 'delivery_charge', 'wallet_deducted', 'coupon_discount', 'payable_amount', 'wallet_cashback', 'admin_charge', 'status', 'expected_delivery', 'expected_intransit', 'coupon_id', 'payment_mode', 'payment_txnid', 'payment_refid', 'deliveryboy_id', 'deliveryboy_status', 'deliveryboy_reachedstore', 'shop_rating', 'shop_review', 'deliveryboy_rating', 'deliveryboy_review', 'status_log', 'user_cancel_reason' , 'merchant_total'
     ];
 
     protected $appends = ['invoice'];

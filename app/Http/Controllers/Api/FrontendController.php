@@ -64,8 +64,8 @@ class FrontendController extends Controller
 
             $nearest_shop_ids = \Myhelper::getAvailableShops($default_address->latitude, $default_address->longitude);
 
-            $nearest_shops = Shop::where('status', '1')->whereIn('id', $nearest_shop_ids);
-            $featured_shops = Shop::where('status', '1')->where('is_featured', '1')->whereIn('id', $nearest_shop_ids);
+            $nearest_shops = Shop::whereIn('id', $nearest_shop_ids);
+            $featured_shops = Shop::where('is_featured', '1')->whereIn('id', $nearest_shop_ids);
 
 
             if ($request->has('type') && $request->type) {
