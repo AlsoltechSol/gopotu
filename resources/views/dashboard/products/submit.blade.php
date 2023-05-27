@@ -61,9 +61,9 @@
                                             <th>Scheme</th>
                                            
                                             @if ($product_master->scheme_id)
-                                                <td>{!! $product_master->scheme->name ?? "N/A" !!}(Charges:{{\App\Model\Commission::where('scheme_id',$product_master->scheme_id)->where('provider_id', 1)->first()->value ?? "N/A" }}-{{ \App\Model\Commission::where('scheme_id',$product_master->scheme_id)->where('provider_id', 1)->first()->type ?? "N/A" }})</td>
+                                                <td>{!! ucwords($product_master->scheme->name) ?? "N/A" !!}</td>
                                             @else
-                                                <td>{!! $product_master->category->scheme->name ?? "N/A" !!}(Charges:{{\App\Model\Commission::where('scheme_id',$product_master->category->scheme_id)->where('provider_id', 1)->first()->value ?? "N/A" }}-{{ \App\Model\Commission::where('scheme_id',$product_master->category->scheme_id)->where('provider_id', 1)->first()->type ?? "N/A" }})</td>
+                                                <td>{!! ucwords($product_master->category->scheme->name) ?? "N/A" !!}</td>
                                             @endif
                                           
                                             <td></td>
@@ -83,7 +83,7 @@
                                 <div class="col-sm-10">
                                     <select onchange="changeScheme(this)" id="scheme_change" name="scheme_id" class="form-control">
                                         @foreach ($schemes as $item)
-                                            <option {{$product_master->scheme_id == $item->id ? 'selected' : ''}} value="{{$item->id}}">{{$item->name}}(Charges:{{\App\Model\Commission::where('scheme_id',$item->id)->where('provider_id', 1)->first()->value ?? "N/A" }}-{{ \App\Model\Commission::where('scheme_id',$item->id)->where('provider_id', 1)->first()->type ?? "N/A" }})</option>
+                                            <option {{$product_master->scheme_id == $item->id ? 'selected' : ''}} value="{{$item->id}}">{{ucwords($item->name)}}</option>
                                         @endforeach
                                        
                                     </select>

@@ -172,6 +172,8 @@ class ProductsController extends Controller
                 break;
 
             case 'changestatus':
+            case 'master':
+            case 'verify':
             case 'changetopoffer':
                 $permission = "edit_product";
 
@@ -267,7 +269,6 @@ class ProductsController extends Controller
                     }
 
                     $product_master = ProductMaster::where('id', $product_document['master_id'])->first();
-
 
                     $scheme_id = $product_master->scheme_id;
 
@@ -528,6 +529,37 @@ class ProductsController extends Controller
 
                 $action = $product->save();
                 break;
+            case 'master':
+                $product = Product::findorfail($post->id);
+
+                if ($product->master_status == '1') {
+                    $product->master_status = '0';
+                } else {
+                    if ($product->shop->user->role->slug == 'branch' && $product->shop->user->business_category != 'mart') {
+                        return response()->json(['status' => 'The merchant is currently not assigned for mart sales'], 400);
+                    }
+
+                    $product->master_status = '1';
+                }
+
+                $action = $product->save();
+                break;
+                
+            case 'verify':
+                $product = Product::findorfail($post->id);
+
+                if ($product->verification_status == '1') {
+                    $product->verification_status = '0';
+                } else {
+                    if ($product->shop->user->role->slug == 'branch' && $product->shop->user->business_category != 'mart') {
+                        return response()->json(['status' => 'The merchant is currently not assigned for mart sales'], 400);
+                    }
+
+                    $product->verification_status = '1';
+                }
+
+                $action = $product->save();
+                break;
 
             case 'changetopoffer':
                 $product = Product::findorfail($post->id);
@@ -670,9 +702,11 @@ class ProductsController extends Controller
                     'id' => 'required|exists:product_variants',
                     'price' => 'required|numeric|min:1',
                     'offeredprice' => 'required|numeric|min:1',
-                    'listingprice' => 'required|numeric',
+                   // 'listingprice' => 'required|numeric',
                     'quantity' => 'required|numeric|min:0',
                 ];
+
+                
 
                 if ($post->offeredprice >= $post->price) {
                     return response()->json(['status' => 'The offered price must be less than the product price.'], 400);

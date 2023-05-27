@@ -49,6 +49,10 @@
                        
                         <th>Top Offer</th>
                         <th>Last Updated</th>
+                        @if( Myhelper::hasRole(['superadmin']))
+                            <th>Master Status</th>
+                            <th>Verification Status</th>
+                        @endif
                         <th>Status</th>
                         <th>Action</th>
                     </tr>
@@ -73,7 +77,8 @@
 @push('script')
     <script>
 
-        
+    var role = document.getElementById('role-data').getAttribute('data-role');
+    
 
         var col = [
                 {
@@ -179,7 +184,7 @@
                         searchable: false,
                         orderable: false,
                 },
-                
+
                 {
                     data:'product_variants',
                         name: 'product_variants',
@@ -199,6 +204,9 @@
                         searchable: false,
                         orderable: false,
                 },
+             
+                
+
                 {
                     data:'top_offer',
                     name: 'top_offer',
@@ -215,12 +223,47 @@
                     },
                     className: 'text-center'
                 },
+                
+            
                 {
                     data:'updated_at',
                     name: 'updated_at',
                     render: function(data, type, full, meta){
                         return data
                     },
+                },
+              
+                {
+                    data:'master_status',
+                    name: 'master_status',
+                    render: function(data, type, full, meta){
+                        var checked = "";
+                        if(data == '1'){
+                            checked = "checked";
+                        }
+
+                        return `<label class="switch">
+                                    <input type="checkbox" ` + checked + ` onChange="changeAction(` + full.id + ` , 'master')">
+                                    <span class="slider round"></span>
+                                </label>`;
+                    },
+                    className: 'text-center'
+                },
+                {
+                    data:'verification_status',
+                    name: 'verification_status',
+                    render: function(data, type, full, meta){
+                        var checked = "";
+                        if(data == '1'){
+                            checked = "checked";
+                        }
+
+                        return `<label class="switch">
+                                    <input type="checkbox" ` + checked + ` onChange="changeAction(` + full.id + ` , 'verify')">
+                                    <span class="slider round"></span>
+                                </label>`;
+                    },
+                    className: 'text-center'
                 },
                 {
                     data:'status',
@@ -260,12 +303,12 @@
                 }
             ];
 
-            var role = document.getElementById('role-data').getAttribute('data-role');
-    
+           
         // hide superadmin section for merchants
         if (role !== 'superadmin') {
-            col.splice(7,1);
-            col.splice(8,1);
+            col.splice(7,2);
+            col.splice(10,2);
+          // col.splice(8,1);
         }
        
            
@@ -308,6 +351,82 @@
                 });
             });
         }
+
+        // function changeAction(id, operation = "master"){
+        //     Pace.track(function(){
+        //         $.ajax({
+        //             dataType: "JSON",
+        //             url: "{{route('dashboard.products.submit')}}",
+        //             data: {"_token" : "{{csrf_token()}}", "operation" : operation, "id" : id},
+        //             method: "POST",
+        //             success: function(data){
+        //                 notify(data.master_status, 'success');
+        //                 $('#my-datatable').dataTable().api().ajax.reload(function (json) { }, false);
+        //             },
+        //             error: function(errors) {
+        //                 showErrors(errors);
+        //                 $('#my-datatable').dataTable().api().ajax.reload(function (json) { }, false);
+        //             }
+        //         });
+        //     });
+        // }
+
+        // function changeAction(id, operation = "verify"){
+        //     Pace.track(function(){
+        //         $.ajax({
+        //             dataType: "JSON",
+        //             url: "{{route('dashboard.products.submit')}}",
+        //             data: {"_token" : "{{csrf_token()}}", "operation" : operation, "id" : id},
+        //             method: "POST",
+        //             success: function(data){
+        //                 notify(data.verification_status, 'success');
+        //                 $('#my-datatable').dataTable().api().ajax.reload(function (json) { }, false);
+        //             },
+        //             error: function(errors) {
+        //                 showErrors(errors);
+        //                 $('#my-datatable').dataTable().api().ajax.reload(function (json) { }, false);
+        //             }
+        //         });
+        //     });
+        // }
+
+        // function changeActionMaster(id){
+        //     Pace.track(function(){
+        //         $.ajax({
+        //             dataType: "JSON",
+        //             url: "{{route('dashboard.products.submit')}}",
+        //             data: {"_token" : "{{csrf_token()}}", "operation" : operation, "id" : id},
+        //             method: "POST",
+        //             success: function(data){
+        //                 notify(data.master_status, 'success');
+        //                 $('#my-datatable').dataTable().api().ajax.reload(function (json) { }, false);
+        //             },
+        //             error: function(errors) {
+        //                 showErrors(errors);
+        //                 $('#my-datatable').dataTable().api().ajax.reload(function (json) { }, false);
+        //             }
+        //         });
+        //     });
+        // }
+
+        // function changeActionVerify(id){
+        //     Pace.track(function(){
+        //         $.ajax({
+        //             dataType: "JSON",
+        //             url: "{{route('dashboard.products.submit')}}",
+        //             data: {"_token" : "{{csrf_token()}}", "operation" : operation, "id" : id},
+        //             method: "POST",
+        //             success: function(data){
+        //                 notify(data.verification_status, 'success');
+        //                 $('#my-datatable').dataTable().api().ajax.reload(function (json) { }, false);
+        //             },
+        //             error: function(errors) {
+        //                 showErrors(errors);
+        //                 $('#my-datatable').dataTable().api().ajax.reload(function (json) { }, false);
+        //             }
+        //         });
+        //     });
+        // }
 
         function deleteitem(id){
             swal({
