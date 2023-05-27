@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Order;
+use App\Model\OrderCancellationReason;
 use App\Model\Shop;
 use App\Model\WalletReport;
 use App\User;
@@ -102,14 +103,24 @@ class OrdersController extends Controller
         $order = Order::findorfail($post->id);
                
         $order->status = 'cancelled';
+        $usertype = '';
         if (\Myhelper::hasRole(['superadmin', 'admin'])) {
             $order->admin_cancellation_reason = $post->admin_cancellation_reason;
+            $usertype = 'admin';
         }else{
             $order->merchant_cancellation_reason = $post->admin_cancellation_reason;
+            $usertype = 'branch';
         }
        
+        $cancel_reason = new OrderCancellationReason;
+
+        $cancel_reason->description = $post->admin_cancellation_reason;
+        $cancel_reason->usertype = $usertype;
+
+        $cancel_reason->save();
+
         $order->save();
-      
+ 
         return response()->json(['status' => 'Order cancelled successfully'], 200);
 
        

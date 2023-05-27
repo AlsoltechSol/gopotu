@@ -162,7 +162,12 @@
                     data:'brand',
                     name: 'brand.name',
                     render: function(data, type, full, meta){
-                        return data.name
+                        if (data){
+                            return data.name
+                        }else{
+                            return 'N/A'
+                        }
+                       
                     },
                 },
                 {

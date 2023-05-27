@@ -428,7 +428,7 @@
                                 html += `<a class="btn btn-xs btn-info mg" href="javascript:;" onclick="editStatus('`+full.id+`', '`+full.status+`', '`+full.expected_delivery+`')" data-toggle="tooltip" data-placement="top" title="Update Status"><i class="fa fa-edit"></i></a>`;
                             /* @endif */
                         /* @endif */
-                        if(['accepted','processed', 'intransit'].includes(full.status)){
+                        if(['accepted','processed', 'intransit', 'received'].includes(full.status)){
                             html += `<a class="btn btn-xs btn-danger mg" href="javascript:;" onclick="cancelOrder('`+full.id+`')" data-toggle="tooltip" data-placement="top" title="Cancel"><i class="fa fa-ban"></i></a>`;
                         }
                       
