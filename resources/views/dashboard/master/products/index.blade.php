@@ -18,7 +18,7 @@
             $customfilter = true;
             $filteroptions = [
               
-                'shopfilter' => true
+               // 'shopfilter' => true
             ];
             $customfilter_array = [
                 (object) [

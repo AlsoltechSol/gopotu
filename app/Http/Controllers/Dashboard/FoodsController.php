@@ -15,6 +15,7 @@ use App\Model\ProductAttributeVariant;
 use App\Model\ProductImage;
 use App\Model\ProductMaster;
 use App\Model\ProductVariant;
+use App\Model\Scheme;
 use Carbon\Carbon;
 
 class FoodsController extends Controller
@@ -66,9 +67,10 @@ class FoodsController extends Controller
             \Session::flash('warning', "You have already have this dish in showcase");
             return redirect()->route('dashboard.foods.edit', ['id' => $exist->id]);
         }
-
+        $schemes = Scheme::all();
+        $data['attributes'] = ProductAttribute::where('slug', 'quantity')->orWhere('slug', 'weight')->orderBy('name', 'ASC')->get();
         $data['product_master'] = ProductMaster::where('type', 'restaurant')->findorfail($master_id);
-        return view('dashboard.foods.submit', $data);
+        return view('dashboard.foods.submit', $data, compact('schemes'));
     }
 
     public function edit($id)

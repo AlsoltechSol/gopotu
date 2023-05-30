@@ -52,8 +52,9 @@
                         @if( Myhelper::hasRole(['superadmin']))
                             <th>Master Status</th>
                             <th>Verification Status</th>
+                            <th>Status</th>
                         @endif
-                        <th>Status</th>
+                       
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -307,7 +308,7 @@
         // hide superadmin section for merchants
         if (role !== 'superadmin') {
             col.splice(7,2);
-            col.splice(10,2);
+            col.splice(10,3);
           // col.splice(8,1);
         }
        

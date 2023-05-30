@@ -296,7 +296,7 @@ class ProductsController extends Controller
                             }
                         } else {
 
-                            $listing_price =  $post->offeredprice[$key] + 0.01 * $post->offeredprice[$key] * $commission_value;
+                            $listing_price =  floor($post->offeredprice[$key] + 0.01 * $post->offeredprice[$key] * $commission_value);
                       
                           //  $test = (float)$post->price[$key];
                             // dd((float)$post->price[$key]/2);
@@ -312,7 +312,7 @@ class ProductsController extends Controller
                         if ($commission_type == 'flat') {
                             $listing_price =  $post->offeredprice[$key] + $commission_value;
                         } else {
-                            $listing_price =  $post->offeredprice[$key] + 0.01 * $post->offeredprice[$key] * $commission_value;
+                            $listing_price =  floor($post->offeredprice[$key] + 0.01 * $post->offeredprice[$key] * $commission_value);
                            
                         }
                     }
@@ -446,7 +446,7 @@ class ProductsController extends Controller
                             }
                         } else {
 
-                            $listing_price =  $post->offeredprice[$key] + 0.01 * $post->offeredprice[$key] * $commission_value;
+                            $listing_price =  floor($post->offeredprice[$key] + 0.01 * $post->offeredprice[$key] * $commission_value);
                       
                           //  $test = (float)$post->price[$key];
                             // dd((float)$post->price[$key]/2);
@@ -462,7 +462,7 @@ class ProductsController extends Controller
                         if ($commission_type == 'flat') {
                             $listing_price =  $post->offeredprice[$key] + $commission_value;
                         } else {
-                            $listing_price =  $post->offeredprice[$key] + 0.01 * $post->offeredprice[$key] * $commission_value;
+                            $listing_price =  floor($post->offeredprice[$key] + 0.01 * $post->offeredprice[$key] * $commission_value);
                            
                         }
                     }

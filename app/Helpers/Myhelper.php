@@ -1440,4 +1440,22 @@ class Myhelper
             return 0;
         }
     }
+
+    public static function approveUser($id = "none"){
+        if ($id == "none") {
+            $id = \Auth::id();
+        }
+
+        $user = User::where('id', $id)->first();
+        return $user->mobile_verified_at;
+    }
+
+    public static function userId($id = "none"){
+        if ($id == "none") {
+            $id = \Auth::id();
+        }
+
+        $user = User::where('id', $id)->first();
+        return $user->id;
+    }
 }
