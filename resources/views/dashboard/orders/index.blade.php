@@ -209,68 +209,7 @@
                 </form>
             </div>
         </div>
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Cancellation Reason</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <section>
-                    <form action=" " method=" ">
-                
-                        <div class="form-check form-group">
-                            <h3>Property cancellation policy</h3>
-                            <input class="form-check-input" type="radio" name=" " id="property-details-refund-policy-relaxed" value=" ">
-                            <label class="form-check-label" for="property-details-refund-policy-relaxed">
-                    Relaxed - <ins>14 days (100% refund); 7 days (50% refund)</ins>
-                  </label>
-                        </div>
-                        <div class="form-check form-group">
-                            <input class="form-check-input" type="radio" name=" " id="property-details-refund-policy-moderate" value=" ">
-                            <label class="form-check-label" for="property-details-refund-policy-moderate">
-                    Moderate - <ins>30 days (100% refund); 14 days (50% refund)</ins>
-                  </label>
-                        </div>
-                        <div class="form-check form-group">
-                            <input class="form-check-input" type="radio" name=" " id="property-details-refund-policy-firm" value=" ">
-                            <label class="form-check-label" for="property-details-refund-policy-firm">
-                        Firm - <ins>60 days (100% refund); 30 days (50% refund)</ins>
-                  </label>
-                        </div>
-                        <div class="form-check form-group">
-                            <input class="form-check-input" type="radio" name=" " id="property-details-refund-policy-strict" value=" ">
-                            <label class="form-check-label" for="property-details-refund-policy-strict">
-                    Strict - <ins>60 days (100% refund)</ins>
-                  </label>
-                        </div>
-                        <div class="form-check form-group">
-                            <input class="form-check-input" type="radio" name=" " id="property-details-refund-policy-none" value=" " checked>
-                            <label class="form-check-label" for="property-details-refund-policy-relaxed">
-                    None - <ins>(No refunds)</ins>
-                  </label>
-                        </div>
-                
-                        <em>Cancellations must be made by 12:00 PM on the appropriate day.</em><br>
-                
-                        <div class="form-group">
-                            <h3>Check-in/Check-out policy</h3>
-                            <label for="property-details-checkin_times">Describe the times to check-in and when to check-out.</label>
-                            <textarea class="form-control" id="property-details-checkin_times" rows="3" cols=" "></textarea>
-                        </div>
-                
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
-                </section>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-              </div>
-            </div>
-          </div>
+       
     </div>
 @endsection
 

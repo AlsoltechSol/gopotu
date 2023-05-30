@@ -178,25 +178,27 @@
                     className: 'text-center'
                 },
                 {
-                    render: function(data, type, full, meta){
-                        console.log(full);
-                        var html = '';
+                render: function(data, type, full, meta){
+                    console.log(full);
+                    var html = '';
+                    var fullId = full.id;
 
-                        /* @if(Myhelper::can('edit_'.$role->slug)) */
-                            html += `<a class="btn btn-xs btn-primary mg" href="{{route('dashboard.profile')}}/`+btoa(full.id)+`"><i class="fa fa-pencil"></i></a>`;
+                    /* @if(Myhelper::can('edit_'.$role->slug)) */
+                        html += `<a class="btn btn-xs btn-primary mg" href="{{ route('dashboard.profile') }}/${btoa(fullId)}"><i class="fa fa-pencil"></i></a>`;
+                    
+                        /* @if(in_array($role->slug, ['admin','branch'])) */
+                            html += `<a class="btn btn-xs btn-warning mg" href="{{ route('dashboard.members.permission') }}/${btoa(fullId)}"><i class="fa fa-lock"></i></a>`;
+                           
+                                    html += `<a title="login" class="btn btn-xs btn-success mg" href="/admin-merchant-login/${fullId}"><i class="fa fa-sign-in"></i></a>`;
+                          
 
-                            /* @if(in_array($role->slug, ['admin','branch'])) */
-                                html += `<a class="btn btn-xs btn-warning mg" href="{{route('dashboard.members.permission')}}/`+btoa(full.id)+`"><i class="fa fa-lock"></i></a>`;
-                                html += `<a title="login" class="btn btn-xs btn-success mg" href="/admin-merchant-login/${full.id}"><i class="fa fa-sign-in"></i></a>`;
-                            /* @endif */
+                           
                         /* @endif */
+                    /* @endif */
 
-                        return html;
-                    },
-                    orderable: false,
-                    searchable: false,
-                    className: 'text-center'
+                    return html;
                 }
+            }
             ],
             "order": [
                 [0, 'asc']

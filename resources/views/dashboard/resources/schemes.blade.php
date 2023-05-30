@@ -31,6 +31,8 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Last Updated</th>
+                            <th>Type</th>
+                            <th>Value</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -97,6 +99,20 @@
                 {
                     data:'name',
                     name: 'name',
+                    render: function(data, type, full, meta){
+                        return data
+                    },
+                },
+                {
+                    data:'updated_at',
+                    name: 'updated_at',
+                    render: function(data, type, full, meta){
+                        return data
+                    },
+                },
+                {
+                    data:'updated_at',
+                    name: 'updated_at',
                     render: function(data, type, full, meta){
                         return data
                     },

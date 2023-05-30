@@ -154,7 +154,7 @@ class MembersController extends Controller
                     'name' => 'required',
                     'email' => 'required|email|unique:users',
                     'mobile' => 'required|digits:10|unique:users',
-                    'scheme_id' => 'required|exists:schemes,id',
+                    //'scheme_id' => 'required|exists:schemes,id',
                     'business_category' => 'required|in:mart,restaurant',
                 );
                 break;

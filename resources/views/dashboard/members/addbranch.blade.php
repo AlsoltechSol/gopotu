@@ -44,7 +44,7 @@
                             <input type="text" class="form-control" name="mobile">
                         </div>
 
-                        <div class="form-group col-md-4">
+                        {{-- <div class="form-group col-md-4">
                             <label>Scheme <span class="text-danger">*</span></label>
                             <select name="scheme_id" class="form-control select2" style="width: 100%">
                                 <option value="">Select Scheme</option>
@@ -52,7 +52,7 @@
                                     <option value="{{$item->id}}">{{$item->name}}</option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
 
                         <div class="form-group col-md-4">
                             <label>Business Category <span class="text-danger">*</span></label>
@@ -89,9 +89,9 @@
                     maxlength: 10,
                     minlength: 10,
                 },
-                scheme_id: {
-                    required: true,
-                },
+                // scheme_id: {
+                //     required: true,
+                // },
                 business_category: {
                     required: true,
                 },
