@@ -14,8 +14,6 @@
     </section>
 
     
-  
-    
     <section class="content">
         {{-- {{dd(Myhelper::hasRole(['superadmin']))}} --}}
         <div id="role-data" data-role="{{ Myhelper::hasRole(['superadmin']) ? 'superadmin' : 'other' }}"></div>
@@ -207,7 +205,6 @@
                 },
              
                 
-
                 {
                     data:'top_offer',
                     name: 'top_offer',
@@ -308,7 +305,7 @@
         // hide superadmin section for merchants
         if (role !== 'superadmin') {
             col.splice(7,2);
-            col.splice(10,3);
+            col.splice(9,3);
           // col.splice(8,1);
         }
        
