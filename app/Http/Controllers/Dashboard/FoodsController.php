@@ -8,6 +8,7 @@ use App\Model\Brand;
 use App\Model\Cart;
 use App\Model\Category;
 use App\Model\Color;
+use App\Model\Commission;
 use App\Model\OrderProduct;
 use App\Model\Product;
 use App\Model\ProductAttribute;
@@ -91,8 +92,9 @@ class FoodsController extends Controller
 
         $data['product'] = $product;
         $data['product_master'] = ProductMaster::findorfail($product->master_id);
-
-        return view('dashboard.foods.submit', $data);
+        $data['attributes'] = ProductAttribute::where('slug', 'quantity')->orWhere('slug', 'weight')->orderBy('name', 'ASC')->get();
+        $schemes = Scheme::all();
+        return view('dashboard.foods.submit', $data, compact('schemes'));
     }
 
     public function submit(Request $post)
@@ -116,6 +118,8 @@ class FoodsController extends Controller
                 break;
 
             case 'changestatus':
+            case 'master':
+            case 'verify':
             case 'changetopoffer':
                 $permission = "edit_food";
 
@@ -157,6 +161,7 @@ class FoodsController extends Controller
                 $product_document['availability'] = 'instock';
                 $product_document['shop_id'] = \Myhelper::getShop();
                 $product_document['master_id'] = $post->master_id;
+                $product_document['food_type'] = $post->food_type;
 
                 $productvariant_document = array();
                 foreach ($post->price as $key => $item) {
@@ -172,9 +177,60 @@ class FoodsController extends Controller
                         return response()->json(['status' => 'All value should be positive for Row ' . ($key + 1)], 400);
                     }
 
+                    $product_master = ProductMaster::where('id', $product_document['master_id'])->first();
+
+                    $scheme_id = $product_master->scheme_id;
+
+                    if ($scheme_id == 0) {
+                        $scheme_id = $product_master->category->scheme_id;
+                    }
+
+                    $commission = Commission::where('scheme_id', $scheme_id)->where('provider_id', '1')->first();
+
+                    $commission_type = '';
+                    $commission_value = '';
+                    $listing_price = '';
+
+                    if (isset($commission)) {
+                        $commission_type = $commission->type;
+                        $commission_value = $commission->value;
+                    }
+
+                    if ($product_master->type == 'mart') {
+
+                        if ($commission_type == 'flat') {
+                            $listing_price =  $post->offeredprice[$key] + $commission_value;
+                            if ($listing_price > (float)$post->price[$key]) {
+                                $listing_price = (float)$post->price[$key];
+                            }
+                        } else {
+
+                            $listing_price =  floor($post->offeredprice[$key] + 0.01 * $post->offeredprice[$key] * $commission_value);
+                      
+                          //  $test = (float)$post->price[$key];
+                            // dd((float)$post->price[$key]/2);
+                           // dd($listing_price/2);
+
+                            if ($listing_price > (float)$post->price[$key]) {
+                               
+                                $listing_price = (float)$post->price[$key];
+                            }
+                           // $listing_price = $post->price[$key];
+                        }
+                    } else {
+                        if ($commission_type == 'flat') {
+                            $listing_price =  $post->offeredprice[$key] + $commission_value;
+                        } else {
+                            $listing_price =  floor($post->offeredprice[$key] + 0.01 * $post->offeredprice[$key] * $commission_value);
+                           
+                        }
+                    }
+
                     $productvariant_document[] = array(
                         'price' => $post->price[$key],
                         'offeredprice' => $post->offeredprice[$key],
+                        'listingprice' => $listing_price,
+                       
                     );
                 }
 
@@ -201,6 +257,8 @@ class FoodsController extends Controller
                 $product_document = array();
                 $product_document['type'] = 'restaurant';
                 $product_document['availability'] = 'instock';
+                $product_document['master_id'] = $post->master_id;
+                $product_document['food_type'] = $post->food_type;
 
                 $productvariant_document = array();
                 foreach ($post->price as $key => $item) {
@@ -216,11 +274,64 @@ class FoodsController extends Controller
                         return response()->json(['status' => 'All value should be positive for Row ' . ($key + 1)], 400);
                     }
 
+                    
+                    $product_master = ProductMaster::where('id', $product_document['master_id'])->first();
+
+
+                    $scheme_id = $product_master->scheme_id;
+
+                    if ($scheme_id == 0) {
+                        $scheme_id = $product_master->category->scheme_id;
+                    }
+
+                    $commission = Commission::where('scheme_id', $scheme_id)->where('provider_id', '1')->first();
+
+                    $commission_type = '';
+                    $commission_value = '';
+                    $listing_price = '';
+
+                    if (isset($commission)) {
+                        $commission_type = $commission->type;
+                        $commission_value = $commission->value;
+                    }
+
+                    if ($product_master->type == 'mart') {
+
+                        if ($commission_type == 'flat') {
+                            $listing_price =  $post->offeredprice[$key] + $commission_value;
+                            if ($listing_price > (float)$post->price[$key]) {
+                                $listing_price = (float)$post->price[$key];
+                            }
+                        } else {
+
+                            $listing_price =  floor($post->offeredprice[$key] + 0.01 * $post->offeredprice[$key] * $commission_value);
+                      
+                          //  $test = (float)$post->price[$key];
+                            // dd((float)$post->price[$key]/2);
+                           // dd($listing_price/2);
+
+                            if ($listing_price > (float)$post->price[$key]) {
+                               
+                                $listing_price = (float)$post->price[$key];
+                            }
+                           // $listing_price = $post->price[$key];
+                        }
+                    } else {
+                        if ($commission_type == 'flat') {
+                            $listing_price =  $post->offeredprice[$key] + $commission_value;
+                        } else {
+                            $listing_price =  floor($post->offeredprice[$key] + 0.01 * $post->offeredprice[$key] * $commission_value);
+                           
+                        }
+                    }
+
 
                     $productvariant_document[] = array(
                         'id' => $post->variant_id[$key],
                         'price' => $post->price[$key],
                         'offeredprice' => $post->offeredprice[$key],
+                        'listingprice' => $listing_price,
+                       
                     );
                 }
 
@@ -243,6 +354,38 @@ class FoodsController extends Controller
                     return response()->json(['status' => 'Food cannot be updated to the database'], 400);
                 }
 
+                break;
+
+            case 'master':
+                $product = Product::findorfail($post->id);
+
+                if ($product->master_status == '1') {
+                    $product->master_status = '0';
+                } else {
+                    if ($product->shop->user->role->slug == 'branch' && $product->shop->user->business_category != 'restaurant') {
+                        return response()->json(['status' => 'The merchant is currently not assigned for mart sales'], 400);
+                    }
+
+                    $product->master_status = '1';
+                }
+
+                $action = $product->save();
+                break;
+                    
+            case 'verify':
+                $product = Product::findorfail($post->id);
+
+                if ($product->verification_status == '1') {
+                    $product->verification_status = '0';
+                } else {
+                    if ($product->shop->user->role->slug == 'branch' && $product->shop->user->business_category != 'restaurant') {
+                        return response()->json(['status' => 'The merchant is currently not assigned for mart sales'], 400);
+                    }
+
+                    $product->verification_status = '1';
+                }
+
+                $action = $product->save();
                 break;
 
             case 'changestatus':

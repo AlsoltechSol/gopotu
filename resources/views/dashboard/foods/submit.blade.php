@@ -25,6 +25,7 @@
             </div>
             <form action="{{route('dashboard.foods.submit')}}" method="POST" id="productform">
                 <div class="box-body">
+                    {{-- {{dd($product->food_type)}} --}}
                     @csrf
                     <input type="hidden" name="operation" value="{{isset($product) ? 'edit' : 'new'}}">
                     <input type="hidden" name="id" value="{{isset($product) ? $product->id : ''}}">
@@ -93,7 +94,24 @@
                         </div>
                     @endif
 
-                        @if((isset($product) || !isset($product)))
+                     @if((isset($product) || !isset($product)))
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label" style="margin: 8px 0;">Food Type <span class="text-danger">*</span></label>
+                                    <div class="col-sm-10">
+                                        <select name="food_type" class="form-control">
+                                            <option {{isset($product) &&  $product->food_type == 'veg' ? 'selected' : ''}} value="veg">Veg</option>
+                                            <option {{isset($product) &&  $product->food_type == 'nonveg' ? 'selected' : ''}} value="nonveg">Non Veg</option>
+                                            <option {{isset($product) &&  $product->food_type == 'veg/nonveg' ? 'selected' : ''}} value="veg/nonveg">Veg/Non Veg</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                    
+
+                        {{-- @if((isset($product) || !isset($product)))
                             <div class="col-md-12">
                                 <div class="form-group row">
                                     <label class="col-sm-2 col-form-label" style="margin: 8px 0;">Product Availability <span class="text-danger">*</span></label>
@@ -105,14 +123,14 @@
                                     </div>
                                 </div>
                             </div>
-                        @endif
+                        @endif --}}
                     </div>
 
-                    <div class="box-header bg-primary with-border heading-label text-center product-av-blocks">
+                    {{-- <div class="box-header bg-primary with-border heading-label text-center product-av-blocks">
                         <h3 class="box-title text-uppercase text-bold">Product Variant</h3>
-                    </div>
+                    </div> --}}
 
-                    <div class="row product-av-blocks">
+                    {{-- <div class="row product-av-blocks">
                        
 
                         <div class="form-group col-md-12">
@@ -144,7 +162,7 @@
                                 </div>
                             @endif
                         </div>
-                    </div>
+                    </div> --}}
 
 
                     <div class="row product-av-blocks">

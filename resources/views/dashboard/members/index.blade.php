@@ -48,6 +48,7 @@
                             @endif
                             <th>Created On</th>
                             <th>Status</th>
+                            <th>Verification Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -86,15 +87,27 @@
                     data:'name',
                     name: 'name',
                     render: function(data, type, full, meta){
-                        return data
+                        if (full.role.slug == 'deliveryboy'){
+                            return data.slice(0, 10) + '...';
+                        }else{
+                            return data;
+                        }
                     },
                     searchable: true,
                 },
                 {
                     data:'email',
                     name: 'email',
+
+                   
+                    
                     render: function(data, type, full, meta){
-                        return data
+                        if (full.role.slug == 'deliveryboy'){
+                            return data.slice(0, 10) + '...';
+                        }else{
+                            return data;
+                        }
+                       
                     },
                 },
                 {
@@ -163,6 +176,7 @@
                         return data
                     },
                 },
+               
                 {
                     data:'status',
                     name: 'status',
@@ -178,23 +192,47 @@
                     className: 'text-center'
                 },
                 {
+                    data:'mobile_verified_at',
+                    name: 'mobile_verified_at',
+                    render: function(data, type, full, meta){
+                        if(data !=null){
+                            html = `<button class="btn btn-sm btn-success"><i class="fa fa-check-circle"></i>&nbsp;Done</button>`;
+                        } else{
+                            html = `<button class="btn btn-sm btn-warning"><i class="fa fa-remove"></i>&nbsp;Pending</button>`;
+                        }
+
+                        return html;
+                    },
+                    className: 'text-center'
+                },
+                {
                 render: function(data, type, full, meta){
                     console.log(full);
                     var html = '';
-                    var fullId = full.id;
-
-                    /* @if(Myhelper::can('edit_'.$role->slug)) */
-                        html += `<a class="btn btn-xs btn-primary mg" href="{{ route('dashboard.profile') }}/${btoa(fullId)}"><i class="fa fa-pencil"></i></a>`;
-                    
-                        /* @if(in_array($role->slug, ['admin','branch'])) */
+                    fullId = full.id;
+                    if (full.mobile_verified_at !=null && full.status == 1){
+                            /* @if(Myhelper::can('edit_'.$role->slug)) */
+                            html += `<a class="btn btn-xs btn-primary mg" href="{{ route('dashboard.profile') }}/${btoa(fullId)}"><i class="fa fa-pencil"></i></a>`;
+                        
+                        /* @if(in_array($role->slug, ['admin','branch', 'deliveryboy'])) */
                             html += `<a class="btn btn-xs btn-warning mg" href="{{ route('dashboard.members.permission') }}/${btoa(fullId)}"><i class="fa fa-lock"></i></a>`;
-                           
-                                    html += `<a title="login" class="btn btn-xs btn-success mg" href="/admin-merchant-login/${fullId}"><i class="fa fa-sign-in"></i></a>`;
-                          
-
-                           
+                            
+                            html += `<a title="login" class="btn btn-xs btn-success mg" href="/admin-merchant-login/${fullId}"><i class="fa fa-sign-in"></i></a>`;                    
                         /* @endif */
                     /* @endif */
+                    }else{
+                           /* @if(Myhelper::can('edit_'.$role->slug)) */
+                           html += `<a class="btn btn-xs btn-primary mg" href="{{ route('dashboard.profile') }}/${btoa(fullId)}"><i class="fa fa-pencil"></i></a>`;
+                        
+                        /* @if(in_array($role->slug, ['admin','branch', 'deliveryboy'])) */
+                            html += `<a class="btn btn-xs btn-warning mg" href="{{ route('dashboard.members.permission') }}/${btoa(fullId)}"><i class="fa fa-lock"></i></a>`;
+                            html += `<a title="login" class="btn btn-xs btn-success disabled mg" href="/admin-merchant-login/${fullId}"><i class="fa fa-sign-in"></i></a>`;
+                                              
+                        /* @endif */
+                    /* @endif */
+                    }
+
+                  
 
                     return html;
                 }
