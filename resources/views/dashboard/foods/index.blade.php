@@ -31,6 +31,7 @@
                         <th>Shop</th>
                         <th>Name</th>
                         <th>Category</th>
+                        <th>Food Type</th>
                         <th>Image</th>
                         <th>Product Price</th>
                         <th>Offered Price</th>
@@ -106,6 +107,22 @@
                     name: 'details.category.name',
                     render: function(data, type, full, meta){
                         return data.category.name
+                    },
+                    searchable: false,
+                    orderable: false,
+                },
+
+                {
+                    data:'food_type',
+                    name: 'food_type',
+                    render: function(data, type, full, meta){
+                        console.log(full);
+                        if (data !=null){
+                            return data.charAt(0).toUpperCase() + data.slice(1)
+                        }else{
+                            return 'N/A'
+                        }
+                       
                     },
                     searchable: false,
                     orderable: false,
@@ -304,8 +321,8 @@
            
         // hide superadmin section for merchants
         if (role !== 'superadmin') {
-            col.splice(7,2);
-            col.splice(9,3);
+            col.splice(8,2);
+            col.splice(10,3);
           // col.splice(8,1);
         }
        

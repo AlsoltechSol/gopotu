@@ -32,6 +32,7 @@
                 <div class="col-lg-3 col-6">
                     <div class="small-box bg-primary">
                         <div class="inner">
+                          
                             <h3>{{ $count['todaysales'] }}</h3>
                             <p>Today Sales</p>
                         </div>
@@ -288,15 +289,16 @@
         </section>
     @endif
     
-
-@endsection
-@if (session('admin'))
+    @if (session('admin'))
 <div class="mt-5">
 
     <a href="{{ route('admin.login') }}"><button class="btn btn-danger">Back to admin</button> </a>
 </div>
 
 @endif
+
+@endsection
+
 
 
 @push('script')

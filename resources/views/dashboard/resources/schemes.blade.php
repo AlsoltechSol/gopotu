@@ -31,8 +31,8 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Last Updated</th>
-                            <th>Type</th>
-                            <th>Value</th>
+                            <th>Type/Value</th>
+                           
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -111,19 +111,41 @@
                     },
                 },
                 {
-                    data:'updated_at',
-                    name: 'updated_at',
+                    data:'type',
+                    name: 'type',
                     render: function(data, type, full, meta){
-                        return data
+                        console.log(full);
+                        
+                        let concatenatedString = '';
+                        var provider = ''
+
+                    for (const key in full.commissions) {
+                        
+                        if (full.commissions.hasOwnProperty(key)) {
+                            // if (full.commissions[key].provider_id = 1){
+                            // provider = 'GoMart Sales'
+                            // }else if(full.commissions[key].provider_id = 2){
+                            //     provider = 'Food Order'
+                            // }else{
+                            //     provider = 'Meat'
+                            // }
+                            concatenatedString += full.commissions[key].type + ': ' + full.commissions[key].value +'(' + full.commissions[key].provider_id + ')' + ', ';
+                        }
+                    }
+
+                    // Remove the trailing comma and space
+                    concatenatedString = concatenatedString.slice(0, -2);
+                    console.log(concatenatedString);
+                    if (full.commissions.length !== 0){
+                        return concatenatedString
+                    }else{
+                        return 'N/A'
+                    }
+                       
+                       
                     },
                 },
-                {
-                    data:'updated_at',
-                    name: 'updated_at',
-                    render: function(data, type, full, meta){
-                        return data
-                    },
-                },
+               
                 {
                     data:'status',
                     name: 'status',

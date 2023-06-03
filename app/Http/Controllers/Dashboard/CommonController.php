@@ -285,10 +285,9 @@ class CommonController extends Controller
                 break;
 
             case 'schemes':
-                $query = \App\Model\Scheme::query();
+                $query = \App\Model\Scheme::with('commissions')->get();
                 $request['searchdata'] = [];
                 break;
-
             case 'contents':
                 $query = \App\Model\CmsContent::query();
                 $request['searchdata'] = [];

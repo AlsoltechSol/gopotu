@@ -1458,4 +1458,10 @@ class Myhelper
         $user = User::where('id', $id)->first();
         return $user->id;
     }
+
+    public static function getSchemeDet($id = 'none'){
+        $details = Commission::where('scheme_id', $id)->get();
+
+        return $details;
+    }
 }
