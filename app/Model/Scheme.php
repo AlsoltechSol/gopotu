@@ -4,6 +4,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Scheme extends Model
 {
@@ -26,5 +27,9 @@ class Scheme extends Model
 
     public function productMasters(){
         return $this->hasMany(ProductMaster::class, 'scheme_id');
+    }
+
+    public function commissions(){
+        return $this->hasMany(Commission::class, 'scheme_id');
     }
 }
