@@ -6,6 +6,14 @@
             Mart Products Management
             <small></small>
         </h1>
+         
+    @if (session('admin'))
+    <div class="mt-5">
+
+        <a href="{{ route('admin.login') }}"><button class="btn btn-danger">Back to admin</button> </a>
+    </div>
+
+    @endif
         <ol class="breadcrumb">
             <li><a href="{{route('dashboard.home')}}"><i class="fa fa-dashboard"></i> Home</a></li>
             <li class="">Mart Products</li>
@@ -17,8 +25,6 @@
     <section class="content">
         {{-- {{dd(Myhelper::hasRole(['superadmin']))}} --}}
         <div id="role-data" data-role="{{ Myhelper::hasRole(['superadmin']) ? 'superadmin' : 'other' }}"></div>
-        <div id="role-data1" data-role="{{ Myhelper::hasRole(['admin']) ? 'admin' : 'other' }}"></div>
-        <div id="role-data2" data-role="{{ Myhelper::hasRole(['branch']) ? 'branch' : 'other' }}"></div>
         <div class="box">
             <div class="box-header with-border">
                 <h3 class="box-title">All Products</h3>
@@ -40,15 +46,14 @@
                         <th>Product Price</th>
                         <th>Offered Price</th>
                         
-                        @if( Myhelper::hasRole(['superadmin', 'admin']))
+                        @if( Myhelper::hasRole(['superadmin']))
                             <th>Listing Price</th>
                             <th>Admin Charge</th>
                            
                         @endif
                         
-                        @if( Myhelper::hasRole(['superadmin', 'branch']))
+                       
                         <th>Top Offer</th>
-                        @endif
                         <th>Last Updated</th>
                         @if( Myhelper::hasRole(['superadmin']))
                             <th>Master Status</th>
@@ -80,12 +85,8 @@
     <script>
 
     var role = document.getElementById('role-data').getAttribute('data-role');
-    var role1 = document.getElementById('role-data1').getAttribute('data-role');
-    var role2 = document.getElementById('role-data2').getAttribute('data-role');
     
-        console.log(role);
-        console.log(role1);
-        console.log(role2);
+
         var col = [
                 {
                     data:'id',
@@ -310,14 +311,11 @@
 
            
         // hide superadmin section for merchants
-        if (role2 === 'branch' ) {
+        if (role !== 'superadmin') {
             col.splice(7,2);
             col.splice(9,3);
           // col.splice(8,1);
-        } else if(role1 === 'admin'){
-            
-            col.splice(9,3);
-        } 
+        }
        
            
         var dataTable = $('#my-datatable').DataTable({

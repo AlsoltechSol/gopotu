@@ -90,7 +90,7 @@ class User extends Authenticatable implements JWTSubject
     public function getAvatarAttribute()
     {
         if ($this->profile_image == null) {
-            return 'https://via.placeholder.com/160/C5E3F9/669ACD?text=' . strtoupper(substr($this->name, 0, 1)[0]);
+            return 'https://via.placeholder.com/160/C5E3F9/669ACD?text=' . strtoupper(substr($this->mobile, 0, 1)[0]);
         } else {
             return asset('uploads/profile/' . $this->profile_image);
         }

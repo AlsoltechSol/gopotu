@@ -19,6 +19,8 @@ Route::any('scheduler/assignriderfororder', 'SchedulerController@assignRiderForO
 Route::any('scheduler/estimatedeliverytime', 'SchedulerController@estimateDeliveryTime')->name('scheduler.estimatedeliverytime');
 
 Route::any('auth/login', 'Api\AuthController@login');
+Route::any('auth/send-otp', 'Api\AuthController@sendOtp');
+Route::any('auth/otp-login', 'Api\AuthController@otpLogin');
 Route::any('auth/register', 'Api\AuthController@register');
 Route::any('auth/signup', 'Api\AuthController@register');
 Route::any('auth/voktoesache', 'Api\AuthController@register');

@@ -141,6 +141,45 @@
                         <a href="{{ route('dashboard.members.index', ['type' => 'user']) }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
+
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                            <h3>{{ $count['today_cancel_order'] }}</h3>
+                            <p>Today's Cancel Order</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-ban"></i>
+                        </div>
+                        <a href="{{ route('dashboard.orders.index', ['type' => 'user']) }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                            <h3>{{ $count['monthly_cancel_order'] }}</h3>
+                            <p>Monthly Cancel Order</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-ban"></i>
+                        </div>
+                        <a href="{{ route('dashboard.orders.index', ['type' => 'user']) }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                            <h3>{{ $count['return_order'] }}</h3>
+                            <p>Return Order</p>
+                        </div>
+                        <div class="icon">
+                            <<i class="fa fa-arrow-rotate"></i>
+                        </div>
+                        <a href="{{ route('dashboard.orders.index', ['type' => 'user']) }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
             </div>
 
             {{-- <div class="row">
@@ -290,12 +329,12 @@
     @endif
     
     @if (session('admin'))
-<div class="mt-5">
+    <div class="mt-5">
 
-    <a href="{{ route('admin.login') }}"><button class="btn btn-danger">Back to admin</button> </a>
-</div>
+        <a href="{{ route('admin.login') }}"><button class="btn btn-danger">Back to admin</button> </a>
+    </div>
 
-@endif
+    @endif
 
 @endsection
 
