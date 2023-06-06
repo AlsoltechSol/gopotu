@@ -83,7 +83,7 @@ class CommonController extends Controller
                 break;
 
             case 'categories':
-                $query = \App\Model\Category::with('parent_category');
+                $query = \App\Model\Category::with('parent_category')->orderBy('created_at', 'desc');
 
                 if ($request->has('parent_id') && $request->parent_id == null) {
                     $query->where('parent_id', null);

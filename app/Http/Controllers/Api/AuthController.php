@@ -26,6 +26,7 @@ use App\Model\OtpVerification;
 use App\Model\Role;
 use App\Model\UserAddress;
 use App\User;
+use GuzzleHttp\Client;
 
 use Carbon\Carbon;
 use JWTAuth;
@@ -369,5 +370,91 @@ class AuthController extends Controller
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage(), 'data' => \Myhelper::formatApiResponseData($data)]);
         }
+    }
+
+    public function sendOtp(Request $request){
+        $request->validate([
+            'mobile' => 'required',
+            //'business_name' => 'required'
+        ]);
+        $otp_rand = rand(1000, 9999);
+        // $otp_rand = 1000;
+       
+        // $last_send_time = Otp::where('mobile', $request->mobile)->orderBy('created_at', 'desc')->first();
+        // // dd($last_send_time->updated_at);
+        // $dt = new DateTime();
+
+        // $duration = 10;
+        // if (isset($last_send_time)) {
+        //     $last_otp_send_time = $last_send_time->created_at->format('Y-m-d H:i:s');
+        //     $time_now = $dt->format('Y-m-d H:i:s');
+        //     $duration = strtotime($time_now) - strtotime($last_otp_send_time);
+        // }
+        $user = User::where('mobile', $request->mobile)->first(); 
+        if (isset($user)){
+            $user->otp = $otp_rand;
+            $user->save();
+        }  else{
+            $user = new User();
+            $user->mobile = $request->mobile;
+            $user->otp = $otp_rand;
+            $user->role_id = 3;
+          //  $user->name = $request->name;
+            $user->save();
+        }  
+            
+       
+        $client = new Client();
+
+        $response = $client->get('smsapi.syscogen.com/rest/services/sendSMS/sendGroupSms?AUTH_KEY=2946464c2021d8e0b1277bed83cd9f&message='.$otp_rand.'&senderId=DEMOOS&routeId=1&mobileNos='.$request->mobile.'&smsContentType=english&entityid=1001238677144196147&tmid=140200000022&templateid=NoneedIfAddedInPanel');
+
+            return response()->json([
+                'message' => 'otp send to your mobile number',
+                'status' => '200',
+                'otp' => $otp_rand
+            ]);
+    
+    }
+
+    public function otpLogin(Request $request){
+        $otp = User::where('mobile', $request->mobile)->orderBy('created_at', 'desc')->first()->otp;
+        $request->validate([
+            'otp' => 'required',
+            'mobile' => 'required',
+         
+        ]);
+        // return response()->json([
+        //     'otp' => $otp->otp,
+        //     'request' => $request->otp
+        // ]);
+        if ($otp == $request->otp) {
+            $user =  $user = User::where('mobile', $request->mobile)->first();
+           
+            $token = JWTAuth::fromUser($user);
+
+                return response()->json([
+                    'message' => ' Otp verification succesfully completed',
+                    'status' => '200',
+                    'user' => $user,
+                    'token' => $token,
+                  
+                ]);
+        }else{
+                
+            return response()->json([
+                'message' => 'otp verification failed',
+                'status' => 401,
+                // 'token' => $token,
+                //'otp' => $otp
+            ]);
+        }
+            //return $user->createToken('API Token')->accessToken;
+
+
+          
+
+
+          
+        
     }
 }

@@ -230,44 +230,64 @@
                 },
                 {
                     render: function(data, type, full, meta){
-                        let order = full.order;
 
-                        return `<b class="">`+order.code+`</b> <small class="text-uppercase text-info">(`+order.type+`)</small><br>\
+                        let order = full.order;
+                        console.log(order);
+                        if (order != null){
+                            return `<b class="">`+order.type+`</b> <small class="text-uppercase text-info">(`+order.type+`)</small><br>\
                             Payable Amount: <b>{!! config("app.currency.faicon") !!}`+order.payable_amount+`</b><br>\
                             Payment Mode: <b class="text-uppercase">`+order.payment_mode+`</b>`;
+                        }else{
+                            return `N/A`
+                        }
+
+                       
                     },
                     orderable: false,
                     searchable: false,
                 },
                 {
                     render: function(data, type, full, meta){
-                        let user = full.order.user;
-
-                        return `Name: <b>`+user.name+`</b> <b class="text-danger">(#`+user.id+`)</b><br>\
+                        if (full.order != null){
+                            let user = full.order.user;
+                            return `Name: <b>`+user.name+`</b> <b class="text-danger">(#`+user.id+`)</b><br>\
                             Email: <b>`+user.email+`</b><br>\
                             Mobile: <b>`+user.mobile+`</b>`;
+                        }else{
+                            return `N/A`
+                        }
+                      
                     },
                     searchable: false,
                     orderable: false,
                 },
                 {
                     render: function(data, type, full, meta){
-                        let order = full.order;
-
-                        return `Name: <b>`+order.cust_name+`</b><br>\
+                        if (full.order != null){
+                            let order = full.order;
+                            return `Name: <b>`+order.cust_name+`</b><br>\
                             Mobile: <b>`+order.cust_mobile+`</b><br>\
                             Location: <b><a target="_blank" href="https://maps.google.com/?q=` + order.cust_latitude + `,` + order.cust_longitude + `">View on Map</a></b>`;
+                        }else{
+                            return `N/A`
+                        }
+                     
                     },
                     orderable: false,
                     searchable: false,
                 },
                 {
                     render: function(data, type, full, meta){
-                        let shop = full.order.shop;
+                        if (full.order){
+                            let shop = full.order.shop;
 
-                        return `Name: <b>`+shop.shop_name+`</b><br>\
+                            return `Name: <b>`+shop.shop_name+`</b><br>\
                             Mobile: <b>`+shop.shop_mobile+`</b><br>\
                             Location: <b><a target="_blank" href="https://maps.google.com/?q=` + shop.shop_latitude + `,` + shop.shop_longitude + `">View on Map</a></b>`;
+                        }else{
+                            return `N/A`
+                        }
+                       
                     },
                     orderable: false,
                     searchable: false,
@@ -320,7 +340,11 @@
                     render: function(data, type, full, meta){
                         var html = '';
 
-                        html += `<a class="btn btn-xs btn-primary mg" href="{{route('dashboard.orders.view')}}/`+full.order.id+`"><i class="fa fa-eye"></i></a>`;
+                        if (full.order !=null){
+                            html += `<a class="btn btn-xs btn-primary mg" href="{{route('dashboard.orders.view')}}/`+full.order.id+`"><i class="fa fa-eye"></i></a>`;
+                        }
+
+                     
 
                         /* @if(Myhelper::can('update_return_replacement_status')) */
                             /* @if(Myhelper::hasRole('branch')) */

@@ -72,10 +72,13 @@ class HomeController extends Controller
 
             $data['count'] = array(
                 'neworders' => Order::whereIn('status', ['received'])->count(),
+                'return_order' => Order::whereIn('status', ['returned'])->count(),
                 'todaysales' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', Carbon::now())->sum('payable_amount'),
+                'today_cancel_order' => Order::where('status', 'cancelled')->whereDate('created_at', Carbon::now())->count(),
                 'todayprofits' => (Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', Carbon::now())->sum('item_total') - Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', Carbon::now())->sum('merchant_total')),
                 'monthprofits' => (Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereMonth('created_at', Carbon::now())->sum('item_total') - Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', Carbon::now())->sum('merchant_total')),
                 'monthsales' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereMonth('created_at', Carbon::now())->whereYear('created_at', Carbon::now())->sum('payable_amount'),
+                'monthly_cancel_order' => Order::where('status', 'cancelled')->whereMonth('created_at', Carbon::now())->whereYear('created_at', Carbon::now())->count(),
                 'users' => User::whereHas('role', function ($q) {
                     $q->where('slug', 'user');
                 })->count(),
@@ -88,6 +91,7 @@ class HomeController extends Controller
                 'd-boy' => User::whereHas('role', function ($q) {
                     $q->where('slug', 'deliveryboy');
                 })->count(),
+                
             );
 
             $data['latestorders'] = Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered', 'cancelled', 'returned'])->orderBy('created_at', 'DESC')->limit(8)->get();
