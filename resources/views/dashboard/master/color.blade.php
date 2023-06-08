@@ -40,8 +40,9 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Color</th>
+                            <th>Color Code </th>
                             <th>Last Updated</th>
-                            {{-- <th>Action</th> --}}
+                             <th>Action</th> 
                         </tr>
                     </thead>
                     <tbody>
@@ -127,37 +128,44 @@
                     className: 'text-center'
                 },
                 {
+                    data:'code',
+                    name: 'code',
+                    render: function(data, type, full, meta){
+                        return data
+                    },
+                },
+                {
                     data:'updated_at',
                     name: 'updated_at',
                     render: function(data, type, full, meta){
                         return data
                     },
                 },
-                // {
-                //     render: function(data, type, full, meta){
-                //         var html = '';
+                {
+                    render: function(data, type, full, meta){
+                        var html = '';
 
-                //         /* @if (Myhelper::can('edit_color')) */
-                //         // html += `<li><a href="javascript:;" onclick="edit('` + full.id + `')"><i class="fa fa-edit"></i>Edit</a></li>`;
-                //         /* @endif */
+                        /* @if (Myhelper::can('edit_color')) */
+                         html += `<li><a href="javascript:;" onclick="edit('` + full.id + `')"><i class="fa fa-edit"></i>Edit</a></li>`;
+                        /* @endif */
 
-                //         /* @if (Myhelper::can('delete_color')) */
-                //         // html += `<li><a href="javascript:;" onclick="deleteitem('` + full.id + `')"><i class="fa fa-trash"></i>Delete</a></li>`;
-                //         /* @endif */
+                        /* @if (Myhelper::can('delete_color')) */
+                         html += `<li><a href="javascript:;" onclick="deleteitem('` + full.id + `')"><i class="fa fa-trash"></i>Delete</a></li>`;
+                        /* @endif */
 
-                //         var menu = `<div class="btn-group">\
-                //                 <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">\
-                //                     <i class="fa fa-bars"></i>&nbsp;&nbsp;<span class="fa fa-caret-down"></span>\
-                //                 </button>\
-                //                 <ul class="dropdown-menu">` + html + `</ul>\
-                //             </div>`;
+                        var menu = `<div class="btn-group">\
+                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">\
+                                    <i class="fa fa-bars"></i>&nbsp;&nbsp;<span class="fa fa-caret-down"></span>\
+                                </button>\
+                                <ul class="dropdown-menu">` + html + `</ul>\
+                            </div>`;
 
-                //         return menu;
-                //     },
-                //     orderable: false,
-                //     searchable: false,
-                //     className: 'text-center'
-                // }
+                        return menu;
+                    },
+                    orderable: false,
+                    searchable: false,
+                    className: 'text-center'
+                }
             ],
             "order": [
                 [0, 'asc']
