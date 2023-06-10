@@ -51,11 +51,11 @@
 
                         @switch($position)
                             @case('top')
-                                <small><code>Dimension: 950 X 450</code></small>
+                                <small><code>Recommended Dimension: 950 X 450</code></small>
                                 @break
                             @case('middle')
                             @case('footer')
-                                <small><code>Dimension: 1300 X 350</code></small>
+                                <small><code>Recommended Dimension: 1300 X 350</code></small>
                                 @break
                             @default
                         @endswitch
@@ -74,7 +74,7 @@
                                             <option value="">Select Category *</option>
                                             <option value="mart">Mart</option>
                                             <option value="restaurant">Restaurant</option>
-                                            <option value="service">Service</option>
+                                            <option value="meat">Meat</option>
                                         </select>
                                     </div>
                                 </div>

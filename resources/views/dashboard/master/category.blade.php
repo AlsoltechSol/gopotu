@@ -95,7 +95,7 @@
                                 <option value="">Select from the dropdown</option>
                                 <option value="mart">Mart</option>
                                 <option value="restaurant">Restaurant</option>
-                                <option value="service">Service</option>
+                                <option value="meat">Meat</option>
                             </select>
                         </div>
 
@@ -112,7 +112,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label>Icon &nbsp;&nbsp;<code>Dimension - 250 X 150</code></label>
+                            <label>Icon &nbsp;&nbsp;<code>Recommended Dimension - 250 X 150</code></label>
                             <input type="file" value="" name="icon" class="form-control" accept="image/*" required>
                         </div>
                     </div>

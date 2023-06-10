@@ -41,7 +41,7 @@
                             @if(isset($product) && $product->image != null)
                                 <a href="{{ $product->image_path }}" data-toggle="lightbox" class="btn btn-danger btn-xs pull-right mb-1">View Image</a>
                             @endif
-                            <label>Product Image {!! !isset($product) ? '<span class="text-danger">*</span>' : '' !!} &nbsp;&nbsp;<code>Dimension - 500 X 500</code></label>
+                            <label>Product Image {!! !isset($product) ? '<span class="text-danger">*</span>' : '' !!} &nbsp;&nbsp;<code>Recommended Dimension - 500 X 500</code></label>
                             <input type="file" class="form-control" name="product_image">
                         </div>
 
