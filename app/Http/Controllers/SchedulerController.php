@@ -61,9 +61,12 @@ class SchedulerController extends Controller
             // if ($returnreplace_order->expected_intransit) {
             // $_SEARCHSTART = Carbon::parse($returnreplace_order->expected_intransit)->subMinutes($_ASSIGNBEFORE);
             // if (Carbon::now()->gte($_SEARCHSTART)) {
-            if ($returnreplace_order->order->shop->shop_latitude && $returnreplace_order->order->shop->shop_longitude) {
+            // if ($returnreplace_order->order->shop->shop_latitude && $returnreplace_order->order->shop->shop_longitude) 
+            if ($returnreplace_order->order && $returnreplace_order->order->shop && $returnreplace_order->order->shop->shop_latitude && $returnreplace_order->order->shop->shop_longitude) 
+            {
                 \Log::info('RETURNREPLACE_ORDER : ' . $returnreplace_order->code . ' SEARCH STARTED ' . Carbon::now()->format('Y-m-d H:i:s A'));
                 $avail_drivers = \Myhelper::getAvailableDrivers($returnreplace_order->order->shop->shop_latitude, $returnreplace_order->order->shop->shop_longitude, $returnreplace_order->id, 10, false, 'returnreplace');
+                
                 if (count($avail_drivers) > 0) {
                     $deliveryboy_id = $avail_drivers[0];
                     $action = OrderReturnReplace::where('id', $returnreplace_order->id)->update(['deliveryboy_id' => $deliveryboy_id, 'deliveryboy_status' => 'pending']);
@@ -83,6 +86,7 @@ class SchedulerController extends Controller
                 } else {
                     \Log::info('RETURNREPLACE_ORDER : ' . $returnreplace_order->code . ' NO DELIVERY BOY FOUND AT ' . Carbon::now()->format('Y-m-d H:i:s A'));
                 }
+
             } else {
                 \Log::info('RETURNREPLACE_ORDER : ' . $returnreplace_order->code . ' SHOP LATITUDE AND LONGITUDE NOT FOUND AT ' . Carbon::now()->format('Y-m-d H:i:s A'));
             }
