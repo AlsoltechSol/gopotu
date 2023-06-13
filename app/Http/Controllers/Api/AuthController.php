@@ -402,8 +402,7 @@ class AuthController extends Controller
           //  $user->name = $request->name;
             $user->save();
         }  
-            
-       
+                  
         $client = new Client();
 
         $response = $client->get('smsapi.syscogen.com/rest/services/sendSMS/sendGroupSms?AUTH_KEY=2946464c2021d8e0b1277bed83cd9f&message='.$otp_rand.'&senderId=DEMOOS&routeId=1&mobileNos='.$request->mobile.'&smsContentType=english&entityid=1001238677144196147&tmid=140200000022&templateid=NoneedIfAddedInPanel');

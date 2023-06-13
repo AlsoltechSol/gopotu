@@ -13,6 +13,7 @@ use App\Model\DefaultPermission;
 use App\Model\Scheme;
 use App\Model\Shop;
 use App\User;
+use GuzzleHttp\Client;
 
 class MembersController extends Controller
 {
@@ -189,6 +190,11 @@ class MembersController extends Controller
                 $post['referral_code'] = config('app.shortname') . '-' . rand(11111111, 99999999);
             } while (User::where("referral_code", "=", $post->referral_code)->first() instanceof User);
         }
+
+        $otp_rand = rand(1000, 9999);
+        $client = new Client();
+
+        $response = $client->get('smsapi.syscogen.com/rest/services/sendSMS/sendGroupSms?AUTH_KEY=2946464c2021d8e0b1277bed83cd9f&message='.$otp_rand.'&senderId=DEMOOS&routeId=1&mobileNos='.$post->mobile.'&smsContentType=english&entityid=1001238677144196147&tmid=140200000022&templateid=NoneedIfAddedInPanel');
 
         $action = User::create($post->all());
         if ($action) {
