@@ -195,8 +195,9 @@ class MembersController extends Controller
         $client = new Client();
 
         $response = $client->get('smsapi.syscogen.com/rest/services/sendSMS/sendGroupSms?AUTH_KEY=2946464c2021d8e0b1277bed83cd9f&message='.$otp_rand.'&senderId=DEMOOS&routeId=1&mobileNos='.$post->mobile.'&smsContentType=english&entityid=1001238677144196147&tmid=140200000022&templateid=NoneedIfAddedInPanel');
-
-        $action = User::create($post->all());
+        $data = $post->all();
+        $data['otp'] = $otp_rand;
+        $action = User::create($data);
         if ($action) {
             $content = 'Hey ' . $post->name . ', welcome to the GoPotu family. Your account has been created successfully by our Administrator Team. Use ' . $post->email . ' and ' . $password . ' as the email and password respectively to sign in to your account. Thanks, GoPotu Team';
             \Myhelper::sms($post->mobile, $content);
@@ -357,5 +358,28 @@ class MembersController extends Controller
         }
 
         return response()->json(['status' => 'Task successfullly completed'], 200);
+    }
+
+    public function verifyOtp(Request $request){
+        $user = User::where('mobile', $request->mobile)->first();
+        $otp = $user->otp;
+
+        if ($otp == $request->otp){
+           
+            $user->otp_verified_status = '1';
+            $user->save();
+           
+           // dd($user);
+            return response()->json([
+                'status' => 200,
+                'message' => 'Otp validated successfully'
+                
+            ]);
+        }else{
+            return response()->json([
+                'status' => 401,
+                'message' => 'Otp validation failed'
+            ]);
+        }
     }
 }
