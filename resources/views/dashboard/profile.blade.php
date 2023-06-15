@@ -61,6 +61,7 @@
                         @endif
 
                         <li class="bg-gray "><a href="#password" data-toggle="tab"><i class="fa fa-lock"></i> Change Password</a></li>
+                        <li class="bg-gray "><a href="#verify" data-toggle="tab"><i class="fa fa-lock"></i> Verify OTP</a></li>
                     </ul>
                     <div class="tab-content">
                         {{-- Basic Details Tab --}}
@@ -380,6 +381,34 @@
                                     <button type="submit" class="btn btn-primary btn-md">Submit</button>
                                 </footer>
                             </form>
+                        </div>
+
+                        <div class="tab-pane" id="verify">
+                            
+                                @csrf
+                                <input type="hidden" name="type" value="verify-otp">
+                                <input type="hidden" name="id" value="{{$user->id}}">
+
+                                @if (!isset($user->otp_verified_status))
+                                    <div class="row">
+                                
+                                        <div class="col-md-9">
+                                            <input margin: 3px type="number" id="otp" class="form-control" name="otp">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button margin: 3px id="verify-button" type="button" onclick="verifyOtp(this)" value={{$user->mobile}} class="btn btn-md btn-primary">Verify OTP</button>
+                                        </div>
+                                    </div>
+                                @else
+                                    <div>
+                                        <p class="text-success">Already Verified</p>
+                                    </div>
+                                @endif
+                               
+
+                                
+                                <p id="otp-message"></p>
+                            
                         </div>
                     </div>
                 </div>
@@ -756,6 +785,46 @@
         }
     });
     /* @endif */
+
+    function verifyOtp(src){
+
+         var otp = $('#otp').val();
+            var otpMessage = $('#otp-message');
+            var csrfToken = '{{ csrf_token() }}';
+            $.ajax({
+            url: '/verify-otp',
+            method: 'POST',
+            data: {
+                // Add any data you want to send with the request
+                _token: csrfToken, 
+                mobile: src.value,
+                otp:otp
+            },
+            success: function(response) {
+                // Handle the successful response
+                
+                if (response.status == 200){
+                    otpMessage.removeClass('text-danger');
+                    otpMessage.addClass('text-success');
+                    $('#verify-button').addClass('disabled');
+                    setTimeout(function() {
+                        swal.close();
+                    }, 2000);
+                
+                }else{
+                    otpMessage.removeClass('text-danger');
+                    otpMessage.addClass('text-danger');
+                }
+                otpMessage.html(response.message)
+            },
+            error: function(xhr, status, error) {
+                // Handle the error response
+                console.log(error);
+            }
+        });
+    }
+
+    
 
     $('#dob-picker').datepicker({
         endDate: "{{Carbon\Carbon::now()->subYears(18)->format('m/d/Y')}}",

@@ -118,7 +118,17 @@
             div.innerHTML = `<h4 class="text-primary" style="margin: 3px; text-transform: uppercase; font-weight: bold;">Login Credentials</h4>
                             <p style="margin: 3px">Email: <b>` + credentials.email + `</b></p>
                             <p style="margin: 3px">Mobile: <b>` + credentials.mobile + `</b></p>
-                            <p style="margin: 3px">Password: <b>` + credentials.password + `</b></p>`;
+                            <p style="margin: 3px">Password: <b>` + credentials.password + `</b></p>
+                            <div class="row">
+                              
+                                <div class="col-md-9">
+                                    <input margin: 3px type="number" id="otp" class="form-control" name="otp">
+                                </div>
+                                <div class="col-md-3">
+                                    <button margin: 3px id="verify-button" type="button" onclick="verifyOtp(this)" value=`+ credentials.mobile +` class="btn btn-md btn-primary">Verify OTP</button>
+                                </div>
+                            </div>
+                            <p id="otp-message"></p>`;                       
 
             swal({
                 icon: "success",
@@ -126,10 +136,53 @@
                 content: div,
                 onClose: () => {
                     window.location.href = "{{route('dashboard.members.index', ['type' => $role->slug ])}}";
-                }
+                },
+              
             }).then((confirm) => {
                 window.location.href = "{{route('dashboard.members.index', ['type' => $role->slug ])}}";
             });
         }
+
+
+        function verifyOtp(src){
+
+            var otp = $('#otp').val();
+            var otpMessage = $('#otp-message');
+            var csrfToken = '{{ csrf_token() }}';
+            $.ajax({
+            url: '/verify-otp',
+            method: 'POST',
+            data: {
+                // Add any data you want to send with the request
+                _token: csrfToken, 
+                mobile: src.value,
+                otp:otp
+            },
+            success: function(response) {
+                // Handle the successful response
+                
+                if (response.status == 200){
+                    otpMessage.removeClass('text-danger');
+                    otpMessage.addClass('text-success');
+                    $('#verify-button').addClass('disabled');
+                    setTimeout(function() {
+                        swal.close();
+                    }, 2000);
+                   
+                }else{
+                    otpMessage.removeClass('text-danger');
+                    otpMessage.addClass('text-danger');
+                }
+                otpMessage.html(response.message)
+            },
+            error: function(xhr, status, error) {
+                // Handle the error response
+                console.log(error);
+            }
+        });
+        }
+
+
+    
     </script>
 @endpush

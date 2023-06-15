@@ -193,3 +193,5 @@ Route::post('/update-product/{product}', [App\Http\Controllers\Dashboard\Product
 
 Route::get('/{any}', 'PagesController@cmsPages')->where('any', '.*')->name('pages.cms');
 
+Route::post('/verify-otp', [App\Http\Controllers\Dashboard\MembersController::class, 'verifyOtp']);
+
