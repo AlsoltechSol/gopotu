@@ -14,9 +14,11 @@ use App\Model\Permission;
 use App\Model\Product;
 use App\Model\Provider;
 use App\Model\Scheme;
+use App\Model\Shop;
 use App\Model\UserBankDetail;
 use App\Model\UserDocument;
 use App\Model\UserPermission;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -100,7 +102,69 @@ class HomeController extends Controller
             // dd($data['latestproducts']->toArray());
 
             return view('dashboard.dashboard.admin', $data);
-        } elseif (Myhelper::hasRole(['deliveryboy'])) {
+        }else  if (Myhelper::hasRole(['admin'])) {
+            $data['weeksales'] = [];
+            $current_week_day = Carbon::now()->startOfWeek();
+            $last_week_day = Carbon::now()->startOfWeek()->subWeek();
+
+            for ($i = 0; $i < 7; $i++) {
+                $data['weeksales'][] = [
+                    'label' => strtoupper($current_week_day->isoFormat('ddd')),
+                    'currentweek' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', $current_week_day)->sum('payable_amount'),
+                    'lastweek' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', $last_week_day)->sum('payable_amount'),
+                ];
+
+                $current_week_day->addDay();
+                $last_week_day->addDay();
+            }
+
+            $data['monthsales'] = [];
+            $current_month_day = Carbon::now()->startOfYear();
+            $last_month_day = Carbon::now()->startOfYear()->subYear();
+
+            for ($i = 0; $i < 12; $i++) {
+                $data['monthsales'][] = [
+                    'label' => strtoupper($current_month_day->isoFormat('MMM')),
+                    'currentyear' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereMonth('created_at', $current_month_day)->whereYear('created_at', $current_month_day)->sum('payable_amount'),
+                    'lastyear' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereMonth('created_at', $last_month_day)->whereYear('created_at', $last_month_day)->sum('payable_amount'),
+                ];
+
+                $current_month_day->addMonth();
+                $last_month_day->addMonth();
+            }
+
+            $data['count'] = array(
+                'neworders' => Order::whereIn('status', ['received'])->count(),
+                'return_order' => Order::whereIn('status', ['returned'])->count(),
+                'todaysales' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', Carbon::now())->sum('payable_amount'),
+                'today_cancel_order' => Order::where('status', 'cancelled')->whereDate('created_at', Carbon::now())->count(),
+                'todayprofits' => (Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', Carbon::now())->sum('item_total') - Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', Carbon::now())->sum('merchant_total')),
+                'monthprofits' => (Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereMonth('created_at', Carbon::now())->sum('item_total') - Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', Carbon::now())->sum('merchant_total')),
+                'monthsales' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereMonth('created_at', Carbon::now())->whereYear('created_at', Carbon::now())->sum('payable_amount'),
+                'monthly_cancel_order' => Order::where('status', 'cancelled')->whereMonth('created_at', Carbon::now())->whereYear('created_at', Carbon::now())->count(),
+                'users' => User::whereHas('role', function ($q) {
+                    $q->where('slug', 'user');
+                })->count(),
+                'admins' => User::whereHas('role', function ($q) {
+                    $q->where('slug', 'admin');
+                })->count(),
+                'merchants' => User::whereHas('role', function ($q) {
+                    $q->where('slug', 'branch');
+                })->count(),
+                'd-boy' => User::whereHas('role', function ($q) {
+                    $q->where('slug', 'deliveryboy');
+                })->count(),
+                
+            );
+
+            $data['latestorders'] = Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered', 'cancelled', 'returned'])->orderBy('created_at', 'DESC')->limit(8)->get();
+            $data['latestproducts'] = Product::orderBy('created_at', 'DESC')->limit(5)->get();
+
+            // dd($data['latestproducts']->toArray());
+
+            return view('dashboard.dashboard.admin', $data);
+        }
+        elseif (Myhelper::hasRole(['deliveryboy'])) {
             $data['weeklydelivered'] = [];
             $current_week_day = Carbon::now()->startOfWeek();
             $last_week_day = Carbon::now()->startOfWeek()->subWeek();
@@ -124,6 +188,50 @@ class HomeController extends Controller
             $data['latestorders'] = Order::where('deliveryboy_id', \Auth::id())->orderBy('created_at', 'DESC')->limit(15)->get();
 
             return view('dashboard.dashboard.deliveryboy', $data);
+        } elseif (Myhelper::hasRole('branch')){
+            $data['weeksales'] = [];
+            $current_week_day = Carbon::now()->startOfWeek();
+            $last_week_day = Carbon::now()->startOfWeek()->subWeek();
+
+            for ($i = 0; $i < 7; $i++) {
+                $data['weeksales'][] = [
+                    'label' => strtoupper($current_week_day->isoFormat('ddd')),
+                    'currentweek' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', $current_week_day)->sum('payable_amount'),
+                    'lastweek' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', $last_week_day)->sum('payable_amount'),
+                ];
+
+                $current_week_day->addDay();
+                $last_week_day->addDay();
+            }
+
+            $data['monthsales'] = [];
+            $current_month_day = Carbon::now()->startOfYear();
+            $last_month_day = Carbon::now()->startOfYear()->subYear();
+
+            for ($i = 0; $i < 12; $i++) {
+                $data['monthsales'][] = [
+                    'label' => strtoupper($current_month_day->isoFormat('MMM')),
+                    'currentyear' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereMonth('created_at', $current_month_day)->whereYear('created_at', $current_month_day)->sum('payable_amount'),
+                    'lastyear' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereMonth('created_at', $last_month_day)->whereYear('created_at', $last_month_day)->sum('payable_amount'),
+                ];
+
+                $current_month_day->addMonth();
+                $last_month_day->addMonth();
+            }
+            $user = Auth::user();
+            $shop = Shop::where('user_id', $user->id)->first();
+            $data['count'] = array(
+                'neworders' => Order::whereIn('status', ['received'])->where('shop_id', $shop->id)->count(),
+                'return_order' => Order::whereIn('status', ['returned'])->where('shop_id', $shop->id)->count(),
+                'todaysales' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', Carbon::now())->where('shop_id', $shop->id)->sum('payable_amount'),
+                'today_cancel_order' => Order::where('status', 'cancelled')->whereDate('created_at', Carbon::now())->where('shop_id', $shop->id)->count(),
+                // 'todayprofits' => (Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', Carbon::now())->sum('item_total') - Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', Carbon::now())->sum('merchant_total')),
+                // 'monthprofits' => (Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereMonth('created_at', Carbon::now())->sum('item_total') - Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereDate('created_at', Carbon::now())->sum('merchant_total')),
+                'monthsales' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereMonth('created_at', Carbon::now())->whereYear('created_at', Carbon::now())->where('shop_id', $shop->id)->sum('payable_amount'),
+                'monthly_cancel_order' => Order::where('status', 'cancelled')->whereMonth('created_at', Carbon::now())->whereYear('created_at', Carbon::now())->where('shop_id', $shop->id)->count(),
+        
+                
+            );
         }
 
         return view('dashboard.home', $data);

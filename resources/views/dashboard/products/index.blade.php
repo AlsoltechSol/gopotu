@@ -7,7 +7,7 @@
             <small></small>
         </h1>
          
-    @if (session('admin'))
+    @if (session('admin') && !Myhelper::hasRole('superadmin'))
     <div class="mt-5">
 
         <a href="{{ route('admin.login') }}"><button class="btn btn-danger">Back to admin</button> </a>
@@ -42,6 +42,7 @@
                         <th>Shop</th>
                         <th>Name</th>
                         <th>Category</th>
+                        <th>Variants</th>
                         <th>Image</th>
                         <th>Product Price</th>
                         <th>Offered Price</th>
@@ -121,6 +122,20 @@
                     name: 'details.category.name',
                     render: function(data, type, full, meta){
                         return data.category.name
+                    },
+                    searchable: false,
+                    orderable: false,
+                },
+                {
+                    data:'product_variants',
+                    name: 'product_variants',
+                    render: function(data, type, full, meta){
+                        if(data[0]?.variant != null){
+                            return data[0]?.variant
+                        }else{
+                            return 'N/A'
+                        }
+                      
                     },
                     searchable: false,
                     orderable: false,
@@ -327,8 +342,11 @@
                 data:function( d )
                 {
                     d._token = '{{csrf_token()}}';
+                   
                 },
+                
             },
+           
             columns:col,
             "drawCallback": function( settings ) {
                 
