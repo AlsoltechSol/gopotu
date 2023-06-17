@@ -301,7 +301,7 @@
                                             <img src="{{ $item->details->image_path }}" alt="Product Image" class="img-size-50">
                                         </div>
                                         <div class="product-info">
-                                            <a href="javascript:void(0)" class="product-title">{{ $item->details->name }}
+                                            <a href="{{route('dashboard.products.edit', $item->id)}}" class="product-title">{{ $item->details->name }}
                                                 <span class="badge bg-red pull-right">
                                                     @if ($item->availability == 'comingsoon')
                                                         Coming Soon
@@ -335,6 +335,97 @@
     </div>
 
     @endif
+
+    {{-- @if( Myhelper::hasRole(['admin']))
+        <section class="content">
+            <div class="row">
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                            <h3>{{ $count['neworders'] }}</h3>
+                            <p>New Orders</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-shopping-bag"></i>
+                        </div>
+                        <a href="{{ route('dashboard.orders.index') }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                        
+                            <h3>{{ $count['todaysales'] }}</h3>
+                            <p>Today Sales</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-inr"></i>
+                        </div>
+                        <a href="{{ route('dashboard.orders.index') }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                            <h3>{{ $count['monthsales'] }}</h3>
+                            <p>This Month Sales</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                        <a href="{{ route('dashboard.orders.index') }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+
+
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                            <h3>{{ $count['today_cancel_order'] }}</h3>
+                            <p>Today's Cancel Order</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-ban"></i>
+                        </div>
+                        <a href="{{ route('dashboard.orders.index', ['type' => 'user']) }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                            <h3>{{ $count['monthly_cancel_order'] }}</h3>
+                            <p>Monthly Cancel Order</p>
+                        </div>
+                        <div class="icon">
+                            <i class="fa fa-ban"></i>
+                        </div>
+                        <a href="{{ route('dashboard.orders.index', ['type' => 'user']) }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-6">
+                    <div class="small-box bg-primary">
+                        <div class="inner">
+                            <h3>{{ $count['return_order'] }}</h3>
+                            <p>Return Order</p>
+                        </div>
+                        <div class="icon">
+                            <<i class="fa fa-arrow-rotate"></i>
+                        </div>
+                        <a href="{{ route('dashboard.orders.index', ['type' => 'user']) }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
+            </div>
+
+        
+        
+
+        
+        </section>
+    @endif --}}
 
 @endsection
 
