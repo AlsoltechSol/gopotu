@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Model\Shop;
+use App\User;
 use Carbon\Carbon;
 
 class ShopSettingsController extends Controller
@@ -29,13 +30,15 @@ class ShopSettingsController extends Controller
             if (\Myhelper::hasrole(['branch'])) {
                 abort(404);
             } elseif (\Myhelper::hasrole(['superadmin', 'admin'])) {
-                if (!\Myhelper::can('edit_store')) {
-                    abort(401);
-                }
+                // if (!\Myhelper::can('edit_store')) {
+                //     abort(401);
+                // }
             }
         }
 
-        return view('dashboard.shopsettings.index', $data);
+        $admins = User::where('role_id', 2)->get();
+
+        return view('dashboard.shopsettings.index', $data, compact('admins'));
     }
 
     public function submit(Request $post)
@@ -58,6 +61,7 @@ class ShopSettingsController extends Controller
             'shop_city' => 'nullable',
             'shop_state' => 'required|exists:state_masters,state_code',
             'shop_country' => 'nullable',
+            'admin_id' => 'required'
         );
 
         if (config('app.order_storemindeliveryrange')) {
@@ -104,6 +108,7 @@ class ShopSettingsController extends Controller
         $document['shop_delivery_radius'] = $post->shop_delivery_radius;
         $document['shop_latitude'] = $post->shop_latitude;
         $document['shop_longitude'] = $post->shop_longitude;
+        $document['admin_id'] = $post->admin_id;
 
         if ($post->file('shop_image') && \Myhelper::hasrole(['superadmin', 'admin'])) {
             $file = $post->file('shop_image');

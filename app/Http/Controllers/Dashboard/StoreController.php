@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 use App\Model\Shop;
+use App\User;
 use Carbon\Carbon;
 
 class StoreController extends Controller
@@ -16,9 +17,11 @@ class StoreController extends Controller
             'main' => 'stores'
         );
 
-        if (!\Myhelper::can('view_store')) {
-            abort(401);
-        }
+        // if (!\Myhelper::can('view_store')) {
+        //     abort(401);
+        // }
+
+
 
         return view('dashboard.stores.index', $data);
     }
@@ -40,9 +43,9 @@ class StoreController extends Controller
                 break;
         }
 
-        if (isset($permission) && !\Myhelper::can($permission)) {
-            return response()->json(['status' => 'Permission not allowed.'], 400);
-        }
+        // if (isset($permission) && !\Myhelper::can($permission)) {
+        //     return response()->json(['status' => 'Permission not allowed.'], 400);
+        // }
 
         if (isset($rules)) {
             $validator = \Validator::make($post->all(), $rules);

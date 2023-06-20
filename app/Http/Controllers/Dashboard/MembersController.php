@@ -367,6 +367,7 @@ class MembersController extends Controller
         if ($otp == $request->otp){
            
             $user->otp_verified_status = '1';
+            $user->mobile_verified_at = Carbon::now();
             $user->save();
            
            // dd($user);

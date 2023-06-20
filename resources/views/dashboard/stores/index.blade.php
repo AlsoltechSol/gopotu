@@ -133,9 +133,9 @@
                     render: function(data, type, full, meta){
                         var html = '';
 
-                        /* @if(Myhelper::can('edit_store')) */
+                     
                             html += `<a class="btn btn-xs btn-primary mg" href="{{route('dashboard.shopsettings.index')}}/`+full.id+`"><i class="fa fa-edit"></i></a>`;
-                        /* @endif */
+                      
 
                         return html;
                     },

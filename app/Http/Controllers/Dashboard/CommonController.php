@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Dashboard;
 use App\Helpers\Myhelper;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Model\Shop;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CommonController extends Controller
@@ -73,7 +75,12 @@ class CommonController extends Controller
                 break;
 
             case 'stores':
-                $query = \App\Model\Shop::with('user');
+                if (Myhelper::hasRole('superadmin')){
+                    $query = \App\Model\Shop::with('user');
+                }else{
+                    $query = \App\Model\Shop::with('user')->where('admin_id', Auth::user()->id);
+                }
+                
                 $request['searchdata'] = [];
                 break;
 
@@ -113,12 +120,31 @@ class CommonController extends Controller
                 break;
 
             case 'martproductlibrary':
-                $query = \App\Model\ProductMaster::where('type', 'mart')->with('category', 'brand')->where('status', '1');
+               
+                    $query = \App\Model\ProductMaster::where('type', 'mart')->with('category', 'brand')->where('status', '1');
+                
+               
                 $request['searchdata'] = [];
                 break;
 
             case 'martproducts':
-                $query = \App\Model\Product::with('product_variants', 'details', 'shop')->where('products.type', 'mart')->orderBy('created_at', 'desc');
+
+                if (Myhelper::hasRole('superadmin')){
+                    $query = \App\Model\Product::with('product_variants', 'details', 'shop')->where('products.type', 'mart')->orderBy('created_at', 'desc');
+                }else if(Myhelper::hasRole('admin')){
+                    $admin_id = Auth::user()->id;
+                    $shop_id = Shop::where('admin_id', $admin_id)->pluck('id');
+                    if (isset($shop_id)){
+                        $query = \App\Model\Product::with('product_variants', 'details', 'shop')->where('products.type', 'mart')->where('products.shop_id', $shop_id)->orderBy('created_at', 'desc');
+                    }else{
+                        $query = \App\Model\Product::with('product_variants', 'details', 'shop')->where('products.type', 'mart')->orderBy('created_at', 'desc');
+                    }
+                    //$query = \App\Model\Product::with('product_variants', 'details', 'shop')->where('products.type', 'mart')->orderBy('created_at', 'desc');
+                   
+                }else{
+                    $query = \App\Model\Product::with('product_variants', 'details', 'shop')->where('products.type', 'mart')->orderBy('created_at', 'desc');
+                }
+             
 
                 if (\Myhelper::hasNotRole(['admin', 'superadmin'])) {
                     $query->where('shop_id', \Myhelper::getShop());
