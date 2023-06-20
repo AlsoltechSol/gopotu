@@ -49,12 +49,12 @@
                         
                         @if( Myhelper::hasRole(['superadmin']))
                             <th>Listing Price</th>
-                            <th>Admin Charge</th>
-                           
+                            <th>Admin Charge</th>                         
                         @endif
                         
-                       
-                        <th>Top Offer</th>
+                        {{-- @if( Myhelper::hasRole(['superadmin', 'branch'])) --}}
+                            <th>Top Offer</th>
+                        {{-- @endif --}}
                         <th>Last Updated</th>
                         @if( Myhelper::hasRole(['superadmin']))
                             <th>Master Status</th>
@@ -327,11 +327,17 @@
            
         // hide superadmin section for merchants
         if (role !== 'superadmin') {
-            col.splice(7,2);
-            col.splice(9,3);
+
+          
+            col.splice(8,2);
+            col.splice(10,3);
           // col.splice(8,1);
         }
-       
+
+        // if (role == 'admin'){
+        //     col.splice(9,1);
+        // }
+    
            
         var dataTable = $('#my-datatable').DataTable({
             processing: true,

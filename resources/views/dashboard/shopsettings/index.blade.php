@@ -80,6 +80,16 @@
                                             <label>Shop Whatsapp Number <span class="text-danger">*</span></label>
                                             <input name="shop_whatsapp" value="{{$shop->shop_whatsapp}}" class="form-control">
                                         </div>
+
+                                        <div class="form-group col-md-6">
+                                            <label>Assign Admin <span class="text-danger">*</span></label>
+                                            <select class="form-control" name="admin_id" id="">
+                                                @foreach ($admins as $item)
+                                                    <option {{$item->id == $shop->admin_id ? 'selected' : ''}} value="{{$item->id}}">{{$item->name}}</option>
+                                                @endforeach
+                                               
+                                            </select>
+                                        </div>
                                     </div>
                                     <footer class="text-left">
                                         <button type="button" onclick="anchor('addressdetails')" class="btn btn-primary btn-md">Next&nbsp;<i class="fa fa-arrow-circle-right"></i></button>

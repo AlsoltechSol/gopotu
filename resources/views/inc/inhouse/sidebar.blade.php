@@ -111,7 +111,7 @@
             @endif
 
             {{-- @if(Myhelper::hasRole(['superadmin', 'admin'])) --}}
-                @if(Myhelper::can(['view_store']))
+                @if(Myhelper::can(['view_store']) || Myhelper::hasRole(['superadmin', 'admin']))
                     <li class="{{(isset($activemenu['main']) && $activemenu['main'] == 'stores') ? 'active' : ''}}">
                         <a href="{{route('dashboard.stores.index')}}"><i class="fa fa-store"></i>
                             <span>Stores</span>

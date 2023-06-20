@@ -89,7 +89,7 @@
 
                                     @if($user->role->slug == 'branch')
                                         @if(Myhelper::hasrole(['superadmin', 'admin']))
-                                            @php
+                                            {{-- @php
                                                 $schemes = App\Model\Scheme::all();
                                             @endphp
 
@@ -101,7 +101,7 @@
                                                         <option value="{{$item->id}}" {{$user->scheme_id == $item->id ? 'selected' : '  '}}>{{$item->name}}</option>
                                                     @endforeach
                                                 </select>
-                                            </div>
+                                            </div> --}}
 
                                             <div class="form-group col-md-4">
                                                 <label>Business Category <span class="text-danger">*</span></label>
@@ -389,7 +389,7 @@
                                 <input type="hidden" name="type" value="verify-otp">
                                 <input type="hidden" name="id" value="{{$user->id}}">
 
-                                @if (!isset($user->otp_verified_status))
+                                @if ($user->otp_verified_status == 0)
                                     <div class="row">
                                 
                                         <div class="col-md-9">
@@ -477,9 +477,9 @@
             },
             /** @if($user->role->slug == 'branch') **/
                 /* @if(Myhelper::hasrole(['superadmin', 'admin'])) **/
-                    scheme_id: {
-                        required: true,
-                    },
+                    // scheme_id: {
+                    //     required: true,
+                    // },
                     business_category: {
                         required: true,
                     },
