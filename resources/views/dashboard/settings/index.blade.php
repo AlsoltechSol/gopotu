@@ -137,6 +137,21 @@
                                         <input name="deliverycharge_min" value="{{$settings->deliverycharge_min}}" class="form-control" placeholder="Optional">
                                     </div>
 
+                                    <div class="form-group col-md-6">
+                                        <label>Upto 3km Charge</label>
+                                        <input name="upto_3km" value="{{$settings->upto_3km}}" class="form-control" placeholder="Optional">
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>3km to 5km Charge</label>
+                                        <input name="_3km_to_5km" value="{{$settings->_3km_to_5km}}" class="form-control" placeholder="Optional">
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label>5km to 8km Charge</label>
+                                        <input name="_5km_to_8km" value="{{$settings->_5km_to_8km}}" class="form-control" placeholder="Optional">
+                                    </div>
+
                                     {{-- <div class="form-group col-md-6">
                                         <label>Free for Order</label>
                                         <input name="deliverycharge_freeordervalue" value="{{$settings->deliverycharge_freeordervalue}}" class="form-control" placeholder="Optional - Greater than equals">
@@ -336,6 +351,9 @@
                 deliverycharge_status: { required: true },
                 deliverycharge_perkm: { required: true, number: true },
                 deliverycharge_min: { required: false, number: true },
+                upto_3km: { required: false, number: true },
+                _3km_to_5km: { required: false, number: true },
+                _5km_to_8km: { required: false, number: true },
                 deliverycharge_freeordervalue: { required: false, number: true, },
 
                 order_minval: { required: false, number: true, },
