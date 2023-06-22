@@ -355,8 +355,8 @@ class Myhelper
             $locationDistance = \Myhelper::locationDistance($address->latitude, $address->longitude, $shop->shop_latitude, $shop->shop_longitude, 'km');
             $delivery_charge = (float) config('app.deliverycharge_perkm') * (float) $locationDistance;
 
-            if (config('app.deliverycharge_min') && $delivery_charge < (float) config('app.deliverycharge_min')) {
-                $delivery_charge = (float) config('app.deliverycharge_min') * (float) $locationDistance;
+            if (config('app.deliverycharge_min') && $delivery_charge <1) {
+                $delivery_charge = (float) config('app.deliverycharge_min');
             }
             else if (config('app.upto_3km') && $locationDistance >=1 && $locationDistance <3){
                 $delivery_charge = (float) config('app.upto_3km') * (float) $locationDistance;
