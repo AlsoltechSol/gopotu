@@ -377,6 +377,7 @@ class CheckoutController extends Controller
             ];
 
             if ($order->deliveryboy && $order->deliveryboy_status == 'accepted') {
+               
                 if (in_array($order->status, ['outfordelivery'])) {
                     if ($order->deliveryboy->latitude && $order->deliveryboy->longitude && $order->cust_latitude && $order->cust_longitude) {
                         $deliveryboytocustomer_dist = \Myhelper::getDistanceMatric($order->deliveryboy->latitude, $order->deliveryboy->longitude, $order->cust_latitude, $order->cust_longitude);
@@ -390,7 +391,10 @@ class CheckoutController extends Controller
                         }
                     }
 
+                   
+
                     if ($order->shop->shop_latitude && $order->shop->shop_longitude && $order->cust_latitude && $order->cust_longitude) {
+                      
                         $shoptocustomer_dist = \Myhelper::getDistanceMatric($order->shop->shop_latitude, $order->shop->shop_longitude, $order->cust_latitude, $order->cust_longitude);
                         if ($shoptocustomer_dist) {
                             $distance['shoptocustomer'] = [

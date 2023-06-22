@@ -14,7 +14,7 @@ class Setting extends Model
         'mailhost', 'mailport', 'mailenc', 'mailuser', 'mailpwd', 'mailfrom', 'mailname',
         'firstorder_userwallet_type', 'firstorder_userwallet_value', 'firstorder_parentwallet_type', 'firstorder_parentwallet_value',
         'maxwalletuse_mart', 'maxwalletuse_restaurant', 'maxwalletuse_service',
-        'userapp_version', 'userapp_maintenancemsg', 'branchapp_version', 'branchapp_maintenancemsg', 'deliveryboyapp_version', 'deliveryboyapp_maintenancemsg',
+        'userapp_version', 'userapp_maintenancemsg', 'branchapp_version', 'branchapp_maintenancemsg', 'deliveryboyapp_version', 'deliveryboyapp_maintenancemsg','upto_3km', '_3km_to_5km', '_5km_to_8km'
     ];
 
     public $timestamps = false;

@@ -356,7 +356,14 @@ class Myhelper
             $delivery_charge = (float) config('app.deliverycharge_perkm') * (float) $locationDistance;
 
             if (config('app.deliverycharge_min') && $delivery_charge < (float) config('app.deliverycharge_min')) {
-                $delivery_charge = (float) config('app.deliverycharge_min');
+                $delivery_charge = (float) config('app.deliverycharge_min') * (float) $locationDistance;
+            }
+            else if (config('app.upto_3km') && $locationDistance >=1 && $locationDistance <3){
+                $delivery_charge = (float) config('app.upto_3km') * (float) $locationDistance;
+            } else if (config('app._3km_to_5km') && $locationDistance >=3 && $locationDistance <5){
+                $delivery_charge = (float) config('app._3km_to_5km') * (float) $locationDistance;
+            }else{
+                $delivery_charge = (float) config('app._5km_to_8km') * (float) $locationDistance;
             }
 
             return ceil($delivery_charge);
