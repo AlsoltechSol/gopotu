@@ -19,7 +19,8 @@ header('Content-Type:application/json');
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Model\Order;
+use App\Model\OrderReturnReplace;
 use App\Model\SupportTicketSubject;
 use App\Model\SupportTicket;
 
@@ -88,7 +89,7 @@ class SupportTicketController extends Controller
                     }
 
                     if (!$request->message) {
-                        return response()->json(['status' => 'error', 'message' => "Replacement reason is required for return request", 'data' => \Myhelper::formatApiResponseData($data)]);
+                        return response()->json(['status' => 'error', 'message' => "Return reason is required for return request", 'data' => \Myhelper::formatApiResponseData($data)]);
                     }
                     break;
 
@@ -122,9 +123,23 @@ class SupportTicketController extends Controller
             $document['order_code'] = $request->order_code;
             $document['message'] = $request->message;
 
+            $document2 = array();
+            $order = Order::where('code', $request->order_code)->first();
+           // return $order;
+
+            $document2['order_id'] = $order->id;
+            $document2['code'] = $order->code;
+            $document2['status'] = 'initiated';
+            $document2['delivery_charge'] = $order->delivery_charge;
+            $document2['deliveryboy_id'] = $order->deliveryboy_id;
+            $document2['deliveryboy_id'] = $order->deliveryboy_id;
+
+
             $action = SupportTicket::create($document);
-            if ($action) {
+            OrderReturnReplace::create($document2);
+            if ($action ) {
                 $data['ticket'] = SupportTicket::find($action->id);
+               
                 return response()->json(['status' => 'success', 'message' => 'Request sent successfully', 'data' => \Myhelper::formatApiResponseData($data)]);
             } else {
                 return response()->json(['status' => 'success', 'message' => 'Oops!! Someting went wrong. Please try again later', 'data' => \Myhelper::formatApiResponseData($data)]);
