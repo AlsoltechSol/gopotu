@@ -61,7 +61,7 @@ class ShopSettingsController extends Controller
             'shop_city' => 'nullable',
             'shop_state' => 'required|exists:state_masters,state_code',
             'shop_country' => 'nullable',
-            'admin_id' => 'required'
+           // 'admin_id' => 'required'
         );
 
         if (config('app.order_storemindeliveryrange')) {

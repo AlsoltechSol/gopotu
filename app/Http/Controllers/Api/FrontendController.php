@@ -301,6 +301,7 @@ class FrontendController extends Controller
                 $products = Product::where('shop_id', $request->shop_id)
                     ->where('type', $request->type)
                     ->where('status', 1)
+                    ->where('master_status', 1)
                     ->whereHas('details', function ($q) use ($cat_array) {
                         $q->whereIn('category_id', $cat_array);
                     })->count();
@@ -313,6 +314,7 @@ class FrontendController extends Controller
             $topoffered_products = Product::with('details', 'product_variants')
                 ->where('shop_id', $request->shop_id)
                 ->where('status', '1')
+                ->where('master_status', '1')
                 ->where('top_offer', 1)
                 ->where('type', $request->type);
 

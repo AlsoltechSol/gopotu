@@ -480,7 +480,7 @@ class MasterController extends Controller
                 $rules = [
                     'position' => 'required|in:top,middle,footer',
                     'file' => 'required|mimes:jpeg,jpg,png,gif,webp',
-                    'type' => 'nullable|in:mart,restaurant,service|required_if:position,==,top',
+                    'type' => 'nullable|in:mart,restaurant,meat|required_if:position,==,top',
                 ];
 
                 $permission = 'add_app_banner';
