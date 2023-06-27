@@ -198,6 +198,7 @@ class CheckoutController extends Controller
 
             $order = Order::create($order_document);
             if ($order) {
+               
                 foreach ($_cartData->data->items as $key => $item) {
                     $tax = \Myhelper::getVariantTax($item->variant->id);
 
@@ -212,6 +213,7 @@ class CheckoutController extends Controller
                             'variant_name' => strtoupper(str_replace(':', ' : ', $item->variant->variant)),
                         ]),
                         'price' => $item->variant->purchase_price,
+                        'listingprice' => $item->variant->listingprice,
                         'tax' => $tax,
                         'quantity' => $item->quantity,
                         'sub_total' => $item->sub_total,

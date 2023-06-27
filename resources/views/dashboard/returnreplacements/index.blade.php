@@ -250,9 +250,14 @@
                     render: function(data, type, full, meta){
                         if (full.order != null){
                             let user = full.order.user;
-                            return `Name: <b>`+user.name+`</b> <b class="text-danger">(#`+user.id+`)</b><br>\
-                            Email: <b>`+user.email+`</b><br>\
-                            Mobile: <b>`+user.mobile+`</b>`;
+                            if (user != null){
+                                return `Name: <b>`+user.name+`</b> <b class="text-danger">(#`+user.id+`)</b><br>\
+                                Email: <b>`+user.email+`</b><br>\
+                                Mobile: <b>`+user.mobile+`</b>`;
+                            }else{
+                                return `N/A` 
+                            }
+                          
                         }else{
                             return `N/A`
                         }

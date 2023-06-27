@@ -185,7 +185,7 @@ class FoodsController extends Controller
                         $scheme_id = $product_master->category->scheme_id;
                     }
 
-                    $commission = Commission::where('scheme_id', $scheme_id)->where('provider_id', '1')->first();
+                    $commission = Commission::where('scheme_id', $scheme_id)->where('provider_id', '2')->first();
 
                     $commission_type = '';
                     $commission_value = '';
@@ -284,7 +284,7 @@ class FoodsController extends Controller
                         $scheme_id = $product_master->category->scheme_id;
                     }
 
-                    $commission = Commission::where('scheme_id', $scheme_id)->where('provider_id', '1')->first();
+                    $commission = Commission::where('scheme_id', $scheme_id)->where('provider_id', '2')->first();
 
                     $commission_type = '';
                     $commission_value = '';
