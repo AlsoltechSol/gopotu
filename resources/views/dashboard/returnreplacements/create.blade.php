@@ -129,7 +129,7 @@
         function formatSelectTwoOrder (order) {
             if (order.loading) {
                 return order.text;
-                3+
+                
             }
 
             var $container = $(

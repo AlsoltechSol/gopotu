@@ -143,6 +143,7 @@
                     data:'id',
                     name: 'id',
                     render: function(data, type, full, meta){
+
                         return '<b class="text-primary">' + data + '</b>';
                     },
                 },
@@ -183,6 +184,7 @@
                     data:'image',
                     name: 'image',
                     render: function(data, type, full, meta){
+                       
                         return `<a href="` + full.image_path + `" data-toggle="lightbox">\
                                     <img class="datatable-icon" src="` + full.image_path + `">\
                                 </a>`
