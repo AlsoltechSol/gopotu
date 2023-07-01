@@ -129,7 +129,7 @@ class SupportTicketController extends Controller
 
             $document2['order_id'] = $order->id;
             $document2['code'] = $order->code;
-            $document2['status'] = 'initiated';
+            $document2['status'] = 'accepted';
             $document2['delivery_charge'] = $order->delivery_charge;
             $document2['deliveryboy_id'] = $order->deliveryboy_id;
             $document2['deliveryboy_id'] = $order->deliveryboy_id;

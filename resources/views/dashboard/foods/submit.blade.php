@@ -169,8 +169,8 @@
                         <div class="col-md-12" id="product-variants-section">
                             <table class="table table-bordered">
                                 <thead class="bg-primary">
-                                    <th class="text-center">Price</th>
-                                    <th class="text-center">Offered Price</th>
+                                    <th class="text-center">MRP</th>
+                                    <th class="text-center">Merchant Selling Price</th>
                                 </thead>
 
                                 <tbody>

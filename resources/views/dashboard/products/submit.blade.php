@@ -165,8 +165,8 @@
                                 <thead>
                                     <th class="text-left">Variant</th>
                                     <th class="text-left">Color</th>
-                                    <th class="text-center">Price</th>
-                                    <th class="text-center">Offered Price</th>
+                                    <th class="text-center">MRP</th>
+                                    <th class="text-center">Merchant Selling Price</th>
                                     @if (Auth::user()->role->name != 'Merchant')
                                         <th class="text-center">Listing Price</th>                                    
                                     @endif

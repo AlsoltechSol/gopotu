@@ -39,6 +39,8 @@
                             <th class="text-center">ID</th>
                             <th>Return/Replace Details</th>
                             <th>Order Details</th>
+                            <th>Product Details</th>
+                            <th>Ret/Rep Reason</th>
                             <th>User Details</th>
                             <th>Customer Details</th>
                             <th>Shop Details</th>
@@ -237,6 +239,38 @@
                             return `<b class="">`+order.type+`</b> <small class="text-uppercase text-info">(`+order.type+`)</small><br>\
                             Payable Amount: <b>{!! config("app.currency.faicon") !!}`+order.payable_amount+`</b><br>\
                             Payment Mode: <b class="text-uppercase">`+order.payment_mode+`</b>`;
+                        }else{
+                            return `N/A`
+                        }
+
+                       
+                    },
+                    orderable: false,
+                    searchable: false,
+                },
+                {
+                    render: function(data, type, full, meta){
+                        
+                        let order = full.order;
+                        console.log(order);
+                        if (order != null){
+                            return `<b class="">`+order.pro+`</b> `
+                        }else{
+                            return `N/A`
+                        }
+
+                       
+                    },
+                    orderable: false,
+                    searchable: false,
+                },
+                {
+                    render: function(data, type, full, meta){
+
+                        let order = full.order;
+                        console.log(order);
+                        if (order != null){
+                            return `<b class="">`+order.reason+`</b> `
                         }else{
                             return `N/A`
                         }

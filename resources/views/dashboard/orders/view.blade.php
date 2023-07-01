@@ -67,6 +67,7 @@
                         <tr>
                             <th>Qty</th>
                             <th>Product</th>
+                            <th>Image</th>
                             <th>Unit Price</th>
                             <th>Gross Amount</th>
                             <th>Taxable Amount</th>
@@ -79,8 +80,11 @@
 
                     <tbody>
                         @foreach ($order->order_products as $item)
+                      
                             <tr>
                                 <td>{{$item->quantity}}</td>
+                                
+
                                 <td>
                                     {{$item->product->details->name}}
                                     @if($item->variant_selected->color_name)
@@ -90,6 +94,12 @@
                                     @if($item->variant_selected->variant_name)
                                         &nbsp;| {{$item->variant_selected->variant_name}}
                                     @endif
+                                </td>
+
+                                <td>
+                                    <img src="{{$item->product->details->image_path}}" height="50px" alt="">
+                                    
+                                 
                                 </td>
                                 <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)$item->price, 2, '.', '') }}</td>
 

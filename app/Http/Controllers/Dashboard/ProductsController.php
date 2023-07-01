@@ -251,8 +251,8 @@ class ProductsController extends Controller
                         //     return response()->json(['status' => 'Product offered price is required for Row ' . ($key + 1)], 400);
                         // }
 
-                        if ($post->offeredprice[$key] && $post->offeredprice[$key] >= $post->price[$key]) {
-                            return response()->json(['status' => 'Product offered price cannot be greater than or equals for Row ' . ($key + 1)], 400);
+                        if ($post->offeredprice[$key] && $post->offeredprice[$key] > $post->price[$key]) {
+                            return response()->json(['status' => 'Product offered price cannot be greater than for Row ' . ($key + 1)], 400);
                         }
 
                         if (!$post->quantity[$key]) {
@@ -397,8 +397,8 @@ class ProductsController extends Controller
                         //     return response()->json(['status' => 'Product offered price is required for Row ' . ($key + 1)], 400);
                         // }
 
-                        if ($post->offeredprice[$key] && $post->offeredprice[$key] >= $post->price[$key]) {
-                            return response()->json(['status' => 'Product offered price cannot be greater than or equals for Row ' . ($key + 1)], 400);
+                        if ($post->offeredprice[$key] && $post->offeredprice[$key] > $post->price[$key]) {
+                            return response()->json(['status' => 'Product offered price cannot be greater than for Row ' . ($key + 1)], 400);
                         }
 
                         if (!$post->quantity[$key]) {
