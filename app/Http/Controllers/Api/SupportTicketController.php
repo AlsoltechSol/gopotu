@@ -133,6 +133,8 @@ class SupportTicketController extends Controller
             $document2['delivery_charge'] = $order->delivery_charge;
             $document2['deliveryboy_id'] = $order->deliveryboy_id;
             $document2['deliveryboy_id'] = $order->deliveryboy_id;
+            $document2['type'] = $request->type;
+            $document2['reason'] = $request->reason;
 
 
             $action = SupportTicket::create($document);

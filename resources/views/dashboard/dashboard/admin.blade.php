@@ -125,7 +125,7 @@
                         <div class="icon">
                             <i class="fa fa-chart-line"></i>
                         </div>
-                        <a href="#" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{ route('dashboard.profits.index') }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
@@ -138,7 +138,7 @@
                         <div class="icon">
                             <i class="fa fa-chart-line"></i>
                         </div>
-                        <a href="#" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{ route('dashboard.profits.index') }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
@@ -151,7 +151,7 @@
                         <div class="icon">
                             <i class="fa fa-ban"></i>
                         </div>
-                        <a href="{{ route('dashboard.orders.index', ['type' => 'user']) }}"" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{ route('dashboard.cancel.order') }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
@@ -164,7 +164,7 @@
                         <div class="icon">
                             <i class="fa fa-ban"></i>
                         </div>
-                        <a href="{{ route('dashboard.orders.index', ['type' => 'user']) }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{ route('dashboard.cancel.order') }}" class="small-box-footer">View All <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 

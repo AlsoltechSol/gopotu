@@ -192,6 +192,23 @@
                 </li>
             @endif
 
+            @if(Myhelper::can(['view_food', 'add_food']))
+            <li class="treeview {{(isset($activemenu['main']) && $activemenu['main'] == 'foods') ? 'active menu-open' : ''}}">
+                <a href="javascript:void(0);">
+                    <i class="fa fa-chart-line"></i> <span>Sales Management</span>
+                    <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                </a>
+                <ul class="treeview-menu">
+                    @if(Myhelper::can('view_food'))
+                        <li class="{{(isset($activemenu['sub']) && $activemenu['sub'] == 'index') ? 'active' : ''}}"><a href="{{route('dashboard.profits.index')}}"><i class="fa fa-circle-o"></i> Profits</a></li>
+                        <li class="{{(isset($activemenu['sub']) && $activemenu['sub'] == 'index') ? 'active' : ''}}"><a href="{{route('dashboard.cancel.order')}}"><i class="fa fa-circle-o"></i> Cancel Order</a></li>
+                    @endif                 
+                </ul>
+            </li>
+        @endif
+
             @if(Myhelper::can(['fund_tr_action', 'view_payoutrequest', 'branchwallet_statement']))
                 <li class="treeview {{(isset($activemenu['main']) && $activemenu['main'] == 'funds') ? 'active menu-open' : ''}}">
                     <a href="javascript:void(0);">
