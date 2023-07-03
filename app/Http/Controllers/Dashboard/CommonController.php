@@ -103,6 +103,7 @@ class CommonController extends Controller
                 $query = \App\Model\Color::query();
                 $request['searchdata'] = [];
                 break;
+                
 
             case 'productmaster':
                 $query = \App\Model\ProductMaster::with('category', 'brand')->orderBy('created_at', 'desc');
@@ -215,6 +216,50 @@ class CommonController extends Controller
                 // $start_date = Carbon::now()->format('Y-m-d') . " 00:00:00";
                 // $end_date = Carbon::now()->format('Y-m-d') . " 23:59:59";
                 break;
+
+            case 'profits':
+
+
+                $query = \App\Model\Order::with('user', 'deliveryboy', 'shop');
+
+                if (\Myhelper::hasRole(['branch'])) {
+                    $query->where('shop_id', \Myhelper::getShop());
+                    $query->whereIn('status', ['delivered']);
+                } else {
+                    $query->whereIn('status', [ 'delivered']);
+                }
+
+                $request['searchdata'] = ['user_id', 'type', 'status', 'cust_mobile', 'id', 'code'];
+
+                $request['datasearchcolumns'] = [
+                    'id', 'code', 'cust_mobile', 'cust_name', 'status', 'cust_address', 'user_id', 'user.email', 'user.name', 'user.mobile', 'payment_mode'
+                ];
+
+                // $start_date = Carbon::now()->format('Y-m-d') . " 00:00:00";
+                // $end_date = Carbon::now()->format('Y-m-d') . " 23:59:59";
+                break;
+
+            case 'cancel-orders':
+
+
+                $query = \App\Model\Order::with('user', 'deliveryboy', 'shop');
+
+                if (\Myhelper::hasRole(['branch'])) {
+                    $query->where('shop_id', \Myhelper::getShop());
+                    $query->whereIn('status', ['cancelled', 'returned']);
+                } else {
+                    $query->whereIn('status', ['cancelled', 'returned']);
+                }
+
+                $request['searchdata'] = ['user_id', 'type', 'status', 'cust_mobile', 'id', 'code'];
+
+                $request['datasearchcolumns'] = [
+                    'id', 'code', 'cust_mobile', 'cust_name', 'status', 'cust_address', 'user_id', 'user.email', 'user.name', 'user.mobile', 'payment_mode'
+                ];
+
+                // $start_date = Carbon::now()->format('Y-m-d') . " 00:00:00";
+                // $end_date = Carbon::now()->format('Y-m-d') . " 23:59:59";
+                break;    
 
             case 'orderdeliveryboylogs':
                 $query = \App\Model\OrderDeliveryboyLog::with('deliveryboy', 'order');

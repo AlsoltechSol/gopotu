@@ -180,6 +180,9 @@ Route::prefix('/dashboard')->name('dashboard.')->namespace('Dashboard')->middlew
         Route::get('/checkorderstatuslog', 'DebugController@checkorderstatuslog')->name('checkorderstatuslog');
         Route::get('/generatereferralcode', 'DebugController@generatereferralcode')->name('generatereferralcode');
     });
+
+    Route::get('/profit/index', [App\Http\Controllers\Dashboard\OrdersController::class, 'profit'])->name('profits.index');
+    Route::get('/cancel-order/index', [App\Http\Controllers\Dashboard\OrdersController::class, 'cancelOrder'])->name('cancel.order');
 });
 
 

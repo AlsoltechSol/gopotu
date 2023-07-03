@@ -382,4 +382,121 @@ class OrdersController extends Controller
                 break;
         }
     }
+
+    public function profit(){
+
+        $data['activemenu'] = [
+            'main' => 'orders',
+            'sub' => 'index',
+        ];
+
+        if (!\Myhelper::can('view_order')) {
+            abort(401);
+        }
+
+        $data['martTimeslots'] = array();
+        $timeslots = [
+            '10:00:00',
+            '12:00:00',
+            '14:00:00',
+            '16:00:00',
+            '18:00:00',
+            '20:00:00',
+        ];
+
+        for ($i = 0; $i < 2; $i++) {
+            $date = Carbon::now()->addDays($i);
+            foreach ($timeslots as $slot) {
+                $t = Carbon::parse($date->format('Y-m-d') . ' ' . $slot);
+                if ($t->gt(Carbon::now())) {
+                    array_push($data['martTimeslots'], $t->format('Y-m-d H:i:s'));
+                }
+            }
+        }
+
+        $data['restaurantPreperationTtimes'] = array(
+            10 => '10 Minutes',
+            20 => '20 Minutes',
+            40 => '40 Minutes',
+            60 => '1 Hour'
+        );
+
+        if (\Myhelper::hasRole(['superadmin', 'admin'])) {
+            $data['order_status'] = [
+                'received' => config('orderstatus.options')['received'],
+                'accepted' => config('orderstatus.options')['accepted'],
+                'processed' => config('orderstatus.options')['processed'],
+                'intransit' => config('orderstatus.options')['intransit'],
+                'outfordelivery' => config('orderstatus.options')['outfordelivery'],
+                'delivered' => config('orderstatus.options')['delivered'],
+                // 'cancelled' => config('orderstatus.options')['cancelled'],
+            ];
+        } else if (\Myhelper::hasRole('branch')) {
+            $data['order_status'] = [
+                'accepted' => config('orderstatus.options')['accepted'],
+                'processed' => config('orderstatus.options')['processed'],
+                'intransit' => config('orderstatus.options')['intransit'],
+            ];
+        }
+        
+        return view('dashboard.profit.index');
+    }
+
+    public function cancelOrder(){
+        $data['activemenu'] = [
+            'main' => 'orders',
+            'sub' => 'index',
+        ];
+
+        if (!\Myhelper::can('view_order')) {
+            abort(401);
+        }
+
+        $data['martTimeslots'] = array();
+        $timeslots = [
+            '10:00:00',
+            '12:00:00',
+            '14:00:00',
+            '16:00:00',
+            '18:00:00',
+            '20:00:00',
+        ];
+
+        for ($i = 0; $i < 2; $i++) {
+            $date = Carbon::now()->addDays($i);
+            foreach ($timeslots as $slot) {
+                $t = Carbon::parse($date->format('Y-m-d') . ' ' . $slot);
+                if ($t->gt(Carbon::now())) {
+                    array_push($data['martTimeslots'], $t->format('Y-m-d H:i:s'));
+                }
+            }
+        }
+
+        $data['restaurantPreperationTtimes'] = array(
+            10 => '10 Minutes',
+            20 => '20 Minutes',
+            40 => '40 Minutes',
+            60 => '1 Hour'
+        );
+
+        if (\Myhelper::hasRole(['superadmin', 'admin'])) {
+            $data['order_status'] = [
+                'received' => config('orderstatus.options')['received'],
+                'accepted' => config('orderstatus.options')['accepted'],
+                'processed' => config('orderstatus.options')['processed'],
+                'intransit' => config('orderstatus.options')['intransit'],
+                'outfordelivery' => config('orderstatus.options')['outfordelivery'],
+                'delivered' => config('orderstatus.options')['delivered'],
+                // 'cancelled' => config('orderstatus.options')['cancelled'],
+            ];
+        } else if (\Myhelper::hasRole('branch')) {
+            $data['order_status'] = [
+                'accepted' => config('orderstatus.options')['accepted'],
+                'processed' => config('orderstatus.options')['processed'],
+                'intransit' => config('orderstatus.options')['intransit'],
+            ];
+        }
+
+        return view('dashboard.orders.cancel', $data);
+    }
 }
