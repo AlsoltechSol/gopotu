@@ -123,42 +123,52 @@ class SupportTicketController extends Controller
             $document['subject'] = $subject->name;
             $document['order_code'] = $request->order_code;
             $document['message'] = $request->message;
+            $newRecord = '';
+            if ($request->order_code){
+                $document2 = array();
+                $order = Order::where('code', $request->order_code)->first();
+                // return $order;
+    
+                $document2['order_id'] = $order->id;
+                $document2['code'] = $order->code;
+                $document2['status'] = 'accepted';
+                $document2['delivery_charge'] = $order->delivery_charge;
+                $document2['deliveryboy_id'] = $order->deliveryboy_id;
+                $document2['deliveryboy_id'] = $order->deliveryboy_id;
+                $document2['type'] = $request->type;
+                $document2['reason'] = $request->reason;
+                $newRecord = OrderReturnReplace::create($document2);
+            }
 
-            $document2 = array();
-            $order = Order::where('code', $request->order_code)->first();
-            // return $order;
-
-            $document2['order_id'] = $order->id;
-            $document2['code'] = $order->code;
-            $document2['status'] = 'accepted';
-            $document2['delivery_charge'] = $order->delivery_charge;
-            $document2['deliveryboy_id'] = $order->deliveryboy_id;
-            $document2['deliveryboy_id'] = $order->deliveryboy_id;
-            $document2['type'] = $request->type;
-            $document2['reason'] = $request->reason;
+          
 
             $action = SupportTicket::create($document);
-            OrderReturnReplace::create($document2);
-            $newRecord = OrderReturnReplace::create($document2);
+           // OrderReturnReplace::create($document2);
+            
 
-            $items = $request->input('items');
-            $itemIds = [];
+           // $items = $request->items;
+            $items = json_decode($request->items, false);
+           
+          // return $items;
 
-            foreach ($items as $item) {
-                $itemId = $item['id'];
-                $itemIds[] = $itemId;
-            }
-
-
-            foreach ($itemIds as $item) {
-                $orderReturnReplaceItem = new OrderReturnReplaceItem();
-                $orderReturnReplaceItem->orderproduct_id = $item->id;
-                $orderReturnReplaceItem->returnreplace_id = $newRecord->id;
-                $orderReturnReplaceItem->save();
-            }
-            if ($action) {
+            if (isset($items)){
+                foreach ($items as $item) {
+                    $orderReturnReplaceItem = new OrderReturnReplaceItem();
+                    $orderReturnReplaceItem->orderproduct_id = $item;
+                    $orderReturnReplaceItem->returnreplace_id = $newRecord->id;
+                    $orderReturnReplaceItem->save();
+                }
+            } 
+            
+           
+            if ($action && isset($newRecord)) {
                 $data['ticket'] = SupportTicket::find($action->id);
+                $data['order_return_replaces'] = OrderReturnReplace::find($newRecord->id);
+               
 
+                return response()->json(['status' => 'success', 'message' => 'Request sent successfully', 'data' => \Myhelper::formatApiResponseData($data)]);
+            }else if($action){
+                $data['ticket'] = SupportTicket::find($action->id);
                 return response()->json(['status' => 'success', 'message' => 'Request sent successfully', 'data' => \Myhelper::formatApiResponseData($data)]);
             } else {
                 return response()->json(['status' => 'success', 'message' => 'Oops!! Someting went wrong. Please try again later', 'data' => \Myhelper::formatApiResponseData($data)]);
