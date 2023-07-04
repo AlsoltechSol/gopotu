@@ -79,7 +79,6 @@ class HomeController extends Controller
                 'today_cancel_order' => Order::where('status', 'cancelled')->whereDate('created_at', Carbon::now())->count(),
                 'todayprofits' => Order::whereIn('status', ['delivered'])->whereDate('created_at', Carbon::now())->sum('admin_charge'),
                 'monthprofits' => Order::whereIn('status', ['delivered'])->whereMonth('created_at', Carbon::now())->whereYear('created_at', Carbon::now())->sum('admin_charge'),
-                'monthprofits' => Order::whereIn('status', ['delivered'])->whereMonth('created_at', Carbon::now())->whereYear('created_at', Carbon::now())->sum('admin_charge'),
                 'monthsales' => Order::whereIn('status', ['received', 'processed', 'accepted', 'intransit', 'outfordelivery', 'delivered'])->whereMonth('created_at', Carbon::now())->whereYear('created_at', Carbon::now())->sum('payable_amount'),
                 'monthly_cancel_order' => Order::where('status', 'cancelled')->whereMonth('created_at', Carbon::now())->whereYear('created_at', Carbon::now())->count(),
                 'users' => User::whereHas('role', function ($q) {

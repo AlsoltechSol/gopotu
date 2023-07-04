@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Order;
 use App\Model\OrderReturnReplace;
+use App\Model\OrderReturnReplaceItem;
 use App\Model\SupportTicketSubject;
 use App\Model\SupportTicket;
 
@@ -125,7 +126,7 @@ class SupportTicketController extends Controller
 
             $document2 = array();
             $order = Order::where('code', $request->order_code)->first();
-           // return $order;
+            // return $order;
 
             $document2['order_id'] = $order->id;
             $document2['code'] = $order->code;
@@ -136,12 +137,28 @@ class SupportTicketController extends Controller
             $document2['type'] = $request->type;
             $document2['reason'] = $request->reason;
 
-
             $action = SupportTicket::create($document);
             OrderReturnReplace::create($document2);
-            if ($action ) {
+            $newRecord = OrderReturnReplace::create($document2);
+
+            $items = $request->input('items');
+            $itemIds = [];
+
+            foreach ($items as $item) {
+                $itemId = $item['id'];
+                $itemIds[] = $itemId;
+            }
+
+
+            foreach ($itemIds as $item) {
+                $orderReturnReplaceItem = new OrderReturnReplaceItem();
+                $orderReturnReplaceItem->orderproduct_id = $item->id;
+                $orderReturnReplaceItem->returnreplace_id = $newRecord->id;
+                $orderReturnReplaceItem->save();
+            }
+            if ($action) {
                 $data['ticket'] = SupportTicket::find($action->id);
-               
+
                 return response()->json(['status' => 'success', 'message' => 'Request sent successfully', 'data' => \Myhelper::formatApiResponseData($data)]);
             } else {
                 return response()->json(['status' => 'success', 'message' => 'Oops!! Someting went wrong. Please try again later', 'data' => \Myhelper::formatApiResponseData($data)]);
