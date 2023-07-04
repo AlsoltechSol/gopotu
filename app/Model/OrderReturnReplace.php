@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class OrderReturnReplace extends Model
 {
     protected $fillable = [
-        'order_id', 'code', 'status', 'type', 'status_log', 'delivery_charge', 'deliveryboy_id', 'deliveryboy_status', 'deliveryboy_reachedstore', 'expected_intransit', 'expected_delivery', 'adminremarks'
+        'order_id', 'code', 'status', 'type', 'status_log', 'delivery_charge', 'deliveryboy_id', 'deliveryboy_status', 'deliveryboy_reachedstore', 'expected_intransit', 'expected_delivery', 'adminremarks', 'reason'
     ];
 
     protected static function boot()
