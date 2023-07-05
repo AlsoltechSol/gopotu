@@ -328,7 +328,7 @@
         </section>
     @endif
     
-    @if (session('admin'))
+    @if (session('admin') && !Myhelper::hasRole('superadmin'))
     <div class="mt-5">
 
         <a href="{{ route('admin.login') }}"><button class="btn btn-danger">Back to admin</button> </a>

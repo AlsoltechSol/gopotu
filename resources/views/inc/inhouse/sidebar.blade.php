@@ -192,7 +192,7 @@
                 </li>
             @endif
 
-            @if(Myhelper::can(['view_food', 'add_food']))
+            @if(Myhelper::hasRole(['superadmin']))
             <li class="treeview {{(isset($activemenu['main']) && $activemenu['main'] == 'foods') ? 'active menu-open' : ''}}">
                 <a href="javascript:void(0);">
                     <i class="fa fa-chart-line"></i> <span>Sales Management</span>

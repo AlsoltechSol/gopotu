@@ -30,6 +30,7 @@ use App\Model\Provider;
 use App\Model\WalletReport;
 use App\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class CheckoutController extends Controller
 {
@@ -969,5 +970,32 @@ class CheckoutController extends Controller
         } catch (\Exception $e) {
             return response()->json(['status' => 'error', 'message' => $e->getMessage(), 'data' => \Myhelper::formatApiResponseData($data)]);
         }
+    }
+
+    public function getItems(){
+        $user = Auth::user();
+        $orders = Order::where('user_id', $user->id)->pluck('id');
+
+        $items = OrderReturnReplace::whereIn('order_id', $orders)
+        ->leftJoin('order_return_replace_items', 'order_return_replaces.id', '=', 'order_return_replace_items.returnreplace_id')
+        ->select('order_return_replaces.id')
+        ->get();
+    
+
+        return $items;
+
+        
+
+        if ($items->count() > 0){
+            return response()->json([
+                'status' => 200,
+                'return-replace-items' => $items
+            ]);
+        }else{
+            return response()->json([
+                'status' => 404,
+            ]);
+        }
+       
     }
 }

@@ -68,6 +68,7 @@ Route::middleware('auth:api', 'checkuser', 'checkrole:user')->group(function () 
     Route::any('order/cancel-submit', 'Api\CheckoutController@cancelSubmit')->middleware('auth:api');
     Route::any('order/cash-order/initiate-payment', 'Api\CheckoutController@initiatePaymentforCashOrder')->middleware('auth:api');
     Route::any('order/details/timer', 'Api\CheckoutController@timerDetails')->middleware('auth:api');
+    Route::get('/user-return-replace-items', [App\Http\Controllers\Api\CheckoutController::class, 'getItems']);
 
     // Route::any('order/payment-callback', 'Api\CheckoutController@orderPaymentCallback')->middleware('auth:api');
     // Route::any('order/cash-order/initiate-payment', 'Api\CheckoutController@initiatePaymentforCashOrder')->middleware('auth:api');
