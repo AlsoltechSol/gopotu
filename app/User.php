@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Model\Order;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -94,5 +95,9 @@ class User extends Authenticatable implements JWTSubject
         } else {
             return asset('uploads/profile/' . $this->profile_image);
         }
+    }
+
+    public function orders(){
+        return $this->hasMany(Order::class, 'user_id');
     }
 }

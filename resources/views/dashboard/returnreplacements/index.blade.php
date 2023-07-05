@@ -39,7 +39,7 @@
                             <th class="text-center">ID</th>
                             <th>Return/Replace Details</th>
                             <th>Order Details</th>
-                            <th>Product Details</th>
+                            {{-- <th>Product Details</th> --}}
                             <th>Ret/Rep Reason</th>
                             <th>User Details</th>
                             <th>Customer Details</th>
@@ -248,33 +248,34 @@
                     orderable: false,
                     searchable: false,
                 },
-                {
-                    render: function(data, type, full, meta){
+                // {
+                //     render: function(data, type, full, meta){
                         
-                        let order = full.order;
-                        console.log(order);
-                        if (order != null){
-                            return `<b class="">`+order.pro+`</b> `
-                        }else{
-                            return `N/A`
-                        }
-
+                //         let order = full.order;
+                //         let items = [];
+                //         if (order != null && Array.isArray(order.order_products)) {
+                //             order.order_products.forEach(element => {
+                //                 items.push(element.details.name);
+                //             });
+                //             return `<b class="">` + items.join(', ') + `</b>`;
+                //         } else {
+                //             return `N/A`;
+                //         }
                        
-                    },
-                    orderable: false,
-                    searchable: false,
-                },
+                //     },
+                //     orderable: false,
+                //     searchable: false,
+                // },
                 {
                     render: function(data, type, full, meta){
 
                         let order = full.order;
                         console.log(order);
                         if (order != null){
-                            return `<b class="">`+order.reason+`</b> `
+                            return `<b class="">`+full.reason+`</b> `
                         }else{
                             return `N/A`
                         }
-
                        
                     },
                     orderable: false,
