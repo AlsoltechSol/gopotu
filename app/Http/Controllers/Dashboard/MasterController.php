@@ -254,7 +254,7 @@ class MasterController extends Controller
                 $rules = [
                     'parent_id' => 'nullable|exists:categories,id',
                     'name' => 'required',
-                    'type' => 'required|in:mart,restaurant,service',
+                    'type' => 'required|in:mart,restaurant,meat',
                     'icon' => 'required|mimes:jpeg,jpg,png,gif,webp',
                 ];
 
@@ -266,7 +266,7 @@ class MasterController extends Controller
                     'id' => 'required|exists:categories',
                     'parent_id' => 'nullable|exists:categories,id',
                     'name' => 'required',
-                    'type' => 'required|in:mart,restaurant,service',
+                    'type' => 'required|in:mart,restaurant,meat',
                     'icon' => 'nullable|mimes:jpeg,jpg,png,gif,webp',
                 ];
 

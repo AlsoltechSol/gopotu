@@ -356,7 +356,7 @@ class CommonController extends Controller
                 break;
 
             case 'schemes':
-                $query = \App\Model\Scheme::with('commissions')->get();
+                $query = \App\Model\Scheme::with('commissions')->orderBy('created_at', 'asc');
                 $request['searchdata'] = [];
                 break;
             case 'contents':

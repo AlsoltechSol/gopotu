@@ -317,6 +317,7 @@
                     data: {'token':'{{csrf_token()}}'},
                     success: function(data){
                         var result = data.result;
+                        console.log(result);
 
                         $('#categoryform')[0].reset();
                         $('#categoryform').find('[name=parent_id]').val('{{ (isset($parent_category) && $parent_category) ? $parent_category->id : null }}');
@@ -324,6 +325,7 @@
                         $('#categoryform').find('[name=operation]').val('category-edit');
                         $('#categoryform').find('[name=name]').val(result.name);
                         $('#categoryform').find('[name=type]').val(result.type).trigger('change');
+                        $('#categoryform').find('[name=scheme_id]').val(result.scheme_id).trigger('change');
 
                         // $('#categorymodal').find('.modal-title').html('Edit Category <small>{{$level->name}}</small>');
                         $('#categorymodal').find('.modal-title').html('Edit Category');
@@ -341,6 +343,7 @@
             $('#categoryform').find('[name=operation]').val('category-new');
             $('#categoryform').find('[name=id]').val('');
             $('#categoryform').find('[name=type]').val('').trigger('change');
+            $('#categoryform').find('[name=scheme_id]').val('').trigger('change');
 
 
             // $('#categorymodal').find('.modal-title').html('Add New Category <small>{{$level->name}} {{ (isset($parent_category) && $parent_category) ? "| " . $parent_category->name : null }}</small>');

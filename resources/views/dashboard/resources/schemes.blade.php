@@ -31,7 +31,9 @@
                             <th>ID</th>
                             <th>Name</th>
                             <th>Last Updated</th>
-                            <th>Type/Value</th>
+                            <th>Mart(Type:Amount)</th>
+                            <th>Food(Type:Amount)</th>
+                            <th>Meat(Type:Amount)</th>
                            
                             <th>Status</th>
                             <th>Action</th>
@@ -121,15 +123,81 @@
 
                     for (const key in full.commissions) {
                         
-                        if (full.commissions.hasOwnProperty(key)) {
-                            // if (full.commissions[key].provider_id = 1){
-                            // provider = 'GoMart Sales'
-                            // }else if(full.commissions[key].provider_id = 2){
-                            //     provider = 'Food Order'
-                            // }else{
-                            //     provider = 'Meat'
-                            // }
-                            concatenatedString += full.commissions[key].type + ': ' + full.commissions[key].value +'(' + full.commissions[key].provider_id + ')' + ', ';
+                        if (full.commissions[key].provider_id == 1) {
+                           
+                            if (full.commissions[key].type == 'percent') {
+                                concatenatedString += full.commissions[key].type.charAt(0).toUpperCase() + full.commissions[key].type.slice(1) + ': ' + full.commissions[key].value +'%'+ ', ';
+                            }else{
+                                concatenatedString += full.commissions[key].type.charAt(0).toUpperCase() + full.commissions[key].type.slice(1) + ': ' + full.commissions[key].value + ', ';
+                            }
+                        }
+                    }
+
+                    // Remove the trailing comma and space
+                    concatenatedString = concatenatedString.slice(0, -2);
+                   
+                    if (full.commissions.length !== 0){
+                        return concatenatedString
+                    }else{
+                        return 'N/A'
+                    }
+                       
+                       
+                    },
+                },
+                {
+                    data:'type',
+                    name: 'type',
+                    render: function(data, type, full, meta){
+                        console.log(full);
+                        
+                        let concatenatedString = '';
+                        var provider = ''
+
+                    for (const key in full.commissions) {
+                        
+                        if (full.commissions[key].provider_id == 2) {
+
+                            if (full.commissions[key].type == 'percent') {
+                                concatenatedString += full.commissions[key].type.charAt(0).toUpperCase() + full.commissions[key].type.slice(1) + ': ' + full.commissions[key].value +'%'+ ', ';
+                            }else{
+                                concatenatedString += full.commissions[key].type.charAt(0).toUpperCase() + full.commissions[key].type.slice(1) + ': ' + full.commissions[key].value + ', ';
+                            }
+                           
+                           
+                        }
+                    }
+
+                    // Remove the trailing comma and space
+                    concatenatedString = concatenatedString.slice(0, -2);
+                    console.log(concatenatedString);
+                    if (full.commissions.length !== 0){
+                        return concatenatedString
+                    }else{
+                        return 'N/A'
+                    }
+                       
+                       
+                    },
+                },
+                {
+                    data:'type',
+                    name: 'type',
+                    render: function(data, type, full, meta){
+                        console.log(full);
+                        
+                        let concatenatedString = '';
+                        var provider = ''
+
+                    for (const key in full.commissions) {
+                        
+                        if (full.commissions[key].provider_id == 3) {
+                           
+                            if (full.commissions[key].type == 'percent') {
+                                concatenatedString += full.commissions[key].type.charAt(0).toUpperCase() + full.commissions[key].type.slice(1) + ': ' + full.commissions[key].value +'%'+ ', ';
+                            }else{
+                                concatenatedString += full.commissions[key].type.charAt(0).toUpperCase() + full.commissions[key].type.slice(1) + ': ' + full.commissions[key].value + ', ';
+                            }
                         }
                     }
 
@@ -254,6 +322,7 @@
                     data: {'token':'{{csrf_token()}}'},
                     success: function(data){
                         var result = data.result;
+                        console.log(result);
 
                         $('#schemeform')[0].reset();
                         $('#schemeform').find('[name=id]').val(id);

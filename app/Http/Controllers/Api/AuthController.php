@@ -29,6 +29,7 @@ use App\User;
 use GuzzleHttp\Client;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use JWTAuth;
 
 class AuthController extends Controller
@@ -378,18 +379,8 @@ class AuthController extends Controller
             //'business_name' => 'required'
         ]);
         $otp_rand = rand(1000, 9999);
-        // $otp_rand = 1000;
-       
-        // $last_send_time = Otp::where('mobile', $request->mobile)->orderBy('created_at', 'desc')->first();
-        // // dd($last_send_time->updated_at);
-        // $dt = new DateTime();
-
-        // $duration = 10;
-        // if (isset($last_send_time)) {
-        //     $last_otp_send_time = $last_send_time->created_at->format('Y-m-d H:i:s');
-        //     $time_now = $dt->format('Y-m-d H:i:s');
-        //     $duration = strtotime($time_now) - strtotime($last_otp_send_time);
-        // }
+        $content = "Your Gopotu account OTP is $otp_rand. Only valid for 20 min minutes. DO NOT share it with anyone.";
+        $client = new Client();
         $user = User::where('mobile', $request->mobile)->first(); 
         if (isset($user)){
             $user->otp = $otp_rand;
@@ -401,11 +392,14 @@ class AuthController extends Controller
             $user->role_id = 3;
           //  $user->name = $request->name;
             $user->save();
+            $response = $client->get('http://smsapi.syscogen.com/rest/services/sendSMS/sendGroupSms?AUTH_KEY=' . config('sms.pwd') . '&message=' . urlencode($content) . '&senderId=' . config('sms.sender') . '&routeId=1&mobileNos=' . $request->mobile . '&smsContentType=english');
         }  
                   
-        $client = new Client();
+      
 
-        $response = $client->get('smsapi.syscogen.com/rest/services/sendSMS/sendGroupSms?AUTH_KEY=2946464c2021d8e0b1277bed83cd9f&message='.$otp_rand.'&senderId=DEMOOS&routeId=1&mobileNos='.$request->mobile.'&smsContentType=english&entityid=1001238677144196147&tmid=140200000022&templateid=NoneedIfAddedInPanel');
+        
+
+        $response = $client->get('http://smsapi.syscogen.com/rest/services/sendSMS/sendGroupSms?AUTH_KEY=' . config('sms.pwd') . '&message=' . urlencode($content) . '&senderId=' . config('sms.sender') . '&routeId=1&mobileNos=' . $request->mobile . '&smsContentType=english');
 
             return response()->json([
                 'message' => 'otp send to your mobile number',
@@ -428,6 +422,18 @@ class AuthController extends Controller
         // ]);
         if ($otp == $request->otp) {
             $user =  $user = User::where('mobile', $request->mobile)->first();
+            $user->referral_code = config('app.shortname') . '-' . rand(11111111, 99999999);
+            $name_flag = false;
+            $referred_flag = false;
+
+            if (isset($user->name)){
+                $name_flag = true;
+            }
+            if (isset($user->parent_id)){
+                $referred_flag = true;
+            }
+            $user['name_flag'] = $name_flag;
+            $user['referred_flag'] = $referred_flag;
            
             $token = JWTAuth::fromUser($user);
 
@@ -447,13 +453,35 @@ class AuthController extends Controller
                 //'otp' => $otp
             ]);
         }
-            //return $user->createToken('API Token')->accessToken;
+            //return $user->createToken('API Token')->accessToken;                
+    }
 
-
-          
-
-
-          
+    public function nameUpdate(Request $request){
+        $data = array();
+        $user = Auth::user();
+        if (!isset($user->name)){
+            $user->name = $request->name;
+        }
+       
         
+        if ($request->referred_code) {
+           // return 'hi';
+            $parent = User::where('referral_code', $request->referred_code)->first();
+           // return $parent;
+            if ($parent && $parent->status == '1') {
+                $user->parent_id = $parent->id;
+            } else {
+                return response()->json(['status' => 'error', 'message' => 'The referred code you entered may be invalid or the user has been suspended.', 'data' => \Myhelper::formatApiResponseData($data)]);
+            }
+        }
+  
+        $user->save();
+        $user['name_flag'] = true;
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $user
+        ]);
+
     }
 }

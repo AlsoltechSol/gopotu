@@ -76,6 +76,7 @@ Route::middleware('auth:api', 'checkuser', 'checkrole:user')->group(function () 
 
     Route::any('wallet/statement/{type}', 'Api\WalletsController@fetchStatement');
     Route::any('wallet/dashboard/{type}', 'Api\WalletsController@getDashboard');
+    Route::post('name-update', 'Api\AuthController@nameUpdate');
 });
 
 Route::any('cms/contents', 'Api\FrontendController@cmsContents');

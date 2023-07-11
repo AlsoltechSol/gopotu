@@ -183,7 +183,8 @@ class ResourcesController extends Controller
                     }
                 }
 
-                return response()->json(['status' => 'success', 'result' => $update], 200);
+                // return redirect()->route('dashboard.resources.index', ['type' => 'scheme']);
+                return response()->json(['status' => 'Resourse updated successfully', 'result' => $update], 200);
                 break;
         }
 
