@@ -20,11 +20,11 @@
             <div class="box-header with-border">
                 <h3 class="box-title">{{$heading}} <small>{{$scheme->name}}</small></h3>
 
-                <div class="box-tools pull-right">
+                {{-- <div class="box-tools pull-right">
                     @if (Myhelper::can('add_scheme'))
                         <button class="btn btn-primary btn-sm" onclick="add()"><i class="fa fa-plus"></i> Add New</button>
                     @endif
-                </div>
+                </div> --}}
             </div>
             <form action="{{ route('dashboard.resources.submit') }}" id="chargesform" method="POST">
                 <div class="box-body">
@@ -55,7 +55,7 @@
                                             </select>
                                         </td>
                                         <td>
-                                            <input type="number" name="value[]" class="form-control" value="{{ $item->chargevalue }}" placeholder="Enter Value">
+                                            <input type="number" name="value[]" class="form-control numberInput" value="{{ $item->chargevalue }}" placeholder="Enter Value" min="0">
                                         </td>
                                     </tr>
                                 @endforeach
@@ -71,6 +71,7 @@
                     @if (count($providers) > 0)
                         <button type="submit" class="btn btn-primary btn-md">Submit</button>
                     @endif
+                    <button class="btn btn-danger btn-md"><a style="text-decoration: none !important; color:#fff" href="{{route('dashboard.resources.index', ['type' => 'scheme'])}}">Back</a></button>
                 </div>
             </form>
         </div>
@@ -79,6 +80,16 @@
 
 @push('script')
     <script>
+       var numberInputs = document.getElementsByClassName('numberInput');
+
+        for (var i = 0; i < numberInputs.length; i++) {
+        numberInputs[i].addEventListener('keydown', function(event) {
+            if (event.key === '-' || event.key === 'Subtract') {
+            event.preventDefault();
+            }
+        });
+        }
+
         $('#chargesform').validate({
             submitHandler: function() {
                 var form = $('#chargesform');
@@ -91,9 +102,15 @@
                             form.find('tbody').find('span.pull-right').remove();
                         },
                         success:function(data){
+                            notify(data.status, 'success');
+                            setTimeout(function() {
+                                window.location.href = '{{route('dashboard.resources.index', ['type' => 'scheme'])}}';
+                            }, 3000); // Delay in milliseconds (2 seconds)
+
+                           
                             $.each(data.result, function(index, values) {
                                 if(values.id){
-                                    form.find('input[value="'+index+'"]').closest('tr').find('td').eq(0).append('<span class="pull-right text-success"><i class="fas fa-check"></i></span>');
+                                  //  form.find('input[value="'+index+'"]').closest('tr').find('td').eq(0).append('<span class="pull-right text-success"><i class="fas fa-check"></i></span>');
                                 }else{
                                     form.find('input[value="'+index+'"]').closest('tr').find('td').eq(0).append('<span class="pull-right text-danger"><i class="fas fa-times"></i></span>');
                                     if(values){

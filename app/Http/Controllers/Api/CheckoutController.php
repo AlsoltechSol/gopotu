@@ -978,7 +978,7 @@ class CheckoutController extends Controller
 
         $items = OrderReturnReplace::whereIn('order_id', $orders)
         ->leftJoin('order_return_replace_items', 'order_return_replaces.id', '=', 'order_return_replace_items.returnreplace_id')
-        ->select('order_return_replaces.id')
+        ->select('order_return_replaces.orderproduct_id')
         ->get();
     
 
