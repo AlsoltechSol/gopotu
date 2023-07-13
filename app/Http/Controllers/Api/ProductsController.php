@@ -53,8 +53,8 @@ class ProductsController extends Controller
                 }
             }
 
-            $products = Product::with('details', 'product_variants', 'shop')->where('status', '1')->where('master_status', '1');
-
+            $products = Product::with('details', 'product_variants', 'shop')->where('status', '1')->where('master_status', '1')->orderBy('priority','desc');
+            //return $products;
             /** Filter By Type */
             if ($request->has('type') && $request->type != null) {
                 $products->where('type', $request->type);

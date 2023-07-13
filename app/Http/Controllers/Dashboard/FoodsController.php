@@ -259,6 +259,7 @@ class FoodsController extends Controller
                 $product_document['availability'] = 'instock';
                 $product_document['master_id'] = $post->master_id;
                 $product_document['food_type'] = $post->food_type;
+                $product_document['priority'] = $post->priority;
 
                 $productvariant_document = array();
                 foreach ($post->price as $key => $item) {

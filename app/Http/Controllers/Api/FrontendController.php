@@ -302,8 +302,9 @@ class FrontendController extends Controller
                     ->where('type', $request->type)
                     ->where('status', 1)
                     ->where('master_status', 1)
+
                     ->whereHas('details', function ($q) use ($cat_array) {
-                        $q->whereIn('category_id', $cat_array);
+                        $q->whereIn('category_id', $cat_array)->orderBy('priority', 'desc');
                     })->count();
 
                 if ($products > 0) {
@@ -316,7 +317,7 @@ class FrontendController extends Controller
                 ->where('status', '1')
                 ->where('master_status', '1')
                 ->where('top_offer', 1)
-                ->where('type', $request->type);
+                ->where('type', $request->type)->orderBy('priority', 'desc');
 
             $shop = Shop::findorfail($request->shop_id);
             $shop->availableproducts = Product::where('shop_id', $shop->id)->where('type', $request->type)->where('status', 1)->count();

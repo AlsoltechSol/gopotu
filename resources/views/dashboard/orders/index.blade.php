@@ -293,10 +293,20 @@
                     data:'user',
                     name: 'user',
                     render: function(data, type, full, meta){
-                        return `Name: <b>`+data.name+`</b><br>\
+                        console.log('data', data);
+                        if (data != null){
+                            return `Name: <b>`+data.name+`</b><br>\
                             Email: <b>`+data.email.substring(0,10)+ "..." +`</b><br>\
                             Mobile: <b>`+data.mobile+`</b><br>\
                             Unique ID: <b class="text-danger">(#`+data.id+`)</b>`;
+                        }
+                        else{
+                            return `Name: <b>`+'N/A'+`</b><br>\
+                            Email: <b>`+'N/A'+ "..." +`</b><br>\
+                            Mobile: <b>`+'N/A'+`</b><br>\
+                            Unique ID: <b class="text-danger">(#`+'N/A'+`)</b>`;
+                        }
+                       
                     },
                     searchable: false,
                     orderable: false,
