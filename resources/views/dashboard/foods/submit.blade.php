@@ -109,6 +109,23 @@
                             </div>
                         @endif
 
+                        
+                        @if((isset($product) || !isset($product)) && !Myhelper::hasRole('branch'))
+                            <div class="col-md-12">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label" style="margin: 8px 0;">Product Priorities <span class="text-danger">*</span></label>
+                                    <div class="col-sm-10">
+                                        <select name="priority" class="form-control">
+                                            <option {{isset($product) &&  $product->priority == '3' ? 'selected' : ''}} value="3">High Priority</option>
+                                            <option {{isset($product) &&  $product->priority == '2' ? 'selected' : ''}} value="2">Medium Priority</option>
+                                            <option {{isset($product) &&  $product->priority == '1' ? 'selected' : ''}} value="1">Low Priority</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
                     
 
                         {{-- @if((isset($product) || !isset($product)))

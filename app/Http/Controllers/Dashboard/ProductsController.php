@@ -19,6 +19,7 @@ use App\Model\ProductVariant;
 use App\Model\Scheme;
 use App\Model\Shop;
 use Carbon\Carbon;
+use FontLib\Table\Type\post;
 
 class ProductsController extends Controller
 {
@@ -354,21 +355,17 @@ class ProductsController extends Controller
             case 'edit':
                 $product = Product::findorfail($post->id);
 
-
-
-
                 if ($product->variant && (!$post->variants || count($post->variants) < 1)) {
 
                     return response()->json(['status' => 'Please select a variant option to continue'], 400);
                 }
-
-
 
                 $product_document = array();
                 $product_document['type'] = 'mart';
                 $product_document['colors'] = json_encode($post->available_colors);
                 $product_document['variant_options'] = json_encode($post->variants);
                 $product_document['master_id'] = $product->master_id;
+                $product_document['priority'] = $post->priority;
 
                 // dd($product_document['master_id']);
 
@@ -379,12 +376,7 @@ class ProductsController extends Controller
 
                 $productvariant_document = array();
 
-
-
-
                 foreach ($post->price as $key => $item) {
-
-
 
                     if (in_array($post->availability, ['instock', 'outofstock'])) {
 
@@ -413,8 +405,6 @@ class ProductsController extends Controller
                             return response()->json(['status' => 'Please enter SKU for Row ' . ($key + 1)], 400);
                         }
                     }
-
-
 
 
                     $product_master = ProductMaster::where('id', $product_document['master_id'])->first();

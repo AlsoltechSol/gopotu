@@ -49,7 +49,7 @@
                     {{ $order->cust_address->city ? $order->cust_address->city.',' : '' }}
                     {{ $order->cust_address->state ? $order->cust_address->state : '' }}<br>
                     Phone: {{ $order->cust_mobile }}<br>
-                    Email: {{ $order->user->email }}
+                    Email: {{ $order->user->email ?? 'N/A' }}
                 </address>
             </div>
             <div class="col-sm-4 invoice-col">
@@ -68,13 +68,20 @@
                             <th>Qty</th>
                             <th>Product</th>
                             <th>Image</th>
-                            <th>Unit Price</th>
-                            <th>Gross Amount</th>
-                            <th>Taxable Amount</th>
-                            <th>CGST</th>
-                            <th>SGST</th>
-                            <th>IGST</th>
-                            <th>Total</th>
+                            @if (Myhelper::hasRole('branch'))
+                                <th>Offered Price</th>
+                            @endif
+                            @if (Myhelper::hasRole(['superadmin', 'admin']))
+                                <th>Unit Price</th>                       
+                                <th>Gross Amount</th>
+                                <th>Taxable Amount</th>
+                                <th>CGST</th>
+                                <th>SGST</th>
+                                <th>IGST</th>
+                                <th>Total</th>
+                            @endif    
+                           
+                            
                         </tr>
                     </thead>
 
@@ -84,7 +91,6 @@
                             <tr>
                                 <td>{{$item->quantity}}</td>
                                 
-
                                 <td>
                                     {{$item->product->details->name}}
                                     @if($item->variant_selected->color_name)
@@ -101,42 +107,54 @@
                                     
                                  
                                 </td>
+                                @if (!Myhelper::hasRole('branch'))
                                 <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)$item->price, 2, '.', '') }}</td>
-
+                                @endif
+                                
+                                @if (Myhelper::hasRole('branch'))
+                                    <td>
+                                        {{Myhelper::getOfferedPrice($item->product_id, $item->variant_id)}}
+                                    </td>
+                                @endif
                                 @php
-                                    $grossamount = round($item->sub_total, 2);
-                                    $tax_total = round($item->tax_total, 2);
+                                        $grossamount = round($item->sub_total, 2);
+                                        $tax_total = round($item->tax_total, 2);
 
-                                    $shop_tin = $item->shop_tin;
+                                        $shop_tin = $item->shop_tin;
 
-                                    $cust_state = DB::table('state_masters')->where('state_code', @$order->cust_address->state)->first();
-                                    $cust_tin = @$cust_state->tin_no ?? null;
+                                        $cust_state = DB::table('state_masters')->where('state_code', @$order->cust_address->state)->first();
+                                        $cust_tin = @$cust_state->tin_no ?? null;
 
-                                    $taxableamount = 0;
-                                    $cgst = 0;
-                                    $sgst = 0;
-                                    $igst = 0;
-                                    $totalaftertax = 0;
+                                        $taxableamount = 0;
+                                        $cgst = 0;
+                                        $sgst = 0;
+                                        $igst = 0;
+                                        $totalaftertax = 0;
 
-                                    if ($shop_tin && $cust_tin) {
-                                        $taxableamount = round($grossamount - $tax_total, 2);
-                                        if ($shop_tin == $cust_tin) {
-                                            $cgst = round($tax_total / 2, 2);
-                                            $sgst = round($tax_total / 2, 2);
-                                        } else{
-                                            $igst = round($tax_total, 2);
+                                        if ($shop_tin && $cust_tin) {
+                                            $taxableamount = round($grossamount - $tax_total, 2);
+                                            if ($shop_tin == $cust_tin) {
+                                                $cgst = round($tax_total / 2, 2);
+                                                $sgst = round($tax_total / 2, 2);
+                                            } else{
+                                                $igst = round($tax_total, 2);
+                                            }
                                         }
-                                    }
 
-                                    $totalaftertax = ($taxableamount + $cgst + $sgst + $igst);
-                                @endphp
-
-                                <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)($grossamount), 2, '.', '') }}</td>
-                                <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)($taxableamount), 2, '.', '') }}</td>
-                                <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)($cgst), 2, '.', '') }}</td>
-                                <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)($sgst), 2, '.', '') }}</td>
-                                <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)($igst), 2, '.', '') }}</td>
-                                <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)($totalaftertax), 2, '.', '') }}</td>
+                                        $totalaftertax = ($taxableamount + $cgst + $sgst + $igst);
+                                        @endphp
+                                @if (Myhelper::hasRole(['superadmin', 'admin']))
+                                        
+                                    
+                                     <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)($grossamount), 2, '.', '') }}</td>
+                                     <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)($taxableamount), 2, '.', '') }}</td>
+                                     <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)($cgst), 2, '.', '') }}</td>
+                                     <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)($sgst), 2, '.', '') }}</td>
+                                     <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)($igst), 2, '.', '') }}</td>
+                                     <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)($totalaftertax), 2, '.', '') }}</td>
+                                @endif
+                                              
+                               
                             </tr>
                         @endforeach
                     </tbody>
@@ -203,15 +221,18 @@
 
                 <div class="table-responsive">
                 <table class="table">
-                    <tr>
-                        <th style="width:50%">Subtotal:</th>
-                        <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)$order->item_total, 2, '.', '') }}</td>
-                    </tr>
-                    <tr>
-                        <th>Delivery Charge:</th>
-                        <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)$order->delivery_charge, 2, '.', '') }}</td>
-                    </tr>
-                    @if ($order->coupon_discount > 0)
+                    @if (Myhelper::hasRole(['superadmin', 'admin']))
+                        <tr>
+                            <th style="width:50%">Subtotal:</th>
+                            <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)$order->item_total, 2, '.', '') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Delivery Charge:</th>
+                            <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)$order->delivery_charge, 2, '.', '') }}</td>
+                        </tr>
+                    @endif
+                  
+                    @if ($order->coupon_discount > 0 && !Myhelper::hasRole('branch'))
                         <tr>
                             <th>Coupon Discount:</th>
                             <td>{!! config('app.currency.htmlcode') !!} {{ number_format((float)$order->coupon_discount, 2, '.', '') }} (-)</td>
@@ -342,12 +363,15 @@
             </div>
         @endforeach
 
-        <div class="row no-print">
-            <div class="col-xs-12">
-                <button class="btn btn-default pull-right" id="print"><i class="fa fa-print"></i> Print</button>
-                {{-- <a href="{{$order->invoice}}" class="btn btn-default pull-right" id="print"><i class="fa fa-doc-pdf"></i> Invoice</a> --}}
+        @if (Myhelper::hasRole(['superadmin', 'admin']))
+            <div class="row no-print">
+                <div class="col-xs-12">
+                    <button class="btn btn-default pull-right" id="print"><i class="fa fa-print"></i> Print</button>
+                    {{-- <a href="{{$order->invoice}}" class="btn btn-default pull-right" id="print"><i class="fa fa-doc-pdf"></i> Invoice</a> --}}
+                </div>
             </div>
-        </div>
+        @endif
+       
     </section>
 
     <div class="clearfix"></div>

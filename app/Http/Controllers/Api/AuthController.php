@@ -394,10 +394,7 @@ class AuthController extends Controller
             $user->save();
             $response = $client->get('http://smsapi.syscogen.com/rest/services/sendSMS/sendGroupSms?AUTH_KEY=' . config('sms.pwd') . '&message=' . urlencode($content) . '&senderId=' . config('sms.sender') . '&routeId=1&mobileNos=' . $request->mobile . '&smsContentType=english');
         }  
-                  
-      
-
-        
+                     
 
         $response = $client->get('http://smsapi.syscogen.com/rest/services/sendSMS/sendGroupSms?AUTH_KEY=' . config('sms.pwd') . '&message=' . urlencode($content) . '&senderId=' . config('sms.sender') . '&routeId=1&mobileNos=' . $request->mobile . '&smsContentType=english');
 
@@ -410,51 +407,55 @@ class AuthController extends Controller
     }
 
     public function otpLogin(Request $request){
-        $otp = User::where('mobile', $request->mobile)->orderBy('created_at', 'desc')->first()->otp;
-        $request->validate([
-            'otp' => 'required',
-            'mobile' => 'required',
-         
-        ]);
-        // return response()->json([
-        //     'otp' => $otp->otp,
-        //     'request' => $request->otp
-        // ]);
-        if ($otp == $request->otp) {
-            $user =  $user = User::where('mobile', $request->mobile)->first();
-            $user->referral_code = config('app.shortname') . '-' . rand(11111111, 99999999);
-            $name_flag = false;
-            $referred_flag = false;
+        $data = array();
+       $otp = User::where('mobile', $request->mobile)->orderBy('created_at', 'desc')->first()->otp;
+       $request->validate([
+           'otp' => 'required',
+           'mobile' => 'required',
+        
+       ]);
+       // return response()->json([
+       //     'otp' => $otp->otp,
+       //     'request' => $request->otp
+       // ]);
+       if ($otp == $request->otp) {
+           $user =  $user = User::where('mobile', $request->mobile)->first();
+           $user->referral_code = config('app.shortname') . '-' . rand(11111111, 99999999);
+           $name_flag = false;
+           $referred_flag = false;
 
-            if (isset($user->name)){
-                $name_flag = true;
-            }
-            if (isset($user->parent_id)){
-                $referred_flag = true;
-            }
-            $user['name_flag'] = $name_flag;
-            $user['referred_flag'] = $referred_flag;
-           
+           if (isset($user->name)){
+               $name_flag = true;
+           }
+           if (isset($user->parent_id)){
+               $referred_flag = true;
+           }
+           $user['name_flag'] = $name_flag;
+           $user['referred_flag'] = $referred_flag;
+           $data['default_address'] = UserAddress::where('user_id', $user->id)->where('is_default', 1)->first();
             $token = JWTAuth::fromUser($user);
+            $data['user'] = $user; $data['token'] = [
+               'access_token' => $token,
+               'token_type' => 'bearer',
+           ];
+          
+          
 
-                return response()->json([
-                    'message' => ' Otp verification succesfully completed',
-                    'status' => '200',
-                    'user' => $user,
-                    'token' => $token,
-                  
-                ]);
-        }else{
-                
-            return response()->json([
-                'message' => 'otp verification failed',
-                'status' => 401,
-                // 'token' => $token,
-                //'otp' => $otp
-            ]);
-        }
-            //return $user->createToken('API Token')->accessToken;                
-    }
+       return response()->json(['status' => 'success', 'message' => 'Logged In Successfully.', 'data' => \Myhelper::formatApiResponseData($data)]);
+      
+  
+       }else{
+              
+           return response()->json([
+               'message' => 'otp verification failed',
+               'status' => 401,
+               // 'token' => $token,
+               //'otp' => $otp
+           ]);
+       }
+           //return $user->createToken('API Token')->accessToken;                
+   }
+
 
     public function nameUpdate(Request $request){
         $data = array();

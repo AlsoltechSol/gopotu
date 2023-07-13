@@ -1471,4 +1471,13 @@ class Myhelper
 
         return $details;
     }
+
+    public static function getOfferedPrice($product_id = "none", $variant_id = "none"){
+        $offered_price = ProductVariant::where('product_id', $product_id)->where('id', $variant_id)->first()->offeredprice;
+        if (isset($offered_price)){
+            return $offered_price;
+        }else{
+            return 'N/A';
+        }
+    }
 }
